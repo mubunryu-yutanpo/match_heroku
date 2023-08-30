@@ -3,26 +3,50 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
+    /* ================================================================
+    ホーム
+    =================================================================*/
+    public function home(){
+        return view('welcome');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        return view('home');
+    /* ================================================================
+    ログアウト
+    =================================================================*/
+    public function logout(){
+        Auth::logout();
+        return redirect('/')->with('flash_message', 'ログアウトしました')->with('flash_message_type', 'success');
     }
+
+    /* ================================================================
+    ログイン状態チェック
+    =================================================================*/
+    public function loginCheck(){
+        $auth = Auth::check();
+        $data = [
+            'auth' => $auth,
+        ];
+        return response()->json($data);
+    }
+
+    /* ================================================================
+    案件一覧ページへ
+    =================================================================*/
+    public function projectList(){
+        return view('project/list');
+    }
+
+
+    /* ================================================================
+        マイページへ
+    =================================================================*/
+    public function mypage(){
+        return view('mypage/mypage');
+    }
+
 }

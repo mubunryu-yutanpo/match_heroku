@@ -1,24 +1,52 @@
-@extends('layouts.app')
+@extends('layouts.parent')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+@section('title', 'メール認証画面')
 
-                <div class="card-body">
-                    @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                        </div>
-                    @endif
+@section('header')
+    @parent
+@show
 
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }}, <a href="{{ route('verification.resend') }}">{{ __('click here to request another') }}</a>.
+@section('main')
+
+<section class="p-page-visual">
+    
+    <div class="p-page-visual__container">
+        
+        <div class="c-title">新規ユーザー登録</div>
+
+        <div class="p-container">
+
+            @if (session('resent'))
+                <div class="p-alert is-success" role="alert">
+                    メールを送信しました！
                 </div>
-            </div>
+            @endif
+
+            <p class="c-text">メールを送信しました。メール内のリンクをクリックし、本登録をお願いします。</p>
+            <p class="c-text">メールが届いていない場合は、
+                <a href="{{ route('verification.resend') }}" class="c-link">ここをクリックしてください。</a>
+                再送いたします。
+            </p>
         </div>
+
     </div>
-</div>
+
+
+
+    <div class="p-form__container">
+        <label for="name" class="c-label">名前:</label>
+        <input id="name" type="text" class="c-input @error('name') valid-error @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+        @error('name')
+            <span class="c-error-text" role="alert">
+                {{ $message }}
+            </span>
+        @enderror
+    </div>
+
+</section>
+
 @endsection
+
+@section('footer')
+    @parent
+@show

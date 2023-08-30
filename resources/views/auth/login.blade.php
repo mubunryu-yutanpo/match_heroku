@@ -1,73 +1,69 @@
-@extends('layouts.app')
+@extends('layouts.parent')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+@section('title', 'ログイン')
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+@section('header')
+    @parent
+@show
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+@section('main')
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+<section class="p-page-visual">
+    <form action="{{ route('login') }}" method="post" class="p-form">
+        @csrf
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        <div class="c-title p-form__title">ログイン</div>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+        <div class="p-form__container">
+            <label for="email" class="c-label">メールアドレス:</label>
+            <input id="email" type="text" class="c-input @error('email') valid-error @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            @error('email')
+                <span class="c-error-text" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
+        </div>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+        <div class="p-form__container">
+            <label for="password" class="c-label">パスワード:</label>
+            <input id="password" type="password" class="c-input @error('password') valid-error @enderror" name="password" required autocomplete="current-password" placeholder="半角英数字8文字以上">
+            @error('password')
+                <span class="c-error-text" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
+        </div>
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        <div class="p-form__container">
+            <div class="">
 
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
+                <div class="p-remember">
+                    <input class="c-input p-remember__input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                    <label class="c-label p-remember__label" for="remember">
+                        ログインを保持する
+                    </label>
                 </div>
+                @if (Route::has('password.request'))
+                    <div class="p-forgot">
+                        <a class="c-link p-forgot__link" href="{{ route('password.request') }}">
+                            パスワードをお忘れの方はこちら
+                        </a>
+                    </div>
+                @endif
+
             </div>
         </div>
-    </div>
-</div>
+
+        <div class="p-submit">
+            <button type="submit" class="c-button p-submit__button">ログインする</button>
+        </div>
+
+
+    </form>
+</section>
+
 @endsection
+
+@section('footer')
+    @parent
+@show

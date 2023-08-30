@@ -1,77 +1,69 @@
-@extends('layouts.app')
+@extends('layouts.parent')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+@section('title', 'ユーザー登録')
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+@section('header')
+    @parent
+@show
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+@section('main')
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+<section class="p-page-visual">
+    <form action="{{ route('register') }}" method="post" class="p-form">
+        @csrf
 
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+        <div class="c-title p-form__title">新規ユーザー登録</div>
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="p-form__container">
+            <label for="name" class="c-label">名前:</label>
+            <input id="name" type="text" class="c-input @error('name') valid-error @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+            @error('name')
+                <span class="c-error-text" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
         </div>
-    </div>
-</div>
+
+        <div class="p-form__container">
+            <label for="email" class="c-label">メールアドレス:</label>
+            <input id="email" type="email" class="c-input @error('email') valid-error @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+            @error('email')
+                <span class="c-error-text" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
+        </div>
+
+        <div class="p-form__container">
+            <label for="password" class="c-label">パスワード:</label>
+            <input id="password" type="password" class="c-input @error('password') valid-error @enderror" name="password" required autocomplete="current-password" placeholder="半角英数字8文字以上">
+            @error('password')
+                <span class="c-error-text" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
+        </div>
+
+        <div class="p-form__container">
+            <label for="password-confirm" class="c-label">パスワード（再入力）:</label>
+            <input id="password-confirm" type="password" class="c-input @error('password-confirm') valid-error @enderror" name="password_confirmation" required autocomplete="new-password" placeholder="半角英数字8文字以上">
+            @error('password-confirm')
+                <span class="c-error-text" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
+        </div>
+
+        <div class="p-submit">
+            <button type="submit" class="c-button p-submit__button">登録する</button>
+        </div>
+
+
+    </form>
+</section>
+
 @endsection
+
+@section('footer')
+    @parent
+@show
