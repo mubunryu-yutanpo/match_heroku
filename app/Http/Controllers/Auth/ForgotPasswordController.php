@@ -20,6 +20,12 @@ class ForgotPasswordController extends Controller
 
     use SendsPasswordResetEmails;
 
+    protected function sendResetLinkResponse($response)
+    {
+        return back()->with('flash_message', 'パスワード再設定のリンクを送信しました！');
+    }
+
+
     /**
      * Create a new controller instance.
      *

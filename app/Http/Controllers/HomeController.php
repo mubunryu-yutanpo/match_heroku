@@ -4,19 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
+
 
 
 class HomeController extends Controller
 {
     /* ================================================================
-    ホーム
+        ホーム
     =================================================================*/
     public function home(){
         return view('welcome');
     }
 
     /* ================================================================
-    ログアウト
+        ログアウト
     =================================================================*/
     public function logout(){
         Auth::logout();
@@ -24,7 +26,7 @@ class HomeController extends Controller
     }
 
     /* ================================================================
-    ログイン状態チェック
+        ログイン状態チェック
     =================================================================*/
     public function loginCheck(){
         $auth = Auth::check();
@@ -35,18 +37,10 @@ class HomeController extends Controller
     }
 
     /* ================================================================
-    案件一覧ページへ
+        案件一覧ページへ
     =================================================================*/
     public function projectList(){
         return view('project/list');
-    }
-
-
-    /* ================================================================
-        マイページへ
-    =================================================================*/
-    public function mypage(){
-        return view('mypage/mypage');
     }
 
 }

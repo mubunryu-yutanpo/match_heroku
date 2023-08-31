@@ -35,14 +35,15 @@
                 <nav class="p-nav">
                     <ul class="p-nav__list">
                         
-                    @if(!Auth::check())
-                            <li class="p-nav__item c-list-item">
-                                <a href="" class="p-nav__link c-link">HOME</a>
-                            </li>
+                        <li class="p-nav__item c-list-item">
+                            <a href="" class="p-nav__link c-link">HOME</a>
+                        </li>
                             
-                            <li class="p-nav__item c-list-item">
-                                <a href="{{ route('list') }}" class="p-nav__link c-link">案件一覧</a>
-                            </li>
+                        <li class="p-nav__item c-list-item">
+                            <a href="{{ route('list') }}" class="p-nav__link c-link">案件一覧</a>
+                        </li>
+
+                    @if(!Auth::check())
                             
                             <li class="p-nav__item c-list-item">
                                 <a href="/login" class="p-nav__link c-link">ログイン</a>
@@ -57,15 +58,19 @@
 
                     @auth
                         <li class="p-nav__item c-list-item">
-                            <a href="" class="p-nav__link c-link">マイページ</a>
+                            <a href="{{ route('mypage') }}" class="p-nav__link c-link">マイページ</a>
                         </li>
                         
                         <li class="p-nav__item c-list-item">
-                            <a href="" class="p-nav__link c-link">案件を投稿</a>
+                            <a href="{{ route('new') }}" class="p-nav__link c-link">案件を投稿</a>
+                        </li>
+
+                        <li class="p-nav__item c-list-item">
+                            <a href="{{ route('d_message', Auth::id() ) }}" class="p-nav__link c-link">メッセージBOX</a>
                         </li>
                         
                         <li class="p-nav__item c-list-item">
-                            <a href="" class="p-nav__link c-link">プロフィール編集</a>
+                            <a href="{{ route('prof', Auth::id() ) }}" class="p-nav__link c-link">プロフィール編集</a>
                         </li>
 
                         <li class="p-nav__item c-list-item">
