@@ -37,11 +37,32 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+
+    //他のモデルの関係
+    public function project(){
+        return $this->hasMany('App\Project');
+    }
+
+    public function apply(){
+        return $this->hasMany('App\Apply');
+    }
+
+    public function publicMessage(){
+        return $this->hasMany('App\PublicMessage');
+    }
+
+    public function directMessage(){
+        return $this->hasMany('App\DirectMessage');
+    }
+
+
     /**
      * Send the email verification notification.
      *
      * @return void
      */
+
+    // メール認証用の確認メールの内容を自作（日本語版）のものに
     public function sendEmailVerificationNotification()
     {
         // 日本語化したメールを送信

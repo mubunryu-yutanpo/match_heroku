@@ -11,7 +11,14 @@
 @section('main')
 
     <h1 class="">案件一覧ページだぜ</h1>
-    <a href="{{ route('project.edit', 1) }}">個別の案件に飛ぶぜ</a>
+    <p>
+        <a href="{{ route('detail', 1) }}">案件の詳細</a>
+        はこちら
+    </p>
+    <p>
+        <a href="{{ route('project.edit', 1) }}">案件の詳細</a>
+        はコチラ
+    </p>
 
 @endsection
 

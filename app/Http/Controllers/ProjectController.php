@@ -19,11 +19,21 @@ class ProjectController extends Controller
     }
 
     /* ================================================================
+        案件詳細画面へ
+    =================================================================*/
+    public function detail($project_id){
+        $user = Auth::user();
+        $project = $project_id;
+
+        return view('project/detail', compact('user', 'project'));
+    }
+
+    /* ================================================================
         案件の編集・削除画面へ
     =================================================================*/
-    public function edit($id){
+    public function edit($project_id){
         $user = Auth::user();
-        $project = $id;
+        $project = $project_id;
 
         return view('project/edit', compact('user', 'project'));
     }
