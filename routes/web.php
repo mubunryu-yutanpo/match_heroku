@@ -12,7 +12,9 @@
 */
 
 /* ================================================================
+
     全ユーザーが閲覧可能ページ
+
 =================================================================*/
 
 Route::get('/', 'HomeController@home')->name('home');
@@ -20,7 +22,9 @@ Route::get('/list', 'HomeController@projectList')->name('list');
 
 
 /* ================================================================
+
     認証関連
+
 =================================================================*/
 
 // Auth::routes();
@@ -35,23 +39,25 @@ Route::middleware('verified')->group(function () {
 
     // マイページ関連
     Route::get('/mypage', 'MypageController@mypage')->name('mypage');
-    Route::get('/prof/{id}', 'MypageController@prof')->name('prof');
-    Route::get('/withdrow/{id}', 'MypageController@withdrow')->name('withdrow');
-    Route::get('/messages/{user_id}', 'MypageController@directMessages')->name('d_message');
+    Route::get('/prof/{user_id}', 'MypageController@prof')->name('prof');
+    Route::get('/withdraw/{user_id}', 'MypageController@withdraw')->name('withdraw');
 
     // 案件関連
     Route::get('/new', 'ProjectController@new')->name('new');
     Route::get('/project/{project_id}/detail', 'ProjectController@detail')->name('detail');
     Route::get('/edit/project/{project_id}', 'ProjectController@edit')->name('project.edit');
 
+    // メッセージ関連
+    Route::get('/messages/{user_id}', 'MessageController@directMessages')->name('d_message');
+
+
     /* ================================================================
         処理関連
     =================================================================*/
 
-    /* ================================================================
-        API関連
-    =================================================================*/
+    // マイページ関連
 
+    Route::post('/withdraw/{user_id}/destroy', 'MypageController@destroy')->name('destroy');
     /* ================================================================
         ログアウト
     =================================================================*/
@@ -59,5 +65,17 @@ Route::middleware('verified')->group(function () {
     Route::get('/logout', 'HomeController@logout')->name('logout');
 
     });
+});
+
+/* ================================================================
+
+    API関連
+
+=================================================================*/
+
+Route::middleware('api')->group(function(){
+
+    Route::get('/api/profile/{user_id}', 'ApiController@getProfile');
+
 });
 

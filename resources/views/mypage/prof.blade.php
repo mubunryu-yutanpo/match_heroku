@@ -11,7 +11,7 @@
         {{ $user->name }}さんのプロフィール編集画面さ。
     </h1>
 
-    <a href="{{ route('withdrow', $user->id) }}" class="c-link">退会はこちら</a>
+    <a href="{{ route('withdraw', $user->id) }}" class="c-link">退会はこちら</a>
 
 @endsection
 

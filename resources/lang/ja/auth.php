@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'エラー：メールアドレスとパスワードを確認してください',
+    'throttle' => 'エラーが発生しました。しばらく経ってから再度お試しください',
 
 ];

@@ -3,16 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
-class MessageController extends Controller
+
+class ApiController extends Controller
 {
+
     /* ================================================================
-        DM画面へ
+        プロフィール情報取得
     =================================================================*/
-    public function directMessages($id){
+    public function getProfile($id){
 
         $user = User::find($id);
-        return view('mypage/message', compact('user'));
-    }
 
+        $data = [
+            'user' => $user,
+        ];
+
+        return response()->json('user');
+    }
 }

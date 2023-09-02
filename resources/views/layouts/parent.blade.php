@@ -34,9 +34,9 @@
                 <!-- NAVメニュー -->
                 <nav class="p-nav">
                     <ul class="p-nav__list">
-                        
+
                         <li class="p-nav__item c-list-item">
-                            <a href="" class="p-nav__link c-link">HOME</a>
+                            <a href="/" class="p-nav__link c-link">HOME</a>
                         </li>
                             
                         <li class="p-nav__item c-list-item">
