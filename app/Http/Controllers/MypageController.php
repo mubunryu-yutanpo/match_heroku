@@ -28,17 +28,38 @@ class MypageController extends Controller
     }
 
     /* ================================================================
-        プロフィール編集処理
+        プロフィール編集処理（画像のパス処理とかはまだ。）
     =================================================================*/
-    public function profUpdate($id){
+    public function profUpdate(Request $request, $id){
 
         if (!ctype_digit($id)) {
             return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
         }
 
+        try{
+            $user = User::find($id);
 
-        $user = User::find($id);
-        return view('mypage/message', compact('user'));
+            $updated = $user->update([
+                'name'         => $request->name,
+                'email'        => $request->email,
+                'avatar'       => $request->avatar,
+                'introduction' => $request->introduction,
+            ]);
+
+            if($updated){
+                // 成功時
+                return redirect('/mypage')->with('flash_message', 'プロフィールを更新しました！')->with('flash_message_type', 'success');
+
+            }else{
+                // 失敗時
+                return redirect()->back()->with('flash_message', 'データの保存に失敗しました')->with('flash_message_type', 'error');
+            }
+
+        }catch(QueryException $e){
+            // エラー内容をログに吐いて、リダイレクト
+            Log::error('プロフィール変更処理エラー：'. $e->getMessage());
+            return redirect('/mypage')->with('flash_message', '予想外のエラーが発生しました。')->with('flash_message_type', 'error');
+        }
     }
 
 
@@ -79,7 +100,7 @@ class MypageController extends Controller
 
         }catch(QueryException $e){
             // エラー内容をログに吐いて、リダイレクト
-            Log::error('退会処理SQLエラー:' . $e->getMessage());
+            Log::error('退会処理エラー:' . $e->getMessage());
             return redirect('/mypage')->with('flash_message', '予定外のエラーが発生しました。')->with('flash_message_type', 'error');
         }
 

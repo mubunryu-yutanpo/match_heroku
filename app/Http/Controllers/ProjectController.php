@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Type;
 
 
 class ProjectController extends Controller
@@ -14,9 +15,18 @@ class ProjectController extends Controller
     =================================================================*/
     public function new(){
         $user = Auth::user();
+        $projectType = Type::all();
 
-        return view('project/new', compact('user'));
+        return view('project/new', compact('user', 'projectType'));
     }
+
+    /* ================================================================
+        案件の新規登録
+    =================================================================*/
+    public function create(){
+
+    }
+
 
     /* ================================================================
         案件詳細画面へ

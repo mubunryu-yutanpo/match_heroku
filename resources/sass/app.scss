@@ -13,6 +13,16 @@
 // ===========  Object  ===========
 
 // ============= Component =============
+
+@import 'Object/Component/button';
+@import 'Object/Component/_image';
+@import 'Object/Component/input';
+@import 'Object/Component/label';
+@import 'Object/Component/link';
+@import 'Object/Component/text';
+@import 'Object/Component/textarea';
+@import 'Object/Component/title';
+
 // ============= Project =============
 
 @import 'Object/Project/_alert';

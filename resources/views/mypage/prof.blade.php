@@ -11,6 +11,61 @@
         {{ $user->name }}さんのプロフィール編集画面さ。
     </h1>
 
+    <form action="{{ route('prof.update', $user->id) }}" method="post" class="p-form" enctype="multipart/form-data">
+        @csrf
+
+        <div class="c-title p-form__title">新規ユーザー登録</div>
+
+        <!-- ユーザー名 -->
+        <div class="p-form__container">
+            <label for="name" class="c-label p-form__label">名前:</label>
+                <input id="name" type="text" class="c-input p-form__input @error('name') valid-error @enderror" name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" autofocus>
+                @error('name')
+                    <span class="c-error-text p-form__error-text" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+        </div>
+
+        <!-- メールアドレス -->
+        <div class="p-form__container">
+            <label for="email" class="c-label p-form__label">メールアドレス:</label>
+                <input id="email" type="email" class="c-input p-form__input @error('email') valid-error @enderror" name="email" value="{{ old('email', $user->email) }}" required autocomplete="email" autofocus>
+                @error('email')
+                    <span class="c-error-text p-form__error-text" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+        </div>
+
+        <!-- アバター画像 -->
+        <div class="p-form__container">
+            <label for="avatar" class="c-label p-form__label">アイコン画像:</label>
+                <input id="avatar" type="file" class="c-input p-form__input @error('avatar') valid-error @enderror" name="avatar" value="{{ old('avatar', $user->avatar) }}" autofocus>
+                @error('avatar')
+                    <span class="c-error-text p-form__error-text" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+        </div>
+
+        <!-- 自己紹介文 -->
+        <div class="p-form__container">
+            <label for="introduction" class="c-label p-form__label">自己紹介文:</label>
+                <textarea name="introduction" id="introduction" cols="30" rows="10" class="c-textarea p-form__textarea">{{ old('introduction', $user->introduction) }}</textarea>
+                @error('introduction')
+                    <span class="c-error-text p-form__error-text" role="alert">
+                        {{ $message }}
+                    </span>
+                @enderror
+        </div>
+
+        <div class="p-submit">
+            <button class="c-button p-submit__button">更新して登録</button>
+        </div>
+
+    </form>
+
     <a href="{{ route('withdraw', $user->id) }}" class="c-link">退会はこちら</a>
 
 @endsection

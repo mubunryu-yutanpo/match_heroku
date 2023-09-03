@@ -57,6 +57,7 @@ Route::middleware('verified')->group(function () {
 
     // マイページ関連
 
+    Route::post('/prof/{user_id}/edit', 'MypageController@profUpdate')->name('prof.update');
     Route::post('/withdraw/{user_id}/destroy', 'MypageController@destroy')->name('destroy');
     /* ================================================================
         ログアウト
