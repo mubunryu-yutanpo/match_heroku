@@ -59,6 +59,13 @@ Route::middleware('verified')->group(function () {
 
     Route::post('/prof/{user_id}/edit', 'MypageController@profUpdate')->name('prof.update');
     Route::post('/withdraw/{user_id}/destroy', 'MypageController@destroy')->name('destroy');
+
+    // 案件関連
+
+    Route::post('/new', 'ProjectController@create')->name('create');
+    Route::post('/edit/project/{project_id}/update', 'ProjectController@projectUpdate')->name('project.update');
+    Route::post('/edit/project/{project_id}/delete', 'ProjectController@projectDelete')->name('project.delete');
+
     /* ================================================================
         ログアウト
     =================================================================*/

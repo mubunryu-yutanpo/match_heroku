@@ -11,7 +11,7 @@
         NEW案件を{{ $user->name }}さんが登録したがってるようです。
     </h1>
 
-    <form action="{{ route('prof.update', $user->id) }}" method="post" class="p-form" enctype="multipart/form-data">
+    <form action="{{ route('create') }}" method="post" class="p-form" enctype="multipart/form-data">
         @csrf
 
         <div class="c-title p-form__title">案件登録</div>
@@ -50,7 +50,7 @@
         <!-- 料金（上限） -->
         <div class="p-form__container">
             <label for="upperPrice" class="c-label p-form__label">料金（上限）:</label>
-                <input id="upperPrice" type="number" class="c-input p-form__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice', $user->upperPrice) }}" required autofocus>
+                <input id="upperPrice" type="number" class="c-input p-form__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice') }}" required autofocus>
                 @error('upperPrice')
                     <span class="c-error-text p-form__error-text" role="alert">
                         {{ $message }}
@@ -61,7 +61,7 @@
         <!-- 料金（下限） -->
         <div class="p-form__container">
             <label for="lowerPrice" class="c-label p-form__label">料金（下限）:</label>
-                <input id="lowerPrice" type="number" class="c-input p-form__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice', $user->lowerPrice) }}" required autofocus>
+                <input id="lowerPrice" type="number" class="c-input p-form__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice') }}" required autofocus placeholder="1,000〜">
                 @error('lowerPrice')
                     <span class="c-error-text p-form__error-text" role="alert">
                         {{ $message }}
@@ -73,7 +73,7 @@
         <!-- サムネ画像 -->
         <!-- <div class="p-form__container">
             <label for="thumbnail" class="c-label p-form__label">アイコン画像:</label>
-                <input id="thumbnail" type="file" class="c-input p-form__input @error('thumbnail') valid-error @enderror" name="thumbnail" value="{{ old('thumbnail', $user->thumbnail) }}" autofocus>
+                <input id="thumbnail" type="file" class="c-input p-form__input @error('thumbnail') valid-error @enderror" name="thumbnail" value="{{ old('thumbnail') }}" autofocus>
                 @error('thumbnail')
                     <span class="c-error-text p-form__error-text" role="alert">
                         {{ $message }}
@@ -81,10 +81,10 @@
                 @enderror
         </div> -->
 
-        <!-- 自己紹介文 -->
+        <!-- 案件内容 -->
         <div class="p-form__container">
-            <label for="content" class="c-label p-form__label">自己紹介文:</label>
-                <textarea name="content" id="content" cols="30" rows="10" class="c-textarea p-form__textarea">{{ old('content', $user->content) }}</textarea>
+            <label for="content" class="c-label p-form__label">案件の内容:</label>
+                <textarea name="content" id="content" cols="30" rows="10" class="c-textarea p-form__textarea">{{ old('content') }}</textarea>
                 @error('content')
                     <span class="c-error-text p-form__error-text" role="alert">
                         {{ $message }}
@@ -93,7 +93,7 @@
         </div>
 
         <div class="p-submit">
-            <button class="c-button p-submit__button">更新して登録</button>
+            <button class="c-button p-submit__button">登録する！</button>
         </div>
 
     </form>

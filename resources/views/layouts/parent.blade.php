@@ -94,5 +94,6 @@
         </footer>
     @show
 
+<script src="js/app.js"></script>
 </body>
 </html>
