@@ -83,7 +83,10 @@ Route::middleware('verified')->group(function () {
 
 Route::middleware('api')->group(function(){
 
+    // プロフィール取得
     Route::get('/api/profile/{user_id}', 'ApiController@getProfile');
+    // 案件一覧
+    Route::get('/api/projects', 'ApiController@getProjects');
 
 });
 

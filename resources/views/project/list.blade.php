@@ -13,7 +13,7 @@
     <h1 class="">案件一覧ページだぜ</h1>
     <div id="app">
         Component
-        <example-component />
+        <list-component />
     </div>
     <p>
         <a href="{{ route('detail', 1) }}">案件の詳細</a>
