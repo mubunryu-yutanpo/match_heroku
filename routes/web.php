@@ -87,6 +87,8 @@ Route::middleware('api')->group(function(){
     Route::get('/api/profile/{user_id}', 'ApiController@getProfile');
     // 案件一覧
     Route::get('/api/projects', 'ApiController@getProjects');
+    // 案件詳細
+    Route::get('/api/{project_id}/detail', 'ApiController@getProjectDetail');
 
 });
 

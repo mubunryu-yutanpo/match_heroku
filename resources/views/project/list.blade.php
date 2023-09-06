@@ -11,18 +11,10 @@
 @section('main')
 
     <h1 class="">案件一覧ページだぜ</h1>
-    <div id="app">
+    <div id="app" class="">
         Component
         <list-component />
     </div>
-    <p>
-        <a href="{{ route('detail', 1) }}">案件の詳細</a>
-        はこちら
-    </p>
-    <p>
-        <a href="{{ route('project.edit', 1) }}">案件の編集</a>
-        はコチラ
-    </p>
 
 @endsection
 

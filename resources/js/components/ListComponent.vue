@@ -21,6 +21,7 @@
                 <p class="c-text p-card__price">{{ project.upperPrice }}</p>
                 <p class="c-text p-card__price">{{ project.lowerPrice }}</p>
                 <p class="c-text p-card__content">{{ project.content }}</p>
+                <a :href="'/project/' + project.id + '/detail'" class="c-link p-card__link">詳細</a>
             </div>
         </section>
 
@@ -157,7 +158,7 @@ export default {
         });
 
         // 案件種別がstring型になるので、そこを考慮して比較
-        return this.projects.filter((project) => project.type.toString() === this.selectedProjectType);
+        return this.projects.filter((project) => project.type.id.toString() === this.selectedProjectType);
     },
 
   },

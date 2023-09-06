@@ -10,7 +10,10 @@
     <h1>
         {{ $user->name }}さんの、案件詳細なんだな。
     </h1>
-    <strong>ID:{{ $project }}の案件なのよ！</strong>
+
+    <div id="app" class="">
+        <detail-component :project_id="{{ $project_id }}"></detail-component>
+    </div>
 
 @endsection
 

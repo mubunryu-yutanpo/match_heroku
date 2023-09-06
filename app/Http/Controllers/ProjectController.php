@@ -59,11 +59,11 @@ class ProjectController extends Controller
     /* ================================================================
         案件詳細画面へ
     =================================================================*/
-    public function detail($project_id){
+    public function detail($id){
         $user = Auth::user();
-        $project = $project_id;
+        $project_id = $id;
 
-        return view('project/detail', compact('user', 'project'));
+        return view('project/detail', compact('user', 'project_id'));
     }
 
     /* ================================================================

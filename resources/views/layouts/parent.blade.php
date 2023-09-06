@@ -94,6 +94,6 @@
         </footer>
     @show
 
-<script src="js/app.js"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
