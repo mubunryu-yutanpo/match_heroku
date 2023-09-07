@@ -12,6 +12,7 @@
     @endif
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     @section('header')
@@ -66,7 +67,7 @@
                         </li>
 
                         <li class="p-nav__item c-list-item">
-                            <a href="{{ route('d_message', Auth::id() ) }}" class="p-nav__link c-link">メッセージBOX</a>
+                            <a href="{{ route('d.message', Auth::id() ) }}" class="p-nav__link c-link">メッセージBOX</a>
                         </li>
                         
                         <li class="p-nav__item c-list-item">

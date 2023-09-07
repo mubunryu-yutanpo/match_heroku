@@ -18,6 +18,10 @@
                 料金： {{ project.lowerPrice | numberWithCommas }}〜{{ project.upperPrice | numberWithCommas }} 円
             </p>
         </div>
+
+        <div class=""><!-- メッセ部分のwrap -->
+            <a :href="'/project/' + project.id + '/messages' " class="">コメントする</a>
+        </div>
     </div>
 </template>
 

@@ -48,7 +48,8 @@ Route::middleware('verified')->group(function () {
     Route::get('/edit/project/{project_id}', 'ProjectController@edit')->name('project.edit');
 
     // メッセージ関連
-    Route::get('/messages/{user_id}', 'MessageController@directMessages')->name('d_message');
+    Route::get('/messages/{user_id}', 'MessageController@directMessages')->name('d.message');
+    Route::get('/project/{project_id}/messages', 'MessageController@publicMessage')->name('pub.message');
 
 
     /* ================================================================
@@ -65,6 +66,8 @@ Route::middleware('verified')->group(function () {
     Route::post('/new', 'ProjectController@create')->name('create');
     Route::post('/edit/project/{project_id}/update', 'ProjectController@projectUpdate')->name('project.update');
     Route::post('/edit/project/{project_id}/delete', 'ProjectController@projectDelete')->name('project.delete');
+
+    // メッセージ関連
 
     /* ================================================================
         ログアウト
@@ -89,6 +92,11 @@ Route::middleware('api')->group(function(){
     Route::get('/api/projects', 'ApiController@getProjects');
     // 案件詳細
     Route::get('/api/{project_id}/detail', 'ApiController@getProjectDetail');
+    // 案件のパブリックメッセージ取得
+    Route::get('/api/{project_id}/publicMessages', 'ApiController@getPublicMessages');
+    // パブリックメッセージ追加
+    Route::post('api/project/{project_id}/{user_id}/publicMessage', 'ApiController@postPublicMessage')->name('post.pub.message');
+
 
 });
 

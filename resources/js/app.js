@@ -22,6 +22,7 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('detail-component', require('./components/DetailComponent.vue').default);
 Vue.component('list-component', require('./components/ListComponent.vue').default);
+Vue.component('public-message-component', require('./components/PublicMessageComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
