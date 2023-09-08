@@ -12,7 +12,7 @@
     </h1>
 
     <div id="app" class="">
-        <detail-component :project_id="{{ $project_id }}"></detail-component>
+        <detail-component :project_id="{{ $project_id }}" :user_id="{{ Auth::id() }}"></detail-component>
     </div>
 
 @endsection

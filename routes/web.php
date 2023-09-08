@@ -48,7 +48,7 @@ Route::middleware('verified')->group(function () {
     Route::get('/edit/project/{project_id}', 'ProjectController@edit')->name('project.edit');
 
     // メッセージ関連
-    Route::get('/messages/{user_id}', 'MessageController@directMessages')->name('d.message');
+    Route::get('/messages/{auth_user_id}/{user_id}', 'MessageController@directMessages')->name('d.message');
     Route::get('/project/{project_id}/messages', 'MessageController@publicMessage')->name('pub.message');
 
 
@@ -95,7 +95,11 @@ Route::middleware('api')->group(function(){
     // 案件のパブリックメッセージ取得
     Route::get('/api/{project_id}/publicMessages', 'ApiController@getPublicMessages');
     // パブリックメッセージ追加
-    Route::post('api/project/{project_id}/{user_id}/publicMessage', 'ApiController@postPublicMessage')->name('post.pub.message');
+    Route::post('/api/project/{project_id}/{user_id}/publicMessage', 'ApiController@postPublicMessage');
+    // ダイレクトメッセージの取得
+    Route::get('/api/messages/{chat_id}', 'ApiController@getDirectMessage');
+    // ダイレクトメッセージ追加
+    Route::post('/api/message/{user_id}/{chat_id}', 'ApiController@sendMessage');
 
 
 });

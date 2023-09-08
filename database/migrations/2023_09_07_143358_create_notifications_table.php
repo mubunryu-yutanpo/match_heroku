@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDirectMessagesTable extends Migration
+class CreateNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,17 @@ class CreateDirectMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('direct_messages', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('receiver_id')->unsigned();
             $table->bigInteger('sender_id')->unsigned();
             $table->bigInteger('chat_id')->unsigned();
-            $table->string('comment');
+            $table->boolean('read')->default(false);
+            $table->text('content');
             $table->timestamps();
 
             // 外部キー
+            $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('chat_id')->references('id')->on('chats')->onDelete('cascade')->onUpdate('cascade');
         });
@@ -33,6 +36,6 @@ class CreateDirectMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('direct_messages');
+        Schema::dropIfExists('notifications');
     }
 }

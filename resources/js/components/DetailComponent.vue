@@ -6,7 +6,9 @@
             <h2 class="">{{ project.title }}</h2>
             
             <div class="">
-                <a href="" class="">メッセージを送る</a>
+                <a :href="'/messages/' + this.user_id + '/' + this.project.user_id " class="" v-if="this.user_id !== this.project.user_id">
+                    メッセージを送る
+                </a>
                 <p>X(旧Twitter)にシェアする</p>
             </div>
 
@@ -30,7 +32,10 @@ import axios from 'axios';
 
 export default {
 
-    props: ['project_id'],
+    props: [
+        'project_id',
+        'user_id',
+    ],
 
     data() {
         return {

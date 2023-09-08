@@ -21,6 +21,14 @@ class UsersTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'テスト花子',
+                'email' => 'test@2.com',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ];
 
         // データベースにユーザーデータを挿入

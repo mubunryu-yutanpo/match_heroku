@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Database\QueryException;
 use App\User;
 use App\Project;
 use App\PublicMessage;
-use Illuminate\Database\QueryException;
+use App\DirectMessage;
+use App\Chat;
 
 class ApiController extends Controller
 {
@@ -119,4 +122,74 @@ class ApiController extends Controller
         }
     }
 
+    /* ================================================================
+        DM情報取得
+    =================================================================*/
+    public function getDirectMessage($chat_id){
+
+        $messages = DirectMessage::where('chat_id', $chat_id)->with('user')->get();
+
+        $messageList = [];
+        if($messages->isNotEmpty()){
+            $messageList = $messages;
+        }
+
+        $data = [
+            'messageList' => $messageList,
+        ];
+
+        return response()->json($data);
+    }
+
+    /* ================================================================
+        DM新規追加
+    =================================================================*/
+    public function sendMessage(Request $request , $user_id, $chat_id){
+
+        // チャットに紐づけられているユーザーかチェック
+        $chat = Chat::find($chat_id);
+        $user_id = (int)$user_id;
+
+        if($user_id !== $chat->user1_id && $user_id !== $chat->user2_id){
+
+            // ユーザーが違う場合
+            return response()->json([
+                'flashMessage' => 'エラーが発生しました',
+                'flashMessageType' => 'error',
+            ]);
+        }
+
+        try{
+            $dm = new DirectMessage;
+            $saved = $dm->fill([
+                'sender_id' => $user_id,
+                'chat_id'   => $chat_id,
+                'comment'   => $request->comment,
+            ])->save();
+
+            // DM追加処理の判定
+            if($saved){
+                // 成功時
+                return response()->json([
+                    'flashMessage' => 'メッセージを送信しました！',
+                    'flashMessageType' => 'success',
+                ]);
+    
+            }else{
+                // 失敗時
+                return response()->json([
+                    'flashMessage' => 'メッセージの保存に失敗しました',
+                    'flashMessageType' => 'error',
+                ]);    
+            }
+
+        }catch(QueryException $e){
+            Log::error('DM追加処理エラー：'. $e->getMessage());
+
+            return response()->json([
+                'flashMessage' => '予想外のエラーが発生しました',
+                'flashMessageType' => 'error',
+            ]);
+        }
+    }
 }
