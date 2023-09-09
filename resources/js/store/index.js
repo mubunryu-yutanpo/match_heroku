@@ -1,4 +1,4 @@
-// Vueでフラッシュメッセージを表示する
+// Vueでフラッシュメッセージを表示する（結局使わなそう）
 
 import Vue from 'vue';
 import Vuex from 'vuex';

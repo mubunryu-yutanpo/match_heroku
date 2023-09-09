@@ -10,6 +10,7 @@ use App\User;
 use App\Project;
 use App\PublicMessage;
 use App\DirectMessage;
+use App\Notification;
 use App\Chat;
 
 class ApiController extends Controller
@@ -160,15 +161,21 @@ class ApiController extends Controller
         }
 
         try{
+            // DM情報を保存
             $dm = new DirectMessage;
-            $saved = $dm->fill([
+            $dmSaved = $dm->fill([
                 'sender_id' => $user_id,
                 'chat_id'   => $chat_id,
                 'comment'   => $request->comment,
             ])->save();
 
+            // 通知情報を保存
+            $notification = new Notification;
+            dd($notification);
+
+
             // DM追加処理の判定
-            if($saved){
+            if($dmSaved){
                 // 成功時
                 return response()->json([
                     'flashMessage' => 'メッセージを送信しました！',

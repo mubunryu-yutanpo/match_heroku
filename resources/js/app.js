@@ -8,8 +8,6 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import store from './store'; // Vuexストアをインポート
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -35,5 +33,4 @@ Vue.component('public-message-component', require('./components/PublicMessageCom
 
 const app = new Vue({
     el: '#app',
-    store, // VuexストアをVueインスタンスに統合
 });

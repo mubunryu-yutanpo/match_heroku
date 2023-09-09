@@ -1,7 +1,7 @@
 <template>
     <div class=""><!-- 全体のwrap -->
 
-        <!-- フラッシュメッセージを表示 -->
+        <!-- フラッシュ?メッセージを表示 -->
         <div v-if="flashMessage" :class="flashMessageType">{{ flashMessage }}</div>
 
         <!-- メッセージを表示するエリア -->
@@ -59,7 +59,6 @@ export default {
         getMessages(){
             axios.get('/api/messages/' + this.chat.id ).
             then((response) => {
-                // メッセージデータを取得し、messageListに設定
                 this.messageList = response.data.messageList;
             })
             .catch((error) => {
@@ -82,6 +81,7 @@ export default {
                 console.error(error);
             });
         },
+
 
         // 日付の表示を変更
         formatDate(value) {
