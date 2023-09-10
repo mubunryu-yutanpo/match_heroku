@@ -1943,6 +1943,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1974,7 +1983,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/' + this.project_id + '/detail').then(function (response) {
         _this2.project = response.data.project;
-        _this2.messageList = response.data.$messageList;
+        _this2.messageList = response.data.messageList;
       })["catch"](function (error) {
         console.error(error);
       });
@@ -36825,11 +36834,28 @@ var render = function () {
       ]),
     ]),
     _vm._v(" "),
-    _c("div", {}, [
-      _c("a", { attrs: { href: "/project/" + _vm.project.id + "/messages" } }, [
-        _vm._v("コメントする"),
-      ]),
-    ]),
+    _c(
+      "div",
+      {},
+      [
+        _vm._l(_vm.messageList, function (message) {
+          return _c("div", { key: message.id }, [
+            _c("div", {}, [
+              _c("img", { attrs: { src: message.user.avatar, alt: "" } }),
+            ]),
+            _vm._v(" "),
+            _c("p", {}, [_vm._v(_vm._s(message.comment))]),
+          ])
+        }),
+        _vm._v(" "),
+        _c(
+          "a",
+          { attrs: { href: "/project/" + _vm.project.id + "/messages" } },
+          [_vm._v("コメントする")]
+        ),
+      ],
+      2
+    ),
   ])
 }
 var staticRenderFns = []

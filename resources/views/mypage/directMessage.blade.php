@@ -15,6 +15,7 @@
     <div id="app">
         <direct-message-component :user="{{ $user }}" :chat="{{ $chat }}"></direct-message-component>
     </div>
+
 @endsection
 
 @section('footer')

@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProjectApplied;
 use App\User;
 use App\Type;
 use App\Project;
+use App\Apply;
+
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\App;
 
 class ProjectController extends Controller
 {
@@ -61,9 +66,9 @@ class ProjectController extends Controller
     =================================================================*/
     public function detail($id){
         $user = Auth::user();
-        $project_id = $id;
+        $project = Project::where('id', $id)->with('user')->first();
 
-        return view('project/detail', compact('user', 'project_id'));
+        return view('project/detail', compact('user', 'project'));
     }
 
     /* ================================================================
@@ -162,5 +167,60 @@ class ProjectController extends Controller
         }
 
     }
+
+    /* ================================================================
+        案件への応募処理
+    =================================================================*/
+    public function apply($project_id, $user_id){
+
+        if (!ctype_digit($project_id) || !ctype_digit($user_id)) {
+            return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
+        }
+
+        $user = User::find($user_id); // 応募者
+        $project = Project::where('id', $project_id)->with('user')->first();
+        $post_user = $project->user; // 案件の投稿者
+
+        try{
+            
+            // すでに本案件に同意している場合はリダイレクト
+            $applied = Apply::where('user_id', $user_id)->where('project_id', $project_id)->first();
+
+            if($applied){
+                return redirect()->back()->with('flash_message', 'この案件には既に応募しています')->with('flash_message_type', 'error');
+            }
+
+            // 同意テーブルに追加
+            $apply = new Apply;
+            $applySaved = $apply->fill([
+                'user_id'    => $user_id,
+                'project_id' => $project_id,
+            ])->save();
+
+            if(!$applySaved){
+                // 同意の処理に失敗した場合
+                return redirect()->back()->with('flash_message', '応募に失敗しました')->with('flash_message_type', 'error');
+            }
+
+            // 通知（DMへの招待など）を送信
+            $send_post_user = Mail::to($post_user->email)->send(new ProjectApplied($user, $post_user, $project));
+            $send_user =      Mail::to($user->email)->send(new ProjectApplied($user, $post_user, $project));
+
+            if($send_post_user === null && $send_user === null){
+                // 全ての処理が成功した場合
+                return redirect('/mypage')->with('flash_message', '応募完了！メールをご確認ください')->with('flash_message_type', 'success');
+
+            }else{
+                // メールの送信に失敗している場合
+                return redirect()->back()->with('flash_message', '処理の途中でエラーが発生しました')->with('flash_message_type', 'error');
+            }
+
+
+        }catch(QueryException $e){
+            Log::error('応募処理エラー：'. $e->getMessage());
+            return redirect()->back()->with('flash_message', '予想外のエラーが発生しました')->with('flash_message_type', 'error');
+        }
+    }
+
 
 }

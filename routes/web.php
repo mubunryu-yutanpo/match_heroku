@@ -66,6 +66,7 @@ Route::middleware('verified')->group(function () {
     Route::post('/new', 'ProjectController@create')->name('create');
     Route::post('/edit/project/{project_id}/update', 'ProjectController@projectUpdate')->name('project.update');
     Route::post('/edit/project/{project_id}/delete', 'ProjectController@projectDelete')->name('project.delete');
+    Route::post('/project/{project_id}/{user_id}/apply', 'ProjectController@apply')->name('apply');
 
     // メッセージ関連
 
