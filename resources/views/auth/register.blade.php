@@ -16,7 +16,7 @@
 
         <div class="p-form__container">
             <label for="name" class="c-label">名前:</label>
-            <input id="name" type="text" class="c-input @error('name') valid-error @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+            <input id="name" type="text" class="c-input @error('name') valid-error @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="20文字以内">
             @error('name')
                 <span class="c-error-text" role="alert">
                     {{ $message }}

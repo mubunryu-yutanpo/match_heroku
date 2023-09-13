@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectApplied;
+use App\Http\Requests\ValidRequest;
 use App\User;
 use App\Type;
 use App\Project;
@@ -29,19 +30,23 @@ class ProjectController extends Controller
     /* ================================================================
         案件の新規登録
     =================================================================*/
-    public function create(Request $request){
+    public function create(ValidRequest $request){
 
         $user_id = Auth::id();
 
         try{
             $project = new Project;
 
+            // 金額は1,000をかけた値に変換
+            $upperPrice = $request->upperPrice * 1000;
+            $lowerPrice = $request->lowerPrice * 1000;
+
             $saved = $project->fill([
                 'user_id'    => $user_id,
                 'title'      => $request->title,
                 'type'       => $request->type,
-                'upperPrice' => $request->upperPrice,
-                'lowerPrice' => $request->lowerPrice,
+                'upperPrice' => $upperPrice,
+                'lowerPrice' => $lowerPrice,
                 'content'    => $request->content,
             ])->save();
 
@@ -78,16 +83,18 @@ class ProjectController extends Controller
         $user = Auth::user();
 
         $project = Project::find($project_id);
+        $savedUpperPrice = $project->upperPrice / 1000;
+        $savedLowerPrice = $project->lowerPrice / 1000;
         $projectType = Type::all();
 
 
-        return view('project/edit', compact('user', 'project', 'projectType'));
+        return view('project/edit', compact('user', 'project', 'savedUpperPrice', 'savedLowerPrice', 'projectType'));
     }
 
     /* ================================================================
         案件の更新処理
     =================================================================*/
-    public function projectUpdate(Request $request, $id){
+    public function projectUpdate(ValidRequest $request, $id){
                 
         if (!ctype_digit($id)) {
             return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
@@ -102,12 +109,17 @@ class ProjectController extends Controller
                 redirect('/')->with('flash_message', 'エラーが発生しました')->with('flash_message_type', 'error');
             }
 
+            // 金額は1,000をかけた値に変換
+            $upperPrice = $request->upperPrice * 1000;
+            $lowerPrice = $request->lowerPrice * 1000;
+
+
             $updated = $project->update([
                 'user_id'    => $user_id,
                 'title'      => $request->title,
                 'type'       => $request->type,
-                'upperPrice' => $request->upperPrice,
-                'lowerPrice' => $request->lowerPrice,
+                'upperPrice' => $upperPrice,
+                'lowerPrice' => $lowerPrice,
                 'content'    => $request->content,
             ]);
 

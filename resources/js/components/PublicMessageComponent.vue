@@ -1,30 +1,44 @@
 <template>
-    <div class=""><!-- 全体のwrap -->
-        <!-- メッセージを表示するエリア -->
-        <div class="">
-            <div class="" v-for="message in messageList" :key="message.id" :class="{'seller': seller_id === message.user.id , 'other': seller_id !== message.user.id}">
-                <!-- ユーザー -->
-                <div class="">
-                    アロハ
-                    <img :src="message.user.avatar" alt="" class="">
-                    <p class="">{{ message.user.name }}</p>
-                </div>
-                <!-- メッセージ -->
-                <div class="">
-                    <p class="">{{ message.comment }}</p>
-                </div>
-            </div>
-        </div>
-        <!-- メッセージ入力＆送信エリア（ルート・メソッドまだ） -->
-        <form @submit.prevent="addMessage" class="">
+    <div class="">
+        <!-- コメント表示/非表示ボタン -->
+        <button class="" @click="toggleShowComment()">
+            <span class="" v-if="!showComment">コメントを表示</span>
+            <span class="" v-if="showComment">コメントを非表示</span>
+        </button>
+
+        <!-- 全体のwrap -->
+        <div class="" v-if="showComment">
+            
+            <!-- メッセージを表示するエリア -->
             <div class="">
-                <textarea class="" v-model="newMessage" placeholder="メッセージを送信"></textarea>
-                <button type="submit" class="">
-                    <i class=" fa-solid fa-paper-plane"></i>
-                </button>
+                <div class="" v-for="message in messageList" :key="message.id" :class="{'seller': seller_id === message.user.id , 'other': seller_id !== message.user.id}">
+                    <!-- ユーザー -->
+                    <div class="">
+                        アロハ
+                        <img :src="message.user.avatar" alt="" class="">
+                        <p class="">{{ message.user.name }}</p>
+                    </div>
+                    <!-- メッセージ -->
+                    <div class="">
+                        <p class="">{{ message.comment }}</p>
+                    </div>
+                </div>
             </div>
-        </form>
+            
+            <!-- メッセージ入力＆送信エリア -->
+            <form @submit.prevent="addMessage" class="">
+                <div class="">
+                    <p class="">この案件に対する質問などをコメントできます（※255文字以内）</p>
+                    <textarea class="" v-model="newMessage" placeholder="メッセージを送信"></textarea>
+                    <button type="submit" class="">
+                        <i class=" fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
     </div>
+
 </template>
 
 <script>
@@ -32,15 +46,16 @@ import axios from 'axios';
 
 export default {
     props: [
-        'project',
+        'project_id',
         'user_id',
-        'seller_id',
     ],
 
     data(){
         return{
             messageList : [],
+            seller_id: null,
             newMessage: '',
+            showComment : true,
         };
     },
 
@@ -52,9 +67,11 @@ export default {
 
         // メッセージ情報取得
         getMessages(){
-            axios.get('/api/' + this.project.id + '/publicMessages').
+            console.log(this.pro);
+            axios.get('/api/' + this.project_id + '/publicMessages').
             then((response) => {
                 this.messageList = response.data.messageList;
+                this.seller_id = response.data.seller_id;
             })
             .catch((error) => {
                 console.error(error);
@@ -64,7 +81,7 @@ export default {
         // メッセージ追加
         addMessage() {
             axios
-            .post('/api/project/' + this.project.id + '/' + this.user_id + '/publicMessage', { comment: this.newMessage })
+            .post('/api/project/' + this.project_id + '/' + this.user_id + '/publicMessage', { comment: this.newMessage })
             .then((response) => {
                 // メッセージの送信後にメッセージを再取得する
                 this.getMessages();
@@ -73,6 +90,11 @@ export default {
             .catch((error) => {
                 console.error(error);
             });
+        },
+
+        // コメント表示切り替え
+        toggleShowComment(){
+            this.showComment = !this.showComment;
         },
 
 

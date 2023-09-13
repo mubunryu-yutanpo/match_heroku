@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ValidRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
@@ -34,9 +35,9 @@ class MypageController extends Controller
     }
 
     /* ================================================================
-        プロフィール編集処理（画像のパス処理とかはまだ。）
+        プロフィール編集処理
     =================================================================*/
-    public function profUpdate(Request $request, $id){
+    public function profUpdate(ValidRequest $request, $id){
 
         if (!ctype_digit($id)) {
             return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');

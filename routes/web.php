@@ -23,7 +23,7 @@ Route::get('/list', 'HomeController@projectList')->name('list');
 
 /* ================================================================
 
-    認証関連
+    認証あり
 
 =================================================================*/
 
@@ -37,10 +37,11 @@ Route::middleware('verified')->group(function () {
         View関連(認証あり)
     =================================================================*/
 
-    // マイページ関連
+    // マイページ・ユーザー関連
     Route::get('/mypage', 'MypageController@mypage')->name('mypage');
     Route::get('/prof/{user_id}', 'MypageController@prof')->name('prof');
     Route::get('/withdraw/{user_id}', 'MypageController@withdraw')->name('withdraw');
+    Route::get('/user/info/{user_id}', 'HomeController@userInfo')->name('user.info');
 
     // 案件関連
     Route::get('/new', 'ProjectController@new')->name('new');
@@ -49,7 +50,7 @@ Route::middleware('verified')->group(function () {
 
     // メッセージ関連
     Route::get('/messages/{auth_user_id}/{user_id}', 'MessageController@directMessages')->name('d.message');
-    Route::get('/project/{project_id}/messages', 'MessageController@publicMessage')->name('pub.message');
+    // Route::get('/project/{project_id}/messages', 'MessageController@publicMessage')->name('pub.message');
 
 
     /* ================================================================
@@ -89,6 +90,8 @@ Route::middleware('api')->group(function(){
 
     // プロフィール取得
     Route::get('/api/profile/{user_id}', 'ApiController@getProfile');
+    // アバター取得
+    Route::get('/api/{user_id}/avatar', 'ApiController@getAvatar');
     // 案件一覧
     Route::get('/api/projects', 'ApiController@getProjects');
     // 案件詳細

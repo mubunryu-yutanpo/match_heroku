@@ -22,7 +22,7 @@
         <!-- メッセージ入力＆送信エリア（ルート・メソッドまだ） -->
         <form @submit.prevent="addMessage" class="">
             <div class="">
-                <textarea class="" v-model="newMessage" placeholder="メッセージを送信"></textarea>
+                <textarea class="" v-model="newMessage" placeholder="メッセージ（255文字以内）を送信"></textarea>
                 <button type="submit" class="">
                     <i class=" fa-solid fa-paper-plane"></i>
                 </button>

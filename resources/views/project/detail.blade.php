@@ -23,7 +23,10 @@
             @csrf
             <button class="" type="submit" onclick="return confirm('この案件に応募します。よろしいですか？')">応募する！</button>
         </form>
+    @else
+        <a href="{{ route('project.edit', $project->id) }}" class="">案件内容を編集する</a>
     @endif
+    
 
 @endsection
 

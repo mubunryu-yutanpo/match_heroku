@@ -38,21 +38,14 @@
                 @enderror
         </div>
 
-        <!-- アバター画像 -->
-        <div class="p-form__container">
-            <label for="avatar" class="c-label p-form__label">アイコン画像:</label>
-                <input id="avatar" type="file" class="c-input p-form__input @error('avatar') valid-error @enderror" name="avatar" value="{{ old('avatar', $user->avatar) }}" autofocus>
-                @error('avatar')
-                    <span class="c-error-text p-form__error-text" role="alert">
-                        {{ $message }}
-                    </span>
-                @enderror
+        <div id="app">
+            <avatar-preview-component :user="{{ $user }}"></avatar-preview-component>
         </div>
 
         <!-- 自己紹介文 -->
         <div class="p-form__container">
             <label for="introduction" class="c-label p-form__label">自己紹介文:</label>
-                <textarea name="introduction" id="introduction" cols="30" rows="10" class="c-textarea p-form__textarea">{{ old('introduction', $user->introduction) }}</textarea>
+                <textarea name="introduction" id="introduction" cols="30" rows="10" class="c-textarea p-form__textarea" placeholder="300文字以内で入力してください">{{ old('introduction', $user->introduction) }}</textarea>
                 @error('introduction')
                     <span class="c-error-text p-form__error-text" role="alert">
                         {{ $message }}

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Project;
+use App\Apply;
 
 
 
@@ -41,6 +43,25 @@ class HomeController extends Controller
     =================================================================*/
     public function projectList(){
         return view('project/list');
+    }
+
+    /* ================================================================
+        各ユーザーのページへ
+    =================================================================*/
+    public function userInfo($user_id){
+        if (!ctype_digit($user_id)) {
+            return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
+        }
+
+        // ユーザー情報
+        $user = User::find($user_id);
+        // 案件投稿数
+        $postCount = Project::where('user_id', $user_id)->count();
+        // 応募数
+        $applyCount = Apply::where('user_id', $user_id)->count();
+
+
+        return view('mypage/userInfo', compact('user', 'postCount', 'applyCount'));
     }
 
 }

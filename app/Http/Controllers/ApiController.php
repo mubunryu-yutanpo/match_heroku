@@ -31,6 +31,20 @@ class ApiController extends Controller
     }
 
     /* ================================================================
+        アバター情報の取得
+    =================================================================*/
+    public function getAvatar($user_id){
+        $avatar = User::where('id', $user_id)->value('avatar');
+
+        $data = [
+            'avatar' => $avatar,
+        ];
+
+        return response()->json($data);
+    }
+
+
+    /* ================================================================
         案件情報取得（一覧用）
     =================================================================*/
     public function getProjects(){
@@ -79,6 +93,7 @@ class ApiController extends Controller
     =================================================================*/
     public function getPublicMessages($id){
 
+        $seller_id = Project::where('id', $id)->value('user_id');
         $messages = PublicMessage::where('project_id', $id)->with('user')->get();
 
         $messageList = [];
@@ -88,6 +103,7 @@ class ApiController extends Controller
 
         $data = [
             'messageList' => $messageList,
+            'seller_id'   => $seller_id,
         ];
 
         return response()->json($data);
@@ -209,4 +225,5 @@ class ApiController extends Controller
             ]);
         }
     }
+
 }

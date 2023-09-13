@@ -21,17 +21,8 @@
             </p>
         </div>
 
-        <div class=""><!-- メッセ部分のwrap -->
-
-            <div class="" v-for="message in messageList" :key="message.id">
-                <div class="">
-                    <img :src="message.user.avatar" alt="" class="">
-                </div>
-                <p class="">{{ message.comment }}</p>
-            </div>
-            
-            <a :href="'/project/' + project.id + '/messages' " class="">コメントする</a>
-        </div>
+        <!-- メッセ部分 -->
+        <public-message-component :project_id="project_id" :user_id="user_id"></public-message-component>
 
     </div>
 </template>
@@ -43,13 +34,13 @@ export default {
 
     props: [
         'project_id',
-        'user_id',
+        'user_id', // Authユーザー
     ],
 
     data() {
         return {
             project : [],
-            messageList : [],
+            // messageList : [],
         };
     },
 
@@ -64,7 +55,7 @@ export default {
             axios.get('/api/' + this.project_id + '/detail').
             then((response) => {
                 this.project = response.data.project;
-                this.messageList = response.data.messageList;
+                // this.messageList = response.data.messageList;
             })
             .catch((error) => {
                 console.error(error);

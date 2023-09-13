@@ -49,8 +49,8 @@
 
         <!-- 料金（上限） -->
         <div class="p-form__container">
-            <label for="upperPrice" class="c-label p-form__label">料金（上限）:</label>
-                <input id="upperPrice" type="number" class="c-input p-form__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice') }}" required autofocus>
+            <label for="upperPrice" class="c-label p-form__label">料金の上限:</label>
+                <input id="upperPrice" type="number" class="c-input p-form__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice') }}" required autofocus placeholder="〜99999">（単位：千円）
                 @error('upperPrice')
                     <span class="c-error-text p-form__error-text" role="alert">
                         {{ $message }}
@@ -60,8 +60,8 @@
 
         <!-- 料金（下限） -->
         <div class="p-form__container">
-            <label for="lowerPrice" class="c-label p-form__label">料金（下限）:</label>
-                <input id="lowerPrice" type="number" class="c-input p-form__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice') }}" required autofocus placeholder="1,000〜">
+            <label for="lowerPrice" class="c-label p-form__label">料金の下限:</label>
+                <input id="lowerPrice" type="number" class="c-input p-form__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice') }}" required autofocus placeholder="1〜">（単位：千円）
                 @error('lowerPrice')
                     <span class="c-error-text p-form__error-text" role="alert">
                         {{ $message }}
@@ -84,7 +84,7 @@
         <!-- 案件内容 -->
         <div class="p-form__container">
             <label for="content" class="c-label p-form__label">案件の内容:</label>
-                <textarea name="content" id="content" cols="30" rows="10" class="c-textarea p-form__textarea">{{ old('content') }}</textarea>
+                <textarea name="content" id="content" cols="30" rows="10" class="c-textarea p-form__textarea" placeholder="2,000文字以内で入力してください">{{ old('content') }}</textarea>
                 @error('content')
                     <span class="c-error-text p-form__error-text" role="alert">
                         {{ $message }}
