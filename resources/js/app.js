@@ -19,12 +19,18 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+Vue.component('apply-list-component', require('./components/ApplyListComponent.vue').default);
 Vue.component('avatar-preview-component', require('./components/AvatarPreviewComponent.vue').default);
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('detail-component', require('./components/DetailComponent.vue').default);
 Vue.component('direct-message-component', require('./components/DirectMessageComponent.vue').default);
+Vue.component('direct-message-list-component', require('./components/DirectMessageListComponent.vue').default);
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('list-component', require('./components/ListComponent.vue').default);
+Vue.component('mypage-component', require('./components/MypageComponent.vue').default);
+Vue.component('post-list-component', require('./components/PostListComponent.vue').default);
 Vue.component('public-message-component', require('./components/PublicMessageComponent.vue').default);
+Vue.component('public-message-list-component', require('./components/PublicMessageListComponent.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

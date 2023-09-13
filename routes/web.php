@@ -92,6 +92,8 @@ Route::middleware('api')->group(function(){
     Route::get('/api/profile/{user_id}', 'ApiController@getProfile');
     // アバター取得
     Route::get('/api/{user_id}/avatar', 'ApiController@getAvatar');
+    // マイページ情報取得
+    Route::get('/api/{user_id}/mypage', 'ApiController@getMypage');
     // 案件一覧
     Route::get('/api/projects', 'ApiController@getProjects');
     // 案件詳細

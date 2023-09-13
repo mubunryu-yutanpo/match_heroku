@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectApplied;
 use App\Http\Requests\ValidRequest;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
 use App\User;
 use App\Type;
 use App\Project;
 use App\Apply;
-
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\App;
 
 class ProjectController extends Controller
 {
@@ -21,10 +21,18 @@ class ProjectController extends Controller
         案件登録画面へ
     =================================================================*/
     public function new(){
-        $user = Auth::user();
-        $projectType = Type::all();
-
-        return view('project/new', compact('user', 'projectType'));
+        
+        try{
+            $user = Auth::user();
+            $projectType = Type::all();
+    
+            return view('project/new', compact('user', 'projectType'));    
+            
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('メソッド"new"実行エラー：'. $e->getMessage());
+            redirect('/')->with('flash_message', '予想外のエラーが発生しました。')->with('flash_message_type', 'error');
+        }
     }
 
     /* ================================================================
@@ -32,9 +40,8 @@ class ProjectController extends Controller
     =================================================================*/
     public function create(ValidRequest $request){
 
-        $user_id = Auth::id();
-
         try{
+            $user_id = Auth::id();
             $project = new Project;
 
             // 金額は1,000をかけた値に変換
@@ -70,25 +77,42 @@ class ProjectController extends Controller
         案件詳細画面へ
     =================================================================*/
     public function detail($id){
-        $user = Auth::user();
-        $project = Project::where('id', $id)->with('user')->first();
 
-        return view('project/detail', compact('user', 'project'));
+        try{
+
+            $user = Auth::user();
+            $project = Project::where('id', $id)->with('user')->first();
+    
+            return view('project/detail', compact('user', 'project'));
+
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('メソッド"detail"実行エラー：'. $e->getMessage());
+            redirect('/')->with('flash_message', '予想外のエラーが発生しました。')->with('flash_message_type', 'error');
+        }
     }
 
     /* ================================================================
         案件の編集・削除画面へ
     =================================================================*/
     public function edit($project_id){
-        $user = Auth::user();
 
-        $project = Project::find($project_id);
-        $savedUpperPrice = $project->upperPrice / 1000;
-        $savedLowerPrice = $project->lowerPrice / 1000;
-        $projectType = Type::all();
+        try{
 
+            $user = Auth::user();
 
-        return view('project/edit', compact('user', 'project', 'savedUpperPrice', 'savedLowerPrice', 'projectType'));
+            $project = Project::find($project_id);
+            $savedUpperPrice = $project->upperPrice / 1000;
+            $savedLowerPrice = $project->lowerPrice / 1000;
+            $projectType = Type::all();
+    
+            return view('project/edit', compact('user', 'project', 'savedUpperPrice', 'savedLowerPrice', 'projectType'));
+
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('メソッド"edit"実行エラー：'. $e->getMessage());
+            redirect('/')->with('flash_message', '予想外のエラーが発生しました。')->with('flash_message_type', 'error');
+        }
     }
 
     /* ================================================================
@@ -171,13 +195,11 @@ class ProjectController extends Controller
                 return redirect('/')->with('flash_message', 'エラーが発生しました。')->with('flash_message_type', 'error');
             }
 
-
         }catch(QueryException $e){
             // エラーをログに吐いてリダイレクト
             Log::error('案件削除処理エラー：'. $e->getMessage());
             return redirect('/')->with('flash_message_type', '予想外のエラーが発生しました。')->with('flash_message_type', 'error');
         }
-
     }
 
     /* ================================================================
@@ -226,7 +248,6 @@ class ProjectController extends Controller
                 // メールの送信に失敗している場合
                 return redirect()->back()->with('flash_message', '処理の途中でエラーが発生しました')->with('flash_message_type', 'error');
             }
-
 
         }catch(QueryException $e){
             Log::error('応募処理エラー：'. $e->getMessage());

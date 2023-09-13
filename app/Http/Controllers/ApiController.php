@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\User;
 use App\Project;
 use App\PublicMessage;
 use App\DirectMessage;
 use App\Notification;
 use App\Chat;
+use App\Apply;
 
 class ApiController extends Controller
 {
@@ -21,41 +23,155 @@ class ApiController extends Controller
     =================================================================*/
     public function getProfile($id){
 
-        $user = User::find($id);
+        try{
+            $user = User::findOrFail($id);
 
-        $data = [
-            'user' => $user,
-        ];
+            $data = [
+                'user' => $user,
+            ];
+    
+            return response()->json($data);
+    
 
-        return response()->json($data);
+        } catch (ModelNotFoundException $e) {
+            // ユーザーデータが存在しない場合
+            return response()->json([
+                'flash_message' => 'ユーザーが見つかりませんでした',
+                'flash_message_type' => 'error',
+            ]);
+
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('プロフ情報取得エラー:'. $e->getMessage());
+            return response()->json([
+                'flash_message'      => 'エラーが発生しました',
+                'flash_message_type' => 'error',
+            ]);
+        }
     }
 
     /* ================================================================
         アバター情報の取得
     =================================================================*/
     public function getAvatar($user_id){
-        $avatar = User::where('id', $user_id)->value('avatar');
 
-        $data = [
-            'avatar' => $avatar,
-        ];
+        try{
 
-        return response()->json($data);
+            $avatar = User::where('id', $user_id)->value('avatar');
+
+            $data = [
+                'avatar' => $avatar,
+            ];
+    
+            return response()->json($data);
+    
+
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('アバター情報取得エラー:'. $e->getMessage());
+            return response()->json([
+                'flash_message'      => 'エラーが発生しました',
+                'flash_message_type' => 'error',
+            ]);
+        }
     }
 
+    /* ================================================================
+        マイページ情報の取得
+    =================================================================*/
+    public function getMypage($user_id){
+
+        try{
+            // ====== 投稿した案件 ======
+            $posts = Project::where('user_id', $user_id)
+                            ->orderBy('created_at', 'desc')
+                            ->limit(5)
+                            ->get();
+
+            $postList = [];
+            if($posts->isNotEmpty()){
+                $postList = $posts;
+            }
+
+            // ====== 応募した案件 ======
+            $applies = Apply::where('user_id', $user_id)
+                            ->orderBy('created_at', 'desc')
+                            ->limit(5)
+                            ->get();
+
+            $applyList = [];
+            if($applies->isNotEmpty()){
+                $applyList = $applies;
+            }
+
+            // ====== パブリックメッセ ======
+            $publicMessages = PublicMessage::where('user_id', $user_id)
+                                            ->with('project')
+                                            ->orderBy('created_at', 'desc')
+                                            ->limit(5)
+                                            ->get();
+            
+            $publicMessageList = [];
+            if($publicMessages->isNotEmpty()){
+                $publicMessageList = $publicMessages;
+            }
+
+
+            // ====== DM ======
+            // 自分が送信or受信したDM情報を、最新5件取得
+            $dms = Chat::where('user1_id', $user_id)
+                        ->orWhere('user2_id', $user_id)
+                        ->with('message')
+                        ->orderBy('created_at', 'desc')
+                        ->limit(5)
+                        ->get();
+        
+            $directMessageList = [];
+            if($dms->isNotEmpty()){
+                $directMessageList = $dms;
+            }
+
+            $data = [
+                'postList'          => $postList,
+                'applyList'         => $applyList,
+                'publicMessageList' => $publicMessageList,
+                'directMessageList' => $directMessageList,
+            ];
+
+            return response()->json($data);
+
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('マイページ情報取得エラー：'. $e->getMessage());
+            return response()->json([
+                'flash_message'      => 'エラーが発生しました',
+                'flash_message_type' => 'error',
+            ]);
+        }
+    }
 
     /* ================================================================
         案件情報取得（一覧用）
     =================================================================*/
     public function getProjects(){
 
-        $projects = Project::with('type')->get();
+        try{
+            $projects = Project::with('type')->get();
 
-        $data = [
-            'projects' => $projects,
-        ];
+            $data = [
+                'projects' => $projects,
+            ];
+    
+            return response()->json($data);
 
-        return response()->json($data);
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('一覧ページ・案件情報取得エラー：'. $e->getMessage());
+            return response()->json([
+                'flash_message'      => 'エラーが発生しました',
+                'flash_message_type' => 'error',
+            ]);
+        }
 
     }
 
@@ -64,28 +180,39 @@ class ApiController extends Controller
     =================================================================*/
     public function getProjectDetail($id){
 
-        // === 案件情報 ===
-        $project = Project::where('id', $id)->with('user', 'type')->first();
+        try{
 
-        // === 案件に対するメッセージ（パブリックメッセージ）===
-        $messageList = [];
-        // 最新の10件取得
-        $messages = PublicMessage::where('project_id', $id)
-                                ->with('user')
-                                ->orderBy('created_at', 'desc')
-                                ->limit(10)
-                                ->get();
+            // === 案件情報 ===
+            $project = Project::where('id', $id)->with('user', 'type')->first();
 
-        if($messages->isNotEmpty()){
-            $messageList = $messages;
+            // === 案件に対するメッセージ（パブリックメッセージ）===
+            $messageList = [];
+            // 最新の10件取得
+            $messages = PublicMessage::where('project_id', $id)
+                                    ->with('user')
+                                    ->orderBy('created_at', 'desc')
+                                    ->limit(10)
+                                    ->get();
+
+            if($messages->isNotEmpty()){
+                $messageList = $messages;
+            }
+
+            $data = [
+                'project'    => $project,
+                'messageList' => $messageList,
+            ];
+
+            return response()->json($data);
+
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('詳細ページ・案件情報取得エラー：'. $e->getMessage());
+            return response()->json([
+                'flash_message'      => 'エラーが発生しました',
+                'flash_message_type' => 'error',
+            ]);
         }
-
-        $data = [
-            'project'    => $project,
-            'messageList' => $messageList,
-        ];
-
-        return response()->json($data);
     }
 
     /* ================================================================
@@ -93,20 +220,32 @@ class ApiController extends Controller
     =================================================================*/
     public function getPublicMessages($id){
 
-        $seller_id = Project::where('id', $id)->value('user_id');
-        $messages = PublicMessage::where('project_id', $id)->with('user')->get();
+        try{
 
-        $messageList = [];
-        if($messages->isNotEmpty()){
-            $messageList = $messages;
+            $seller_id = Project::where('id', $id)->value('user_id');
+            $messages = PublicMessage::where('project_id', $id)->with('user')->get();
+    
+            $messageList = [];
+            if($messages->isNotEmpty()){
+                $messageList = $messages;
+            }
+    
+            $data = [
+                'messageList' => $messageList,
+                'seller_id'   => $seller_id,
+            ];
+    
+            return response()->json($data);
+    
+
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('パブリックメッセージ情報取得エラー：'. $e->getMessage());
+            return response()->json([
+                'flash_message'      => 'エラーが発生しました',
+                'flash_message_type' => 'error',
+            ]);
         }
-
-        $data = [
-            'messageList' => $messageList,
-            'seller_id'   => $seller_id,
-        ];
-
-        return response()->json($data);
     }
 
     /* ================================================================
@@ -120,7 +259,11 @@ class ApiController extends Controller
 
         // ユーザーのチェック
         if($user_id != Auth::id() ){
-            return redirect('/')->with('flash_message', '不正な操作です')->with('flash_message_type', 'error');
+            
+            return response()->json([
+                'flash_message'      => '不正な操作が行われました',
+                'flash_message_type' => 'error',
+            ]);
         }
 
         try{
@@ -132,6 +275,23 @@ class ApiController extends Controller
                 'project_id' => $project_id,
                 'comment'    => $request->comment,
             ])->save();
+
+            if($saved){
+
+                // 成功時
+                return response()->json([
+                    'flash_message'      => 'メッセージを送信しました',
+                    'flash_message_type' => 'success',
+                ]);
+    
+            }else{
+
+                // 失敗時
+                return response()->json([
+                    'flash_message'      => 'メッセージの送信に失敗しました',
+                    'flash_message_type' => 'error',
+                ]);
+            }
 
 
         }catch(QueryException $e){
@@ -145,18 +305,24 @@ class ApiController extends Controller
     =================================================================*/
     public function getDirectMessage($chat_id){
 
-        $messages = DirectMessage::where('chat_id', $chat_id)->with('user')->get();
+        try{
+            $messages = DirectMessage::where('chat_id', $chat_id)->with('user')->get();
 
-        $messageList = [];
-        if($messages->isNotEmpty()){
-            $messageList = $messages;
+            $messageList = [];
+            if($messages->isNotEmpty()){
+                $messageList = $messages;
+            }
+    
+            $data = [
+                'messageList' => $messageList,
+            ];
+    
+            return response()->json($data);
+
+        }catch(QueryException $e){
+            Log::error('DM情報取得エラー：'. $e->getMessage());
+            return redirect('/')->with('flash_message', 'エラーが発生しました')->with('flash_message_type', 'error');
         }
-
-        $data = [
-            'messageList' => $messageList,
-        ];
-
-        return response()->json($data);
     }
 
     /* ================================================================

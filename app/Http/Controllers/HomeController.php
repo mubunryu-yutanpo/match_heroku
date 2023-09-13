@@ -23,6 +23,7 @@ class HomeController extends Controller
         ログアウト
     =================================================================*/
     public function logout(){
+        
         Auth::logout();
         return redirect('/')->with('flash_message', 'ログアウトしました')->with('flash_message_type', 'success');
     }
@@ -53,15 +54,21 @@ class HomeController extends Controller
             return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
         }
 
-        // ユーザー情報
-        $user = User::find($user_id);
-        // 案件投稿数
-        $postCount = Project::where('user_id', $user_id)->count();
-        // 応募数
-        $applyCount = Apply::where('user_id', $user_id)->count();
+        try{
 
+            // ユーザー情報
+            $user = User::find($user_id);
+            // 案件投稿数
+            $postCount = Project::where('user_id', $user_id)->count();
+            // 応募数
+            $applyCount = Apply::where('user_id', $user_id)->count();
 
-        return view('mypage/userInfo', compact('user', 'postCount', 'applyCount'));
+            return view('mypage/userInfo', compact('user', 'postCount', 'applyCount'));
+
+        }catch(QueryException $e){
+            Log::error('メソッド"userInfo"実行エラー：'. $e->getMessage());
+            return redirect()->back()->with('flash_message', '予想外のエラーが発生しました')->with('flash_message_type', 'error');
+        }
     }
 
 }

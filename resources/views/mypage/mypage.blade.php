@@ -8,7 +8,9 @@
 
 @section('main')
     <h1>私がマイページさ！</h1>
-    <img src="{{ $user->avatar }}" alt="">
+    <div id="app">
+        <mypage-component :user="{{ $user }}"></mypage-componet>
+    </div>
 @endsection
 
 @section('footer')

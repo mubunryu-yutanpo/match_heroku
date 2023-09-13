@@ -29,9 +29,16 @@ class MypageController extends Controller
         プロフィール編集画面へ
     =================================================================*/
     public function prof($id){
+        
+        try{
 
-        $user = User::find($id);
-        return view('mypage/prof', compact('user'));
+            $user = User::find($id);
+            return view('mypage/prof', compact('user'));
+
+        }catch(QueryException $e){
+            Log::error('メソッド"prof"実行エラー：'. $e->getMessage());
+            return redirect()->back()->with('flash_message', '予想外のエラーが発生しました')->with('flash_message_type', 'error');
+        }
     }
 
     /* ================================================================
@@ -77,10 +84,12 @@ class MypageController extends Controller
                     $path = 'uploads/'.$filename;
                     Storage::putFileAs('uploads', $avatar, $filename);
                 }
+
             } else if ($user->avatar !== 'default-avatar.png') {
                 // 画像を変更しない場合
                 $filename = $user->avatar;
                 $filename = str_replace('/uploads/', '', $filename);
+
             } else {
                 $filename = 'default-avatar.png';
             }
@@ -125,8 +134,15 @@ class MypageController extends Controller
     =================================================================*/
     public function withdraw($id){
 
-        $user = User::find($id);
-        return view('mypage/withdrow', compact('user'));
+        try{
+
+            $user = User::find($id);
+            return view('mypage/withdrow', compact('user'));
+
+        }catch(QueryException $e){
+            Log::error('メソッド"withdrow"実行エラー：'. $e->getMessage());
+            return redirect()->back()->with('flash_message', '予想外のエラーが発生しました')->with('flash_message_type', 'error');
+        }
     }
 
     /* ================================================================
@@ -139,7 +155,6 @@ class MypageController extends Controller
         }
 
         try{
-
             // ユーザーデータを（物理）削除してリダイレクト
 
             $user = User::find($id);
@@ -160,8 +175,5 @@ class MypageController extends Controller
             Log::error('退会処理エラー:' . $e->getMessage());
             return redirect('/mypage')->with('flash_message', '予定外のエラーが発生しました。')->with('flash_message_type', 'error');
         }
-
     }
-
-
 }
