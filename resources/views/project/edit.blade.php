@@ -73,7 +73,7 @@
 
         <!-- サムネ画像 -->
         <!-- <div class="p-form__container">
-            <label for="thumbnail" class="c-label p-form__label">アイコン画像:</label>
+            <label for="thumbnail" class="c-label p-form__label">サムネイル:</label>
                 <input id="thumbnail" type="file" class="c-input p-form__input @error('thumbnail') valid-error @enderror" name="thumbnail" value="{{ old('thumbnail', $project->thumbnail) }}" autofocus>
                 @error('thumbnail')
                     <span class="c-error-text p-form__error-text" role="alert">

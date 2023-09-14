@@ -50,8 +50,12 @@ Route::middleware('verified')->group(function () {
 
     // メッセージ関連
     Route::get('/messages/{auth_user_id}/{user_id}', 'MessageController@directMessages')->name('d.message');
-    // Route::get('/project/{project_id}/messages', 'MessageController@publicMessage')->name('pub.message');
 
+    // 一覧ページ関連
+    Route::get('/postList/{user_id}', 'MypageController@postList')->name('postList');
+    Route::get('/applyList/{user_id}', 'MypageController@applyList')->name('applyList');
+    Route::get('/publicMessageList/{user_id}', 'MypageController@publicMessageList')->name('pmList');
+    Route::get('/directMessageList/{user_id}', 'MypageController@directMessageList')->name('dmList');
 
     /* ================================================================
         処理関連
@@ -106,6 +110,17 @@ Route::middleware('api')->group(function(){
     Route::get('/api/messages/{chat_id}', 'ApiController@getDirectMessage');
     // ダイレクトメッセージ追加
     Route::post('/api/message/{user_id}/{chat_id}', 'ApiController@sendMessage');
+
+    // === 一覧用 ===
+
+    // 投稿した案件
+    Route::get('/api/{user_id}/postList', 'ApiController@getPostList');
+    // 応募した案件
+    Route::get('/api/{user_id}/applyList', 'ApiController@getApplyList');
+    // パブリックメッセ取得
+    Route::get('/api/{user_id}/publicMessageList', 'ApiController@getPublicMessageList');
+    // DM取得
+    Route::get('/api/{user_id}/directMessageList', 'ApiController@getDirectMessageList');
 
 
 });

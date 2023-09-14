@@ -84,6 +84,7 @@ class ApiController extends Controller
         try{
             // ====== 投稿した案件 ======
             $posts = Project::where('user_id', $user_id)
+                            ->with('type')
                             ->orderBy('created_at', 'desc')
                             ->limit(5)
                             ->get();
@@ -95,6 +96,11 @@ class ApiController extends Controller
 
             // ====== 応募した案件 ======
             $applies = Apply::where('user_id', $user_id)
+                            ->with(['project' => function ($query) {
+                                $query->with('type')
+                                    ->orderBy('created_at', 'desc')
+                                    ->limit(5);
+                            }])
                             ->orderBy('created_at', 'desc')
                             ->limit(5)
                             ->get();
@@ -105,23 +111,34 @@ class ApiController extends Controller
             }
 
             // ====== パブリックメッセ ======
+
             $publicMessages = PublicMessage::where('user_id', $user_id)
-                                            ->with('project')
-                                            ->orderBy('created_at', 'desc')
-                                            ->limit(5)
-                                            ->get();
-            
+                ->orderBy('created_at', 'desc')
+                ->limit(5) // 自分が投稿したパブリックメッセージを最新の5件取得
+                ->get();
+
             $publicMessageList = [];
-            if($publicMessages->isNotEmpty()){
+            if ($publicMessages->isNotEmpty()) {
                 $publicMessageList = $publicMessages;
+                
+                // 各パブリックメッセージに紐づくプロジェクトを取得し、最新の1件のパブリックメッセージを追加
+                foreach ($publicMessageList as $publicMessage) {
+                    $project = Project::where('id', $publicMessage->project_id)
+                        ->with(['type'])
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+                    
+                    $publicMessage->project = $project;
+                }
             }
-
-
+        
             // ====== DM ======
             // 自分が送信or受信したDM情報を、最新5件取得
             $dms = Chat::where('user1_id', $user_id)
                         ->orWhere('user2_id', $user_id)
-                        ->with('message')
+                        ->with(['message' => function ($query) {
+                            $query->with('user')->get();
+                        }])
                         ->orderBy('created_at', 'desc')
                         ->limit(5)
                         ->get();
@@ -391,5 +408,142 @@ class ApiController extends Controller
             ]);
         }
     }
+
+
+    /* ================================================================
+        投稿した案件情報取得（一覧用）
+    =================================================================*/
+    public function getPostList($user_id){
+
+        try{
+
+            $projects = Project::where('user_id', $user_id)->get();
+
+            $projectList = [];
+            if($projects->isNotEmpty()){
+                $projectList = $projects;
+            }
+
+            $data = [
+                'projectList' => $projectList,
+            ];
+
+            return response()->json($data);
+
+        }catch(QueryException $e){
+            Log::error('一覧用・投稿した案件取得エラー：'. $e->getMessage());
+
+            return response()->json([
+                'flashMessage' => '予想外のエラーが発生しました',
+                'flashMessageType' => 'error',
+            ]);
+        }
+    }
+
+    /* ================================================================
+        応募した案件情報取得（一覧用）
+    =================================================================*/
+    public function getApplyList($user_id){
+    
+        try{
+
+            $applies = Apply::where('user_id', $user_id)->with('project')->get();
+
+            $applyList = [];
+            if($applies->isNotEmpty()){
+                $applyList = $applies;
+            }
+
+            $data = [
+                'applyList' => $applyList,
+            ];
+
+            return response()->json($data);
+
+        }catch(QueryException $e){
+            Log::error('一覧用・応募した案件情報取得エラー：'. $e->getMessage());
+
+            return response()->json([
+                'flashMessage' => '予想外のエラーが発生しました',
+                'flashMessageType' => 'error',
+            ]);
+        }
+
+    }
+
+    /* ================================================================
+        パブメッセ情報取得（一覧用）
+    =================================================================*/
+    public function getPublicMessageList($user_id){
+    
+        try{
+
+            // 自分の案件用
+            $project_id = Project::where('user_id', $user_id)->value('id');
+
+            $publicMessages = PublicMessage::where('user_id', $user_id)
+                                ->orWhere('project_id', $project_id)
+                                ->with('project')
+                                ->get();
+
+            $publicMessageList = [];
+            if($publicMessages->isNotEmpty()){
+                $publicMessageList = $publicMessages;
+            }
+
+            $data = [
+                'publicMessageList' => $publicMessageList,
+            ];
+
+            return response()->json($data);
+
+        }catch(QueryException $e){
+            Log::error('一覧用・パブリックメッセージ取得エラー：'. $e->getMessage());
+
+            return response()->json([
+                'flashMessage' => '予想外のエラーが発生しました',
+                'flashMessageType' => 'error',
+            ]);
+        }
+
+    }
+
+    /* ================================================================
+        DM情報取得（一覧用）
+    =================================================================*/
+    public function getDirectMessageList($user_id){
+    
+        try{
+
+            // チャットごとに取得する。それ用のID
+            $chat_id = Chat::where('user1_id', $user_id)
+                            ->orWhere('user2_id', $user_id)
+                            ->value('id');
+
+            $directMessages = PublicMessage::where('chat_id', $chat_id)->get();
+
+            $directMessageList = [];
+            if($directMessages->isNotEmpty()){
+                $directMessageList = $directMessages;
+            }
+
+            $data = [
+                'publicMessageList' => $directMessageList,
+            ];
+
+            return response()->json($data);
+
+        }catch(QueryException $e){
+            Log::error('一覧用・DM取得エラー：'. $e->getMessage());
+
+            return response()->json([
+                'flashMessage' => '予想外のエラーが発生しました',
+                'flashMessageType' => 'error',
+            ]);
+        }
+
+    }
+
+
 
 }

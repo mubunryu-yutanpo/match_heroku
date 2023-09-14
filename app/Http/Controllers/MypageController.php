@@ -11,6 +11,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\ProfileUpdated;
+use App\Project;
 use App\User;
 
 
@@ -176,4 +177,52 @@ class MypageController extends Controller
             return redirect('/mypage')->with('flash_message', '予定外のエラーが発生しました。')->with('flash_message_type', 'error');
         }
     }
+
+    /* ================================================================
+        投稿一覧ページへ
+    =================================================================*/
+    public function postList($user_id){
+        if (!ctype_digit($user_id)) {
+            return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
+        }
+
+        return view('lists/postList', compact('user_id'));
+
+    }
+
+    /* ================================================================
+        応募した案件一覧ページへ
+    =================================================================*/
+    public function applyList($user_id){
+        if (!ctype_digit($user_id)) {
+            return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
+        }
+
+        return view('lists/applyList', compact('user_id'));
+    }
+
+    /* ================================================================
+        自分のパブリックメッセージ一覧ページへ
+    =================================================================*/
+    public function publicMessageList($user_id){
+        if (!ctype_digit($user_id)) {
+            return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
+        }
+
+        return view('lists/publicMessageList', compact('user_id'));
+    }
+
+    /* ================================================================
+        自分のダイレクトメッセージ一覧ページへ
+    =================================================================*/
+    public function directMessageList($user_id){
+        if (!ctype_digit($user_id)) {
+            return redirect('/')->with('flash_message', '不正な操作が行われました')->with('flash_message_type', 'error');
+        }
+
+        return view('lists/directMessageList', compact('user_id'));
+    }
+
+
+
 }

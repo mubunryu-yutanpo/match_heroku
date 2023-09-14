@@ -18,6 +18,7 @@ class CreateProjectsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('title');
             $table->bigInteger('type')->unsigned();
+            $table->string('thumbnail')->nullable()->default('/uploads/thumbnail-default.png');
             $table->integer('upperPrice')->unsigned()->nullable();
             $table->integer('lowerPrice')->unsigned()->nullable();
             $table->text('content');
