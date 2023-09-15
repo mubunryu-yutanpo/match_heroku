@@ -15,6 +15,9 @@
         </div>
 
         <div class=""><!-- 詳細のwrap -->
+            <div class="">
+                <img :src="project.thumbnail" alt="" class="">
+            </div>
             <p class="">{{ project.content }}</p>
             <p>
                 料金： {{ project.lowerPrice | numberWithCommas }}〜{{ project.upperPrice | numberWithCommas }} 円

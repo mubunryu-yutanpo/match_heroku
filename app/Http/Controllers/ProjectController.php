@@ -10,6 +10,8 @@ use App\Mail\ProjectApplied;
 use App\Http\Requests\ValidRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Storage;
+use Image;
 use App\User;
 use App\Type;
 use App\Project;
@@ -48,12 +50,31 @@ class ProjectController extends Controller
             $upperPrice = $request->upperPrice * 1000;
             $lowerPrice = $request->lowerPrice * 1000;
 
+            // サムネ画像のパス名を変数に
+            if ($request->hasFile('thumbnail')) {
+                $avatar = $request->file('thumbnail');
+                $filename = $avatar->getClientOriginalName();
+
+                // 画像を圧縮して保存 
+                $compressedImage = Image::make($avatar)->resize(300, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                
+                $path = '/uploads/'.$filename;
+                Storage::put($path, (string)$compressedImage->encode());
+            
+            } else {
+                $filename = 'thumbnail-default.png';
+            }
+
             $saved = $project->fill([
                 'user_id'    => $user_id,
                 'title'      => $request->title,
                 'type'       => $request->type,
                 'upperPrice' => $upperPrice,
                 'lowerPrice' => $lowerPrice,
+                'thumbnail'    => '/uploads/'.$filename,
                 'content'    => $request->content,
             ])->save();
 
@@ -137,6 +158,23 @@ class ProjectController extends Controller
             $upperPrice = $request->upperPrice * 1000;
             $lowerPrice = $request->lowerPrice * 1000;
 
+            // サムネ画像のパス名を変数に
+            if ($request->hasFile('thumbnail')) {
+                $avatar = $request->file('thumbnail');
+                $filename = $avatar->getClientOriginalName();
+
+                // 画像を圧縮して保存 
+                $compressedImage = Image::make($avatar)->resize(300, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
+                
+                $path = '/uploads/'.$filename;
+                Storage::put($path, (string)$compressedImage->encode());
+            
+            } else {
+                $filename = 'thumbnail-default.png';
+            }
 
             $updated = $project->update([
                 'user_id'    => $user_id,
@@ -144,6 +182,7 @@ class ProjectController extends Controller
                 'type'       => $request->type,
                 'upperPrice' => $upperPrice,
                 'lowerPrice' => $lowerPrice,
+                'thumbnail'    => '/uploads/'.$filename,
                 'content'    => $request->content,
             ]);
 

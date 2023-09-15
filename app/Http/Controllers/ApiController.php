@@ -77,6 +77,32 @@ class ApiController extends Controller
     }
 
     /* ================================================================
+        サムネイル取得
+    =================================================================*/
+    public function getThumbnail($project_id){
+
+        try{
+
+            $thumbnail = Project::where('id', $project_id)->value('thumbnail');
+
+            $data = [
+                'thumbnail' => $thumbnail,
+            ];
+    
+            return response()->json($data);
+    
+
+        }catch(QueryException $e){
+            // エラー時
+            Log::error('サムネイル情報取得エラー:'. $e->getMessage());
+            return response()->json([
+                'flash_message'      => 'エラーが発生しました',
+                'flash_message_type' => 'error',
+            ]);
+        }
+    }
+
+    /* ================================================================
         マイページ情報の取得
     =================================================================*/
     public function getMypage($user_id){
