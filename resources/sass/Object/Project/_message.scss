@@ -1,0 +1,13 @@
+.p-message{
+    background: $white;
+    max-height: 500px;
+    overflow-y: auto;
+
+    &__container{
+        border-radius: 5px;
+        box-shadow: 0 0 2px 0 $gray;
+        margin: 0 0 $space_default;
+        padding: $space_20 $space_10;
+    }
+
+}
