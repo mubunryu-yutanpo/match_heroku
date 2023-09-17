@@ -64,7 +64,7 @@
                 <div class="p-list__container" v-if="publicMessageList.length > 0" >
 
                     <div class="p-card" v-for="pubMessage in publicMessageList" :key="pubMessage.id">
-                        <a :href="'/project/' + pubMessage.project.id + '/detail'" class="c-link p-card__link">{{ apply.title }}</a>
+                        <a :href="'/project/' + pubMessage.project.id + '/detail'" class="c-link p-card__link">{{ pubMessage.project.title }}</a>
                     
                         <div class="c-image-box p-card__image-box">
                             <p class="c-type">{{ pubMessage.project.type.name }}</p>

@@ -1,0 +1,9 @@
+.c-error{
+    border: 2px solid $red;
+    font-weight: bold;    
+
+    &--text{
+        border: none;
+        color: $red;
+    }
+}

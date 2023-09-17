@@ -93,6 +93,16 @@ label {
     Object
 =================================================================*/
 
+.c-error {
+  border: 2px solid #FA7070;
+  font-weight: bold;
+}
+
+.c-error--text {
+  border: none;
+  color: #FA7070;
+}
+
 .p-alert {
   border: 1px solid transparent;
   border-radius: 0.25rem;

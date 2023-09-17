@@ -1,7 +1,7 @@
 <template>
     <div class=""><!-- 全体のwrap -->
 
-        <!-- フラッシュ?メッセージを表示 -->
+        <!-- フラッシュメッセージを表示 -->
         <div v-if="flashMessage" :class="flashMessageType">{{ flashMessage }}</div>
 
         <!-- メッセージを表示するエリア -->
@@ -19,15 +19,25 @@
                 </div>
             </div>
         </div>
-        <!-- メッセージ入力＆送信エリア（ルート・メソッドまだ） -->
+        <!-- メッセージ入力＆送信エリア -->
         <form @submit.prevent="addMessage" class="">
             <div class="">
-                <textarea class="" v-model="newMessage" placeholder="メッセージ（255文字以内）を送信"></textarea>
+                
+                <textarea
+                    class=""
+                    :class="{'c-error': countText > max }"
+                    v-model="newMessage"
+                    placeholder="メッセージを送信"
+                    @input="updateCount"
+                ></textarea>
+
                 <button type="submit" class="">
                     <i class=" fa-solid fa-paper-plane"></i>
                 </button>
             </div>
+            <span class="" :class="{'c-error c-error--text': countText > max }"> {{ countText }} / {{ max }}</span>
         </form>
+
     </div>
 </template>
 
@@ -46,6 +56,8 @@ export default {
             newMessage: '',
             flashMessage: '',
             flashMessageType: '',
+            max: 255,
+            countText: 0, // 文字数カウントを初期化
         };
     },
 
@@ -73,13 +85,18 @@ export default {
             .then((response) => {
                 this.flashMessage = response.data.flashMessage;
                 this.flashMessageType = response.data.flashMessageType;
-                // メッセージの送信後にメッセージを再取得する
-                this.getMessages();
-                this.newMessage = ''; // 送信後、入力欄をクリアする
+                this.getMessages(); // メッセージの送信後にメッセージを再取得
+                this.newMessage = ''; // 送信後、入力欄をクリア
+                this.countText = 0;// カウンターをリセット
             })
             .catch((error) => {
                 console.error(error);
             });
+        },
+
+        // 入力文字数をカウント
+        updateCount() {
+            this.countText = this.newMessage.length;
         },
 
 

@@ -11,7 +11,7 @@
         >
             <!-- 8MBまで -->
             <input type="hidden" name="MAX_FILE_SIZE" value="8388608">
-            <input type="file" class="hoge__file-input" name="thumbnail" ref="fileInput" @change="handleFileChange">
+            <input id="thumbnail" type="file" class="hoge__file-input" name="thumbnail" ref="fileInput" @change="handleFileChange">
             <img :src="previewImage" alt="" class="hoge__file-image">
         </div>
         <span v-if="validError" class="hoge__error" role="alert">

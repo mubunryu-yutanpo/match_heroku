@@ -30,7 +30,7 @@
                 </select>
 
                 @error('type')
-                    <span class="c-error-text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-form__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -42,7 +42,7 @@
             <label for="title" class="c-label p-form__label">タイトル:</label>
                 <input id="title" type="text" class="c-input p-form__input @error('title') valid-error @enderror" name="title" value="{{ old('title', $project->title) }}" required autocomplete="title" autofocus>
                 @error('title')
-                    <span class="c-error-text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-form__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -53,7 +53,7 @@
             <label for="upperPrice" class="c-label p-form__label">料金（上限）:</label>
                 <input id="upperPrice" type="number" class="c-input p-form__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice', $savedUpperPrice ) }}" required autofocus placeholder="〜999999">（単位：千円）
                 @error('upperPrice')
-                    <span class="c-error-text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-form__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -64,7 +64,7 @@
             <label for="lowerPrice" class="c-label p-form__label">料金（下限）:</label>
                 <input id="lowerPrice" type="number" class="c-input p-form__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice', $savedLowerPrice ) }}" required autofocus placeholder="1〜">（単位：千円）
                 @error('lowerPrice')
-                    <span class="c-error-text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-form__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -78,13 +78,24 @@
 
         <!-- 案件内容 -->
         <div class="p-form__container">
-            <label for="content" class="c-label p-form__label">案件の内容:</label>
-                <textarea name="content" id="content" cols="30" rows="10" class="c-textarea p-form__textarea">{{ old('content', $project->content ) }}</textarea>
-                @error('content')
-                    <span class="c-error-text p-form__error-text" role="alert">
-                        {{ $message }}
-                    </span>
-                @enderror
+            <!-- テキストカウンター用コンポーネント -->
+            <div id="counter">
+                <text-counter-component
+                    label="案件の内容"
+                    name="content"
+                    id="content"
+                    :max="2000"
+                    autocomplete="content"
+                    placeholder="2,000文字以内で入力してください"
+                    data="{{ $project->content }}"
+                ></text-counter-component>
+            </div>
+
+            @error('content')
+                <span class="c-error c-error--text p-form__error-text" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
         </div>
 
         <div class="p-submit">

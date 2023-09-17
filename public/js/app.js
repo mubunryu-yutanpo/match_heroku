@@ -2372,6 +2372,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2381,7 +2391,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       messageList: [],
       newMessage: '',
       flashMessage: '',
-      flashMessageType: ''
+      flashMessageType: '',
+      max: 255,
+      countText: 0 // 文字数カウントを初期化
     };
   },
   mounted: function mounted() {
@@ -2417,12 +2429,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (response) {
         _this3.flashMessage = response.data.flashMessage;
         _this3.flashMessageType = response.data.flashMessageType;
-        // メッセージの送信後にメッセージを再取得する
-        _this3.getMessages();
-        _this3.newMessage = ''; // 送信後、入力欄をクリアする
+        _this3.getMessages(); // メッセージの送信後にメッセージを再取得
+        _this3.newMessage = ''; // 送信後、入力欄をクリア
+        _this3.countText = 0; // カウンターをリセット
       })["catch"](function (error) {
         console.error(error);
       });
+    },
+    // 入力文字数をカウント
+    updateCount: function updateCount() {
+      this.countText = this.newMessage.length;
     },
     // 日付の表示を変更
     formatDate: function formatDate(value) {
@@ -3065,6 +3081,84 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
       return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TextCounterComponent.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TextCounterComponent.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    label: String,
+    errors: Boolean,
+    max: Number,
+    name: String,
+    placeholder: String,
+    autocomplete: String,
+    id: String,
+    data: String
+  },
+  data: function data() {
+    return {
+      countText: this.data || '',
+      count: 0,
+      placeholderText: this.placeholder
+    };
+  },
+  methods: {
+    // 入力文字数を反映
+    updatecount: function updatecount() {
+      this.count = this.countText.length;
+      this.storeComment();
+    },
+    // 入力内容をセッションストレージに保存
+    storeComment: function storeComment() {
+      sessionStorage.setItem(this.id, this.countText);
+    },
+    // 入力内容をセッションストレージから取得し復元
+    getComment: function getComment() {
+      var storedComment = sessionStorage.getItem(this.id);
+      if (storedComment !== null) {
+        this.countText = storedComment;
+        this.count = storedComment.length;
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.count = this.countText.length;
+    this.getComment();
   }
 });
 
@@ -38488,20 +38582,30 @@ var render = function () {
                 expression: "newMessage",
               },
             ],
-            attrs: { placeholder: "メッセージ（255文字以内）を送信" },
+            class: { "c-error": _vm.countText > _vm.max },
+            attrs: { placeholder: "メッセージを送信" },
             domProps: { value: _vm.newMessage },
             on: {
-              input: function ($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.newMessage = $event.target.value
-              },
+              input: [
+                function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.newMessage = $event.target.value
+                },
+                _vm.updateCount,
+              ],
             },
           }),
           _vm._v(" "),
           _vm._m(0),
         ]),
+        _vm._v(" "),
+        _c(
+          "span",
+          { class: { "c-error c-error--text": _vm.countText > _vm.max } },
+          [_vm._v(" " + _vm._s(_vm.countText) + " / " + _vm._s(_vm.max))]
+        ),
       ]
     ),
   ])
@@ -38933,7 +39037,7 @@ var render = function () {
                               "/project/" + pubMessage.project.id + "/detail",
                           },
                         },
-                        [_vm._v(_vm._s(_vm.apply.title))]
+                        [_vm._v(_vm._s(pubMessage.project.title))]
                       ),
                       _vm._v(" "),
                       _c(
@@ -39187,6 +39291,78 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TextCounterComponent.vue?vue&type=template&id=5ad148ce&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TextCounterComponent.vue?vue&type=template&id=5ad148ce& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "p-counter" }, [
+    _c(
+      "label",
+      { staticClass: "c-label p-counter__label", attrs: { for: _vm.name } },
+      [_vm._v(_vm._s(_vm.label) + ":")]
+    ),
+    _vm._v(" "),
+    _c("textarea", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.countText,
+          expression: "countText",
+        },
+      ],
+      staticClass: "c-textarea p-counter__textarea",
+      class: { "c-error": _vm.count > _vm.max },
+      attrs: {
+        name: _vm.name,
+        id: _vm.id,
+        cols: "30",
+        rows: "10",
+        autocomplete: _vm.autocomplete,
+        placeholder: _vm.placeholder,
+      },
+      domProps: { value: _vm.countText },
+      on: {
+        input: [
+          function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.countText = $event.target.value
+          },
+          _vm.updatecount,
+        ],
+      },
+    }),
+    _vm._v(" "),
+    _c(
+      "span",
+      {
+        staticClass: "p-counter__text",
+        class: { "c-error c-error--text": _vm.count > _vm.max },
+      },
+      [_vm._v("\n    " + _vm._s(_vm.count) + "/" + _vm._s(_vm.max) + "\n    ")]
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ThumbnailPreviewComponent.vue?vue&type=template&id=5eb66274&":
 /*!****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ThumbnailPreviewComponent.vue?vue&type=template&id=5eb66274& ***!
@@ -39233,7 +39409,7 @@ var render = function () {
         _c("input", {
           ref: "fileInput",
           staticClass: "hoge__file-input",
-          attrs: { type: "file", name: "thumbnail" },
+          attrs: { id: "thumbnail", type: "file", name: "thumbnail" },
           on: { change: _vm.handleFileChange },
         }),
         _vm._v(" "),
@@ -50428,6 +50604,7 @@ Vue.component('mypage-component', __webpack_require__(/*! ./components/MypageCom
 Vue.component('post-list-component', __webpack_require__(/*! ./components/PostListComponent.vue */ "./resources/js/components/PostListComponent.vue")["default"]);
 Vue.component('public-message-component', __webpack_require__(/*! ./components/PublicMessageComponent.vue */ "./resources/js/components/PublicMessageComponent.vue")["default"]);
 Vue.component('public-message-list-component', __webpack_require__(/*! ./components/PublicMessageListComponent.vue */ "./resources/js/components/PublicMessageListComponent.vue")["default"]);
+Vue.component('text-counter-component', __webpack_require__(/*! ./components/TextCounterComponent.vue */ "./resources/js/components/TextCounterComponent.vue")["default"]);
 Vue.component('thumbnail-preview-component', __webpack_require__(/*! ./components/ThumbnailPreviewComponent.vue */ "./resources/js/components/ThumbnailPreviewComponent.vue")["default"]);
 
 /**
@@ -50438,6 +50615,14 @@ Vue.component('thumbnail-preview-component', __webpack_require__(/*! ./component
 
 var app = new Vue({
   el: '#app'
+});
+
+// const preview = new Vue({
+//     el: '#preview',
+// });
+
+var counter = new Vue({
+  el: '#counter'
 });
 
 /***/ }),
@@ -51174,6 +51359,76 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 component.options.__file = "resources/js/components/PublicMessageListComponent.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TextCounterComponent.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/TextCounterComponent.vue ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TextCounterComponent_vue_vue_type_template_id_5ad148ce___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TextCounterComponent.vue?vue&type=template&id=5ad148ce& */ "./resources/js/components/TextCounterComponent.vue?vue&type=template&id=5ad148ce&");
+/* harmony import */ var _TextCounterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TextCounterComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/TextCounterComponent.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _TextCounterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _TextCounterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TextCounterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TextCounterComponent_vue_vue_type_template_id_5ad148ce___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TextCounterComponent_vue_vue_type_template_id_5ad148ce___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/TextCounterComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/TextCounterComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/TextCounterComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TextCounterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TextCounterComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TextCounterComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TextCounterComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/TextCounterComponent.vue?vue&type=template&id=5ad148ce&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/TextCounterComponent.vue?vue&type=template&id=5ad148ce& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextCounterComponent_vue_vue_type_template_id_5ad148ce___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./TextCounterComponent.vue?vue&type=template&id=5ad148ce& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TextCounterComponent.vue?vue&type=template&id=5ad148ce&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextCounterComponent_vue_vue_type_template_id_5ad148ce___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TextCounterComponent_vue_vue_type_template_id_5ad148ce___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

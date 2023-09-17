@@ -30,6 +30,7 @@ Vue.component('mypage-component', require('./components/MypageComponent.vue').de
 Vue.component('post-list-component', require('./components/PostListComponent.vue').default);
 Vue.component('public-message-component', require('./components/PublicMessageComponent.vue').default);
 Vue.component('public-message-list-component', require('./components/PublicMessageListComponent.vue').default);
+Vue.component('text-counter-component', require('./components/TextCounterComponent.vue').default);
 Vue.component('thumbnail-preview-component', require('./components/ThumbnailPreviewComponent.vue').default);
 
 
@@ -42,3 +43,12 @@ Vue.component('thumbnail-preview-component', require('./components/ThumbnailPrev
 const app = new Vue({
     el: '#app',
 });
+
+// const preview = new Vue({
+//     el: '#preview',
+// });
+
+const counter = new Vue({
+    el: '#counter',
+});
+

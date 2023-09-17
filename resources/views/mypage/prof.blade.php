@@ -21,7 +21,7 @@
             <label for="name" class="c-label p-form__label">名前:</label>
                 <input id="name" type="text" class="c-input p-form__input @error('name') valid-error @enderror" name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" autofocus>
                 @error('name')
-                    <span class="c-error-text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-form__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -32,7 +32,7 @@
             <label for="email" class="c-label p-form__label">メールアドレス:</label>
                 <input id="email" type="email" class="c-input p-form__input @error('email') valid-error @enderror" name="email" value="{{ old('email', $user->email) }}" required autocomplete="email" autofocus>
                 @error('email')
-                    <span class="c-error-text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-form__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -44,13 +44,24 @@
 
         <!-- 自己紹介文 -->
         <div class="p-form__container">
-            <label for="introduction" class="c-label p-form__label">自己紹介文:</label>
-                <textarea name="introduction" id="introduction" cols="30" rows="10" class="c-textarea p-form__textarea" placeholder="300文字以内で入力してください">{{ old('introduction', $user->introduction) }}</textarea>
-                @error('introduction')
-                    <span class="c-error-text p-form__error-text" role="alert">
-                        {{ $message }}
-                    </span>
-                @enderror
+            <!-- テキストカウンター用コンポーネント -->
+            <div id="counter">
+                <text-counter-component
+                    label="自己紹介文"
+                    name="introduction"
+                    id="introduction"
+                    :max="300"
+                    autocomplete="introduction"
+                    placeholder="300文字以内で入力してください"
+                    data="{{ $user->introduction }}"
+                ></text-counter-component>
+            </div>
+
+            @error('introduction')
+                <span class="c-error c-error--text p-form__error-text" role="alert">
+                    {{ $message }}
+                </span>
+            @enderror
         </div>
 
         <div class="p-submit">
