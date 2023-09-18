@@ -1,0 +1,10 @@
+.p-list{
+
+    &__container{
+        display: flex;
+
+        &--message{
+            flex-direction: column;
+        }
+    }
+}

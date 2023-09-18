@@ -16,6 +16,10 @@
         margin: 0 $space_5;
         padding: 1px;
         width: 40px;
+
+        &--border1{
+            border: 1px solid $gray;
+        }
     }
 
     &__image-item{

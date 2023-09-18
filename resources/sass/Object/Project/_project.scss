@@ -1,0 +1,32 @@
+.p-project{
+    background-color: $white;
+    border-radius: 5px;
+    box-shadow: 0 0 2px 0 $gray;
+    box-sizing: border-box;
+    margin: $space_default $space_default $space_default 0;
+    padding: $space_default $space_10;
+    width: calc(33% - 15px);
+
+    &__title{
+        box-sizing: border-box;
+        margin: $space_default auto;
+        max-height: 40px;
+        overflow-y: auto;
+        word-break: normal;
+    }
+
+    &__image{
+        position: relative;
+    }
+
+    &__image-item{
+        border-radius: 5px;
+    }
+
+    &__content{
+        margin: $space_default auto 0;
+        max-height: 70px;
+        overflow-y: hidden;
+        word-break: normal;
+    }
+}
