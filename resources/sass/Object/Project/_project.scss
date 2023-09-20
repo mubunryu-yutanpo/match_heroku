@@ -1,7 +1,7 @@
 .p-project{
     background-color: $white;
     border-radius: 5px;
-    box-shadow: 0 0 2px 0 $gray;
+    box-shadow: 0 0 8px 0 $white;
     box-sizing: border-box;
     margin: $space_default $space_default $space_default 0;
     padding: $space_default $space_10;
@@ -10,23 +10,25 @@
     &__title{
         box-sizing: border-box;
         margin: $space_default auto;
-        max-height: 40px;
+        height: 60px;
         overflow-y: auto;
-        word-break: normal;
     }
 
     &__image{
+        height: auto;
+        margin: 0 0 $space_default;
+        max-height: 250px;
         position: relative;
     }
 
-    &__image-item{
-        border-radius: 5px;
-    }
-
     &__content{
-        margin: $space_default auto 0;
         max-height: 70px;
+        min-height: 50px;
         overflow-y: hidden;
         word-break: normal;
+    }
+
+    &__price{
+        margin: 0 0 $space_default;
     }
 }

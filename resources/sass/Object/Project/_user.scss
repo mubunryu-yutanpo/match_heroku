@@ -1,25 +1,8 @@
 .p-user{
-    align-items: center;
-    display: flex;
-    justify-content: flex-start;
     margin: 0 0 $space_default;
 
-    &--mypage{
-        justify-content: flex-end;
-        padding-right: $space_25;
-    }
-
-    &__image{
-        border: 1px solid white;
-        border-radius: 100%;
-        height: 40px;
-        margin: 0 $space_5;
-        padding: 1px;
-        width: 40px;
-
-        &--border1{
-            border: 1px solid $gray;
-        }
+    &__name{
+        margin-bottom: 0;
     }
 
     &__image-item{

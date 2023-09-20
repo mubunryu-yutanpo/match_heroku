@@ -1,9 +1,9 @@
 .p-public-message{
     border: 2px solid gray;
+    border-radius: 5px;
     box-shadow: 0 0 8px 0 gray;
     margin: 50px auto;
     padding: $space_20 $space_default;
-    width: 90%;
 
     &__toggle-button{
         background-color: $lightblue;

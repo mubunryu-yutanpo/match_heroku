@@ -1,0 +1,19 @@
+.p-detail{
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 980px;
+    width: 100%;
+
+    &__container{
+        margin: $space_40 auto;
+    }
+
+    &__thumbnail{
+        box-shadow: 0 0 8px 0 $white;
+    }
+
+    &__content{
+        margin: $space_30 0;
+    }
+
+}
