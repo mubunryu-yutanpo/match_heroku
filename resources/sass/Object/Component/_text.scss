@@ -1,0 +1,22 @@
+.c-text{
+    line-height: 1.25;
+    margin-bottom: $space_default;
+    word-break: normal;
+
+    &--type{
+        background: $gray;
+        border-radius: 5px 0 0 0;
+        font-size: $font-size_14;
+        left: 0;
+        margin-bottom: 0;
+        position: absolute;
+        padding: $space_5;
+        top: 0;
+    }
+
+    &--price{
+        color: $red;
+        font-size: $font-size_24;
+        font-weight: bold;    
+    }
+}
