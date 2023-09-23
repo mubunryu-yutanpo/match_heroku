@@ -1,4 +1,16 @@
 .p-list{
-    padding: $space_40 0 $space_40 $space_default;
-    margin-right: -15px;
+
+    &__container{
+        padding: $space_40 0 $space_40 $space_default;
+        margin-right: -15px;
+
+        @include mq(){
+            margin-right: 0;
+        }
+
+        @include mq(sm){
+            padding-left: 0;
+            margin-right: 0;
+        }
+    }
 }

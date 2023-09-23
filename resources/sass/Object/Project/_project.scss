@@ -7,6 +7,15 @@
     padding: $space_default $space_10;
     width: calc(33% - 15px);
 
+    @include mq(){
+        width: calc(50% - 15px);
+    }
+
+    @include mq(sm){
+        margin-right: 0;
+        width: 100%;
+    }
+
     &__title{
         box-sizing: border-box;
         margin: $space_default auto;
@@ -19,13 +28,20 @@
         margin: 0 0 $space_default;
         max-height: 250px;
         position: relative;
+
+        &-item{
+            max-height: 250px;
+        }
     }
 
     &__content{
-        max-height: 70px;
-        min-height: 50px;
+        height: 80px;
         overflow-y: hidden;
         word-break: normal;
+
+        @include mq(){
+            height: 60px;
+        }
     }
 
     &__price{
