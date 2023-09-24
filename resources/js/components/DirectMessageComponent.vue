@@ -1,41 +1,42 @@
 <template>
-    <div class=""><!-- 全体のwrap -->
+    <div class="p-page-visual"><!-- 全体のwrap -->
 
         <!-- フラッシュメッセージを表示 -->
-        <div v-if="flashMessage" :class="flashMessageType">{{ flashMessage }}</div>
+        <div v-if="flashMessage" class="p-alert" :class="'is-' + flashMessageType">{{ flashMessage }}</div>
 
         <!-- メッセージを表示するエリア -->
-        <div class="">
-            <div class="" v-for="message in messageList" :key="message.id" :class="{'me': 1 === message.sender_id , 'you': 1 !== message.sender_id}">
+        <div class="p-message">
+            <div class="p-message__container" v-for="message in messageList" :key="message.id">
                 <!-- ユーザー -->
-                <div class="">
-                    DM
-                    <img :src="message.user.avatar" alt="" class="">
-                    <p class="">{{ message.user.name }}</p>
+                <div class="p-user c-box--flex" :class="{'p-user--me': 1 === message.sender_id , 'p-user--other': 1 !== message.sender_id}">
+                    <div class="p-user__image c-box--avatar">
+                        <img :src="message.user.avatar" class="p-user__image-item c-image">
+                    </div>
+                    <p class="p-user__name">{{ message.user.name }}</p>
                 </div>
                 <!-- メッセージ -->
-                <div class="">
-                    <p class="">{{ message.comment }}</p>
+                <div class="c-message" :class="{'c-message--me': 1 === message.sender_id , 'c-message--other': 1 !== message.sender_id}">
+                    <p class="c-message__text">{{ message.comment }}</p>
                 </div>
             </div>
         </div>
         <!-- メッセージ入力＆送信エリア -->
-        <form @submit.prevent="addMessage" class="">
-            <div class="">
+        <form @submit.prevent="addMessage" class="p-message-form">
+            <div class="p-message-form__container">
                 
                 <textarea
-                    class=""
+                    class="p-message-form__area"
                     :class="{'c-error': countText > max }"
                     v-model="newMessage"
                     placeholder="メッセージを送信"
                     @input="updateCount"
                 ></textarea>
 
-                <button type="submit" class="">
+                <button type="submit" class="p-message-form__button c-button">
                     <i class=" fa-solid fa-paper-plane"></i>
                 </button>
             </div>
-            <span class="" :class="{'c-error c-error--text': countText > max }"> {{ countText }} / {{ max }}</span>
+            <p class="p-message-form__count-text" :class="{'c-error c-error--text': countText > max }"> {{ countText }} / {{ max }}</p>
         </form>
 
     </div>

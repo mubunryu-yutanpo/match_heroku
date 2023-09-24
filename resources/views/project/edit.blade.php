@@ -12,15 +12,17 @@
         案件のIDは{{ $project->id }}です。
     </h1>
 
-    <form action="{{ route('project.update', $project->id) }}" method="post" class="p-form" enctype="multipart/form-data">
+    <form action="{{ route('project.update', $project->id) }}" method="post" class="p-edit c-box--form" enctype="multipart/form-data">
         @csrf
 
-        <div class="c-title p-form__title">案件登録</div>
+        <h2 class="c-title p-edit__title">
+            <i class="fa-solid fa-pen c-icon c-icon--title"></i>案件の編集
+        </h2>
 
         <!-- 案件タイプ -->
-        <div class="p-form__container">
-            <label for="type" class="c-label p-form__label">案件の種類:</label>
-                <select name="type" id="type" class="c-select p-form__select @error('type') valid-error @enderror">
+        <div class="p-edit__container c-box--form-container">
+            <label for="type" class="c-label p-edit__label">案件の種類:</label>
+                <select name="type" id="type" class="c-select p-edit__select @error('type') valid-error @enderror">
 
                     <option value="" hidden>選択してください</option>
                     
@@ -30,7 +32,7 @@
                 </select>
 
                 @error('type')
-                    <span class="c-error c-error--text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-edit__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -38,33 +40,33 @@
 
 
         <!-- 案件名 -->
-        <div class="p-form__container">
-            <label for="title" class="c-label p-form__label">タイトル:</label>
-                <input id="title" type="text" class="c-input p-form__input @error('title') valid-error @enderror" name="title" value="{{ old('title', $project->title) }}" required autocomplete="title" autofocus>
+        <div class="p-edit__container c-box--form-container">
+            <label for="title" class="c-label p-edit__label">タイトル:</label>
+                <input id="title" type="text" class="c-input p-edit__input @error('title') valid-error @enderror" name="title" value="{{ old('title', $project->title) }}" required autocomplete="title" autofocus>
                 @error('title')
-                    <span class="c-error c-error--text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-edit__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
         </div>
 
         <!-- 料金（上限） -->
-        <div class="p-form__container">
-            <label for="upperPrice" class="c-label p-form__label">料金（上限）:</label>
-                <input id="upperPrice" type="number" class="c-input p-form__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice', $savedUpperPrice ) }}" required autofocus placeholder="〜999999">（単位：千円）
+        <div class="p-edit__container c-box--form-container">
+            <label for="upperPrice" class="c-label p-edit__label">料金上限（単位：千円）:</label>
+                <input id="upperPrice" type="number" class="c-input p-edit__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice', $savedUpperPrice ) }}" required autofocus placeholder="〜999999">
                 @error('upperPrice')
-                    <span class="c-error c-error--text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-edit__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
         </div>
 
         <!-- 料金（下限） -->
-        <div class="p-form__container">
-            <label for="lowerPrice" class="c-label p-form__label">料金（下限）:</label>
-                <input id="lowerPrice" type="number" class="c-input p-form__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice', $savedLowerPrice ) }}" required autofocus placeholder="1〜">（単位：千円）
+        <div class="p-edit__container c-box--form-container">
+            <label for="lowerPrice" class="c-label p-edit__label">料金下限（単位：千円）:</label>
+                <input id="lowerPrice" type="number" class="c-input p-edit__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice', $savedLowerPrice ) }}" required autofocus placeholder="1〜">
                 @error('lowerPrice')
-                    <span class="c-error c-error--text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-edit__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -77,7 +79,7 @@
         </div>
 
         <!-- 案件内容 -->
-        <div class="p-form__container">
+        <div class="p-edit__container c-box--form-container">
             <!-- テキストカウンター用コンポーネント -->
             <div id="counter">
                 <text-counter-component
@@ -92,7 +94,7 @@
             </div>
 
             @error('content')
-                <span class="c-error c-error--text p-form__error-text" role="alert">
+                <span class="c-error c-error--text p-edit__error-text" role="alert">
                     {{ $message }}
                 </span>
             @enderror
@@ -104,11 +106,11 @@
 
     </form>
 
-    <form action="{{ route('project.delete', $project->id) }}" method="post" class="p-form">
+    <form action="{{ route('project.delete', $project->id) }}" method="post" class="p-delete c-box--form">
         @csrf
 
         <div class="p-submit">
-            <button class="c-button p-submit__button" onclick="return confirm('この案件を削除します。よろしいですか？')">削除</button>
+            <button class="p-submit__button--delete c-button" onclick="return confirm('この案件を削除します。よろしいですか？')">削除する</button>
         </div>
     </form>
 

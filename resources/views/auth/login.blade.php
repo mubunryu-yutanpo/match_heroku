@@ -9,49 +9,54 @@
 @section('main')
 
 <section class="p-page-visual">
-    <form action="{{ route('login') }}" method="post" class="p-form">
+    <form action="{{ route('login') }}" method="post" class="p-login c-box c-box--form">
         @csrf
 
-        <div class="c-title p-form__title">ログイン</div>
+        <h2 class="p-login__title c-title">
+            <i class="fa-solid fa-user-check c-icon c-icon--title"></i>
+            ログイン
+        </h2>
 
-        <div class="p-form__container">
-            <label for="email" class="c-label">メールアドレス:</label>
-            <input id="email" type="text" class="c-input @error('email') valid-error @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        <div class="p-login__container c-box--form-container">
+            <label for="email" class="p-login__label c-label">メールアドレス:</label>
+            <input id="email" type="text" class="p-login__input c-input @error('email') c-error @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
             @error('email')
-                <span class="c-error-text" role="alert">
+                <p class="c-error--text" role="alert">
                     {{ $message }}
-                </span>
+                </p>
             @enderror
         </div>
 
-        <div class="p-form__container">
-            <label for="password" class="c-label">パスワード:</label>
-            <input id="password" type="password" class="c-input @error('password') valid-error @enderror" name="password" required autocomplete="current-password" placeholder="半角英数字8文字以上">
+        <div class="p-login__container c-box--form-container">
+            <label for="password" class="p-login__label c-label">パスワード:</label>
+            <input id="password" type="password" class="p-login__input c-input @error('password') c-error @enderror" name="password" required autocomplete="current-password" placeholder="半角英数字8文字以上">
             @error('password')
-                <span class="c-error-text" role="alert">
+                <p class="c-error--text" role="alert">
                     {{ $message }}
-                </span>
+                </p>
             @enderror
         </div>
 
-        <div class="p-form__container">
-            <div class="">
+        <div class="p-login__container c-box--form-container">
 
-                <div class="p-remember">
-                    <input class="c-input p-remember__input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                    <label class="c-label p-remember__label" for="remember">
-                        ログインを保持する
-                    </label>
-                </div>
-                @if (Route::has('password.request'))
-                    <div class="p-forgot">
-                        <a class="c-link p-forgot__link" href="{{ route('password.request') }}">
-                            パスワードをお忘れの方はこちら
-                        </a>
-                    </div>
-                @endif
-
+            <div class="p-remember">
+                <input class="c-input p-remember__input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                <label class="c-label p-remember__label" for="remember">
+                    ログインを保持する
+                </label>
             </div>
+        </div>
+
+        <div class="p-login__container c-box--form-container">
+
+            @if (Route::has('password.request'))
+                <div class="p-forgot">
+                    <a class="p-forgot__link c-link" href="{{ route('password.request') }}">
+                        パスワードをお忘れの方はこちら
+                    </a>
+                </div>
+            @endif
+
         </div>
 
         <div class="p-submit">

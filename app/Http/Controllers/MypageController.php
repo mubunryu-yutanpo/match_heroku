@@ -64,26 +64,26 @@ class MypageController extends Controller
             // アバター画像のパス名を変数に
             if ($request->hasFile('avatar')) {
                 $avatar = $request->file('avatar');
-
-                // 画像がHEIC形式ならJPEG形式に変換して保存
+                $filename = $avatar->getClientOriginalName();
+                
+                // HEIC形式の画像をJPEG形式に変換
                 if ($avatar->getClientOriginalExtension() === 'heic') {
-                    $filename = $avatar->getClientOriginalName() . '.jpg';
-                    $image = Image::make($avatar->getRealPath());
+                    $avatar = Image::make($avatar)->encode('jpg');
+                    $filename = pathinfo($filename, PATHINFO_FILENAME) . '.jpg';
+                }
 
-                    // 画像のリサイズと圧縮
-                    $compressedImage = $image->resize(300, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })->encode('jpg', 75);
-                    
-                    $path = 'uploads/'.$filename;
-                    Storage::put($path, (string)$compressedImage);
-                } else {
-                    $filename = $avatar->getClientOriginalName();
+                // 画像を圧縮して保存 
+                $compressedImage = Image::make($avatar)->resize(300, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                });
 
-                    // 通常の画像の保存
-                    $path = 'uploads/'.$filename;
-                    Storage::putFileAs('uploads', $avatar, $filename);
+                // 画像をpublic/uploadsディレクトリに移動
+                $moved = $compressedImage->save(public_path('uploads/'.$filename));
+                
+                if (!$moved) {
+                    // 画像の保存等が失敗した場合
+                    return redirect()->back()->with('flash_message', '画像のアップロードに失敗しました。')->with('flash_message_type', 'error');
                 }
 
             } else if ($user->avatar !== 'default-avatar.png') {
@@ -92,6 +92,7 @@ class MypageController extends Controller
                 $filename = str_replace('/uploads/', '', $filename);
 
             } else {
+                // アバターが未選択の場合
                 $filename = 'default-avatar.png';
             }
 

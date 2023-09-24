@@ -15,9 +15,9 @@
         @input="updatecount"
         ></textarea>
 
-        <span class="p-counter__text" :class="{'c-error c-error--text': count > max }">
+        <p class="p-counter__text" :class="{'c-error c-error--text': count > max }">
         {{ count }}/{{ max }}
-        </span>
+        </p>
     </div>
 </template>
 

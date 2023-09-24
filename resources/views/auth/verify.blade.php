@@ -8,13 +8,14 @@
 
 @section('main')
 
-<section class="p-page-visual">
-    
-    <div class="p-page-visual__container">
+    <div class="p-verify c-box">
         
-        <div class="c-title">新規ユーザー登録</div>
+        <h2 class="p-verify c-title">
+            <i class="fa-solid fa-user-check c-icon c-icon--title"></i>
+            ユーザー認証
+        </h2>
 
-        <div class="p-container">
+        <div class="p-verify__container">
 
             @if (session('resent'))
                 <div class="p-alert is-success" role="alert">
@@ -22,27 +23,14 @@
                 </div>
             @endif
 
-            <p class="c-text">メールを送信しました。メール内のリンクをクリックし、本登録をお願いします。</p>
-            <p class="c-text">メールが届いていない場合は、
-                <a href="{{ route('verification.resend') }}" class="c-link">ここをクリックしてください。</a>
+            <p class="p-verify__text c-text">メールを送信しました。メール内のリンクをクリックし、本登録をお願いします。</p>
+            <p class="p-verify__text c-text">メールが届いていない場合は、
+                <a href="{{ route('verification.resend') }}" class="p-verify__link c-link">ここをクリックしてください。</a>
                 再送いたします。
             </p>
         </div>
 
     </div>
-
-
-
-    <div class="p-form__container">
-        <label for="name" class="c-label">名前:</label>
-        <input id="name" type="text" class="c-input @error('name') valid-error @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-        @error('name')
-            <span class="c-error-text" role="alert">
-                {{ $message }}
-            </span>
-        @enderror
-    </div>
-
 </section>
 
 @endsection

@@ -20,15 +20,17 @@
     </div>
 
     <!-- 応募部分 -->
-    @if($user->id !== $project->user->id)
-        <form action="{{ route('apply', ['project_id' => $project->id, 'user_id' => $user->id]) }}" method="post" class="">
-            @csrf
-            <button class="" type="submit" onclick="return confirm('この案件に応募します。よろしいですか？')">応募する！</button>
-        </form>
-    @else
-        <a href="{{ route('project.edit', $project->id) }}" class="">案件内容を編集する</a>
-    @endif
+    <div class="p-detail-action">
+        @if($user->id !== $project->user->id)
+            <form action="{{ route('apply', ['project_id' => $project->id, 'user_id' => $user->id]) }}" method="post" class="p-detail-action__apply">
+                @csrf
+                <button class="p-detail-action__button c-button" type="submit" onclick="return confirm('この案件に応募します。よろしいですか？')">応募する！</button>
+            </form>
+        @else
+            <a href="{{ route('project.edit', $project->id) }}" class="p-detail-action__link c-link">案件内容を編集する</a>
+        @endif
 
+    </div>
 
 @endsection
 

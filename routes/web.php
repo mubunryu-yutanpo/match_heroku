@@ -119,7 +119,7 @@ Route::middleware('api')->group(function(){
     Route::get('/api/{user_id}/postList', 'ApiController@getPostList');
     // 応募した案件
     Route::get('/api/{user_id}/applyList', 'ApiController@getApplyList');
-    // パブリックメッセ取得
+    // パブリックメッセに絡んだ案件
     Route::get('/api/{user_id}/publicMessageList', 'ApiController@getPublicMessageList');
     // DM取得
     Route::get('/api/{user_id}/directMessageList', 'ApiController@getDirectMessageList');

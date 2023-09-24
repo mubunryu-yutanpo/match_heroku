@@ -1,0 +1,8 @@
+.l-main{
+    box-sizing: border-box;
+    padding: $space_40 $space-30;
+
+    @include mq(sm){
+        padding: $space-30 $space_default;
+    }
+}

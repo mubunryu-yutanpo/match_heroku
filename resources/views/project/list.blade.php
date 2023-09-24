@@ -11,8 +11,7 @@
 @section('main')
 
     <h1 class="">案件一覧ページだぜ</h1>
-    <div id="app" class="">
-        Component
+    <div id="app">
         <list-component />
     </div>
 

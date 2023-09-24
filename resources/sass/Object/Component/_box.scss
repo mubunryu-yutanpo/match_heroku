@@ -1,9 +1,8 @@
 .c-box{
-
-    &--image{
-        margin: 0 0 $space_default 0;
-        width: 100%;
-    }
+    box-sizing: border-box;
+    margin: 0 auto;
+    max-width: 980px;
+    width: 100%;
 
     &--avatar{
         border: 1px solid $gray;
@@ -18,16 +17,22 @@
         background: $white;
         border-radius: 5px;
         box-shadow: 0 0 8px 0 $white;
+        box-sizing: border-box;
         margin: $space_40 auto;
         max-width: 980px;
         padding: $space_40 $space_30;
         width: 100%;    
     }
 
+    &--form-container{
+        margin: $space_30 0;
+    }
+
     &--flex{
         align-items: center;
         display: flex;
-        padding-right: 20px;
+        flex-wrap: wrap;
+        // padding-right: 20px;
 
         &-1{
             justify-content: flex-start;
@@ -41,4 +46,24 @@
             flex-direction: column;
         }
     }
+
+    &--image{
+        margin: 0 0 $space_default 0;
+        width: 100%;
+    }
+
+    &--link{
+        text-align: right;
+        width: 100%;
+    }
+
+    &--message{
+        background-color: $white;
+        border-radius: 5px;
+        box-shadow: 0 0 2px 0 $gray;
+        margin-bottom: $space_default;
+        padding: $space_20 $space_default;
+        width: 100%;    
+    }
+
 }

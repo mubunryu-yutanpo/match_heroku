@@ -34,8 +34,8 @@ class ValidRequest extends FormRequest
             'title'        => 'sometimes|required|string|max:255',
             'type'         => 'sometimes|required|',
             'thumbnail'    => 'sometimes|nullable|mimes:jpg,jpeg,png,gif,heic,heif|max:8388608', // 8MB'
-            'upperPrice'   => 'sometimes|required|integer|min:1|max:999999|regex:/^[0-9]+$/',
-            'lowerPrice'   => 'sometimes|required|integer|min:1|max:999999|regex:/^[0-9]+$/',
+            'upperPrice'   => 'sometimes|nullable|integer|min:1|max:999999|regex:/^[0-9]+$/',
+            'lowerPrice'   => 'sometimes|nullable|integer|min:1|max:999999|regex:/^[0-9]+$/',
             'comment'      => 'sometimes|nullable|string|max:255',
             'content'      => 'sometimes|required|string|max:2000',
         ];
@@ -45,8 +45,8 @@ class ValidRequest extends FormRequest
         return[
             //バリデーションのエラーメッセージ設定
             'type.required' => '選択してください',
-            'upperPrice.min' => '1,000円未満は設定できません',
-            'lowerPrice.min' => '1,000円未満は設定できません',
+            'upperPrice.min' => '1,000円(1)未満は設定できません',
+            'lowerPrice.min' => '1,000円(1)未満は設定できません',
             'avatar.mimes' => 'ファイル形式はjpeg(jpg)、png、gif、heic（heif）が利用可能です',
             'avatar.max'   => 'ファイルサイズは8MB以下にしてください',
             'thumbnail.mimes' => 'ファイル形式はjpeg(jpg)、png、gif、heic（heif）が利用可能です',

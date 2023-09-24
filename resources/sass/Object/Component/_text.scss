@@ -16,7 +16,11 @@
 
     &--price{
         color: $red;
-        font-size: $font-size_24;
+        font-size: 22px;
         font-weight: bold;    
+    }
+
+    &--right{
+        text-align: right;
     }
 }

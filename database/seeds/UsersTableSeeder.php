@@ -14,21 +14,32 @@ class UsersTableSeeder extends Seeder
         // デフォルトデータを挿入
         $users = [
             [
-                'name' => 'テスト太郎',
-                'email' => 'test@1.com',
-                'password' => bcrypt('password'),
+                'name'              => 'テスト太郎',
+                'email'             => 'test@1.com',
+                'password'          => bcrypt('password'),
+                'avatar'            => '/uploads/img5.jpeg',
                 'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at'        => now(),
+                'updated_at'        => now(),
             ],
             [
-                'name' => 'テスト花子',
-                'email' => 'test@2.com',
-                'password' => bcrypt('password'),
+                'name'              => 'テスト花子',
+                'email'             => 'test@2.com',
+                'password'          => bcrypt('password'),
+                'avatar'            => '/uploads/img1.jpeg',
                 'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'created_at'        => now(),
+                'updated_at'        => now(),
             ],
+            [
+                'name'              => 'お試しんのすけ',
+                'email'             => 'test@3.com',
+                'password'          => bcrypt('password'),
+                'email_verified_at' => now(),
+                'created_at'        => now(),
+                'updated_at'        => now(),
+            ],
+
         ];
 
         // データベースにユーザーデータを挿入

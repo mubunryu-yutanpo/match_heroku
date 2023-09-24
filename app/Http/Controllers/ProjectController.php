@@ -42,58 +42,75 @@ class ProjectController extends Controller
     =================================================================*/
     public function create(ValidRequest $request){
 
-        try{
+        try {
             $user_id = Auth::id();
             $project = new Project;
-
-            // 金額は1,000をかけた値に変換
-            $upperPrice = $request->upperPrice * 1000;
-            $lowerPrice = $request->lowerPrice * 1000;
-
+    
             // サムネ画像のパス名を変数に
             if ($request->hasFile('thumbnail')) {
                 $avatar = $request->file('thumbnail');
                 $filename = $avatar->getClientOriginalName();
+
+                // HEIC形式の画像をJPEG形式に変換
+                if ($avatar->getClientOriginalExtension() === 'heic') {
+                    $avatar = Image::make($avatar)->encode('jpg');
+                    $filename = pathinfo($filename, PATHINFO_FILENAME) . '.jpg';
+                }
 
                 // 画像を圧縮して保存 
                 $compressedImage = Image::make($avatar)->resize(300, null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
+
+                // 画像をpublic/uploadsディレクトリに移動
+                $moved = $compressedImage->save(public_path('uploads/'.$filename));
                 
-                $path = '/uploads/'.$filename;
-                Storage::put($path, (string)$compressedImage->encode());
-            
+                if (!$moved) {
+                    // 画像の保存等が失敗した場合
+                    return redirect()->back()->with('flash_message', '画像のアップロードに失敗しました。')->with('flash_message_type', 'error');
+                }
+
             } else {
+                // サムネが未選択の場合
                 $filename = 'thumbnail-default.png';
             }
-
+    
+            // 案件のタイプに応じて料金の内容を変更
+            if ($request->type === 1) {
+                // 金額は1,000をかけた値に変換
+                $upperPrice = $request->upperPrice * 1000;
+                $lowerPrice = $request->lowerPrice * 1000;
+            } else {
+                $upperPrice = null;
+                $lowerPrice = null;
+            }
+    
             $saved = $project->fill([
                 'user_id'    => $user_id,
                 'title'      => $request->title,
                 'type'       => $request->type,
                 'upperPrice' => $upperPrice,
                 'lowerPrice' => $lowerPrice,
-                'thumbnail'    => '/uploads/'.$filename,
+                'thumbnail'  => '/uploads/'.$filename,
                 'content'    => $request->content,
             ])->save();
-
-            if($saved){
+    
+            if ($saved) {
                 // 成功時
                 return redirect('/mypage')->with('flash_message', '案件を投稿しました！')->with('flash_message_type', 'success');
-            }else{
+            } else {
                 // 失敗時
                 return redirect('/mypage')->with('flash_message', 'データの保存に失敗しました。')->with('flash_message_type', 'error');
             }
-
-        }catch(QueryException $e){
+    
+        } catch (QueryException $e) {
             // エラー内容をログに吐いてリダイレクト
             Log::error('新規案件登録処理エラー：'. $e->getMessage());
             return redirect('/')->with('flash_message', '予想外のエラーが発生しました。')->with('flash_message_type', 'error');
         }
     }
-
-
+    
     /* ================================================================
         案件詳細画面へ
     =================================================================*/
@@ -162,17 +179,34 @@ class ProjectController extends Controller
             if ($request->hasFile('thumbnail')) {
                 $avatar = $request->file('thumbnail');
                 $filename = $avatar->getClientOriginalName();
+                
+                // HEIC形式の画像をJPEG形式に変換
+                if ($avatar->getClientOriginalExtension() === 'heic') {
+                    $avatar = Image::make($avatar)->encode('jpg');
+                    $filename = pathinfo($filename, PATHINFO_FILENAME) . '.jpg';
+                }
 
                 // 画像を圧縮して保存 
                 $compressedImage = Image::make($avatar)->resize(300, null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
+
+                // 画像をpublic/uploadsディレクトリに移動
+                $moved = $compressedImage->save(public_path('uploads/'.$filename));
                 
-                $path = '/uploads/'.$filename;
-                Storage::put($path, (string)$compressedImage->encode());
-            
+                if (!$moved) {
+                    // 画像の保存等が失敗した場合
+                    return redirect()->back()->with('flash_message', '画像のアップロードに失敗しました。')->with('flash_message_type', 'error');
+                }
+
+            } else if ($project->thumbnail !== 'thumbnail-default.png') {
+                // 画像を変更しない場合
+                $filename = $project->thumbnail;
+                $filename = str_replace('/uploads/', '', $filename);
+
             } else {
+                // サムネが未選択の場合
                 $filename = 'thumbnail-default.png';
             }
 

@@ -18,15 +18,16 @@ class ProjectsTableSeeder extends Seeder
                 'type'       => 1,
                 'upperPrice' => 30000,
                 'lowerPrice' => 10000,
+                'thumbnail'  => '/uploads/img19.png',
                 'content'    => 'バナーを作って欲しいんだよね。',
             ],
             [
                 'user_id'    => 2,
-                'title'      => '友達の作り方',
+                'title'      => '【どんな相手でも対応可】魔法少女派遣します',
                 'type'       => 1,
-                'upperPrice' => 5555,
-                'lowerPrice' => 1000,
-                'content'    => '友達いっぱい作れるよ！',
+                'upperPrice' => 50000,
+                'lowerPrice' => 4000,
+                'content'    => 'うちの魔法少女は強いので誰が相手でも問題ありません',
             ],
 
         ];

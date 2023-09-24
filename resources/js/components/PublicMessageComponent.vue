@@ -1,39 +1,49 @@
 <template>
-    <div class="">
+    <div class="p-public-message">
+        <h3 class="c-title p-public-message__title">コメント</h3>
         <!-- コメント表示/非表示ボタン -->
-        <button class="" @click="toggleShowComment()">
-            <span class="" v-if="!showComment">コメントを表示</span>
-            <span class="" v-if="showComment">コメントを非表示</span>
+        <button class="p-public-message__toggle-button c-button" @click="toggleShowComment()">
+            <span class="p-public-message__toggle-text" v-if="!showComment">コメントを表示</span>
+            <span class="p-public-message__toggle-text" v-if="showComment">コメントを非表示</span>
+             ▼
         </button>
 
         <!-- 全体のwrap -->
-        <div class="" v-if="showComment">
+        <div class="p-public-message__container" v-if="showComment">
             
             <!-- メッセージを表示するエリア -->
-            <div class="">
-                <div class="" v-for="message in messageList" :key="message.id" :class="{'seller': seller_id === message.user.id , 'other': seller_id !== message.user.id}">
+            <div class="p-message">
+                <div class="p-message__container" v-for="message in messageList" :key="message.id">
                     <!-- ユーザー -->
-                    <div class="">
-                        アロハ
-                        <img :src="message.user.avatar" alt="" class="">
-                        <p class="">{{ message.user.name }}</p>
+                    <div class="p-user c-box--flex" :class="{'p-user--me': seller_id === message.user.id , 'p-user--other': seller_id !== message.user.id}">
+                        <div class="p-user__image c-box--avatar">
+                            <img :src="message.user.avatar" class="p-user__image-item c-image">
+                        </div>
+                        <p class="p-user__name">{{ message.user.name }}</p>
                     </div>
                     <!-- メッセージ -->
-                    <div class="">
-                        <p class="">{{ message.comment }}</p>
+                    <div class="c-message" :class="{'c-message--me': seller_id === message.user.id , 'c-message--other': seller_id !== message.user.id}">
+                        <p class="c-message__text">{{ message.comment }}</p>
                     </div>
                 </div>
             </div>
             
             <!-- メッセージ入力＆送信エリア -->
-            <form @submit.prevent="addMessage" class="">
-                <div class="">
-                    <p class="">この案件に対する質問などをコメントできます（※255文字以内）</p>
-                    <textarea class="" v-model="newMessage" placeholder="メッセージを送信"></textarea>
-                    <button type="submit" class="">
+            <form @submit.prevent="addMessage" class="p-message-form">
+                <p class="p-message-form__description">この案件に対する質問などをコメントできます（※255文字以内）</p>
+                <div class="p-message-form__container">
+                    <textarea 
+                        class="p-message-form__area c-textarea"
+                        :class="{'c-error': countText > max }"
+                        v-model="newMessage"
+                        placeholder="メッセージを送信"
+                        @input="updateCount"
+                    ></textarea>
+                    <button type="submit" class="c-button p-message-form__button">
                         <i class=" fa-solid fa-paper-plane"></i>
                     </button>
                 </div>
+                <p class="p-message-form__count-text" :class="{'c-error c-error--text': countText > max }"> {{ countText }} / {{ max }}</p>
             </form>
         </div>
 
@@ -56,6 +66,8 @@ export default {
             seller_id: null,
             newMessage: '',
             showComment : true,
+            max: 255,
+            countText: 0, // 文字数カウントを初期化
         };
     },
 
@@ -67,7 +79,6 @@ export default {
 
         // メッセージ情報取得
         getMessages(){
-            console.log(this.pro);
             axios.get('/api/' + this.project_id + '/publicMessages').
             then((response) => {
                 this.messageList = response.data.messageList;
@@ -86,6 +97,7 @@ export default {
                 // メッセージの送信後にメッセージを再取得する
                 this.getMessages();
                 this.newMessage = ''; // 送信後、入力欄をクリアする
+                this.countText = 0;// カウンターをリセット
             })
             .catch((error) => {
                 console.error(error);
@@ -95,6 +107,11 @@ export default {
         // コメント表示切り替え
         toggleShowComment(){
             this.showComment = !this.showComment;
+        },
+
+        // 入力文字数をカウント
+        updateCount() {
+            this.countText = this.newMessage.length;
         },
 
 

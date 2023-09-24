@@ -10,11 +10,15 @@ class Chat extends Model
     protected $fillable = ['user1_id', 'user2_id'];
 
     //他のモデルとの関係
-    public function me(){
-        return $this->belongsTo('App\User');
-    }
+    // public function me(){
+    //     return $this->belongsTo('App\User');
+    // }
 
-    public function you(){
+    // public function you(){
+    //     return $this->belongsTo('App\User');
+    // }
+
+    public function user(){
         return $this->belongsTo('App\User');
     }
 

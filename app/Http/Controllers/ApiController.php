@@ -112,7 +112,7 @@ class ApiController extends Controller
             $posts = Project::where('user_id', $user_id)
                             ->with('type')
                             ->orderBy('created_at', 'desc')
-                            ->limit(5)
+                            ->limit(3)
                             ->get();
 
             $postList = [];
@@ -122,13 +122,9 @@ class ApiController extends Controller
 
             // ====== 応募した案件 ======
             $applies = Apply::where('user_id', $user_id)
-                            ->with(['project' => function ($query) {
-                                $query->with('type')
-                                    ->orderBy('created_at', 'desc')
-                                    ->limit(5);
-                            }])
+                            ->with(['project.type'])
                             ->orderBy('created_at', 'desc')
-                            ->limit(5)
+                            ->limit(3)
                             ->get();
 
             $applyList = [];
@@ -140,7 +136,7 @@ class ApiController extends Controller
 
             $publicMessages = PublicMessage::where('user_id', $user_id)
                 ->orderBy('created_at', 'desc')
-                ->limit(5) // 自分が投稿したパブリックメッセージを最新の5件取得
+                ->limit(3) // 自分が投稿したパブリックメッセージを最新の5件取得
                 ->get();
 
             $publicMessageList = [];
@@ -160,18 +156,31 @@ class ApiController extends Controller
         
             // ====== DM ======
             // 自分が送信or受信したDM情報を、最新5件取得
-            $dms = Chat::where('user1_id', $user_id)
-                        ->orWhere('user2_id', $user_id)
-                        ->with(['message' => function ($query) {
-                            $query->with('user')->get();
-                        }])
-                        ->orderBy('created_at', 'desc')
-                        ->limit(5)
-                        ->get();
-        
+            $chats = Chat::where('user1_id', $user_id)
+            ->orWhere('user2_id', $user_id)
+            ->orderBy('created_at', 'desc')
+            ->limit(3)
+            ->get();
+
             $directMessageList = [];
-            if($dms->isNotEmpty()){
-                $directMessageList = $dms;
+            if ($chats->isNotEmpty()) {
+                foreach ($chats as $chat) {
+                    // Chatに関連する最新のメッセージを取得
+                    $latestMessage = DirectMessage::where('chat_id', $chat->id)
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+            
+                    // Chatの相手のユーザー情報を取得
+                    $user_id = (int)$user_id;
+                    $otherUserId = ($user_id === $chat->user1_id) ? $chat->user2_id : $chat->user1_id;
+                    $otherUser = User::find($otherUserId);
+            
+                    // メッセージとユーザー情報をリストに追加
+                    $directMessageList[] = [
+                        'message' => $latestMessage,
+                        'other_user' => $otherUser,
+                    ];
+                }
             }
 
             $data = [
@@ -230,11 +239,10 @@ class ApiController extends Controller
 
             // === 案件に対するメッセージ（パブリックメッセージ）===
             $messageList = [];
-            // 最新の10件取得
             $messages = PublicMessage::where('project_id', $id)
                                     ->with('user')
                                     ->orderBy('created_at', 'desc')
-                                    ->limit(10)
+                                    // ->limit(10)
                                     ->get();
 
             if($messages->isNotEmpty()){
@@ -310,7 +318,6 @@ class ApiController extends Controller
         }
 
         try{
-
             // メッセージを保存
             $message = new PublicMessage;
             $saved = $message->fill([
@@ -443,7 +450,7 @@ class ApiController extends Controller
 
         try{
 
-            $projects = Project::where('user_id', $user_id)->get();
+            $projects = Project::where('user_id', $user_id)->with('type')->get();
 
             $projectList = [];
             if($projects->isNotEmpty()){
@@ -473,7 +480,9 @@ class ApiController extends Controller
     
         try{
 
-            $applies = Apply::where('user_id', $user_id)->with('project')->get();
+            $applies = Apply::where('user_id', $user_id)
+                            ->with(['project.type'])
+                            ->get();
 
             $applyList = [];
             if($applies->isNotEmpty()){
@@ -504,14 +513,10 @@ class ApiController extends Controller
     
         try{
 
-            // 自分の案件用
-            $project_id = Project::where('user_id', $user_id)->value('id');
-
             $publicMessages = PublicMessage::where('user_id', $user_id)
-                                ->orWhere('project_id', $project_id)
-                                ->with('project')
-                                ->get();
-
+                                            ->with(['project.type'])
+                                            ->get();
+            
             $publicMessageList = [];
             if($publicMessages->isNotEmpty()){
                 $publicMessageList = $publicMessages;
@@ -531,7 +536,6 @@ class ApiController extends Controller
                 'flashMessageType' => 'error',
             ]);
         }
-
     }
 
     /* ================================================================
@@ -541,20 +545,36 @@ class ApiController extends Controller
     
         try{
 
-            // チャットごとに取得する。それ用のID
-            $chat_id = Chat::where('user1_id', $user_id)
-                            ->orWhere('user2_id', $user_id)
-                            ->value('id');
-
-            $directMessages = PublicMessage::where('chat_id', $chat_id)->get();
+            // 自分が送信or受信したDM情報取得
+            $chats = Chat::where('user1_id', $user_id)
+            ->orWhere('user2_id', $user_id)
+            ->get();
 
             $directMessageList = [];
-            if($directMessages->isNotEmpty()){
-                $directMessageList = $directMessages;
+
+            if ($chats->isNotEmpty()) {
+                foreach ($chats as $chat) {
+
+                    // Chatに関連する最新のメッセージを取得
+                    $latestMessage = DirectMessage::where('chat_id', $chat->id)
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->first();
+            
+                    // Chatの相手のユーザー情報を取得
+                    $user_id = (int)$user_id;
+                    $otherUserId = ($user_id === $chat->user1_id) ? $chat->user2_id : $chat->user1_id;
+                    $otherUser = User::find($otherUserId);
+            
+                    // メッセージとユーザー情報をリストに追加
+                    $directMessageList[] = [
+                        'message' => $latestMessage,
+                        'other_user' => $otherUser,
+                    ];
+                }
             }
 
             $data = [
-                'publicMessageList' => $directMessageList,
+                'directMessageList' => $directMessageList,
             ];
 
             return response()->json($data);

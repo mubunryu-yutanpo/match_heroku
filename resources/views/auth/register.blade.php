@@ -9,48 +9,51 @@
 @section('main')
 
 <section class="p-page-visual">
-    <form action="{{ route('register') }}" method="post" class="p-form">
+    <form action="{{ route('register') }}" method="post" class="p-register c-box c-box--form">
         @csrf
 
-        <div class="c-title p-form__title">新規ユーザー登録</div>
+        <h2 class="p-register__title c-title ">
+            <i class="fa-solid fa-user-plus c-icon c-icon--title"></i>
+            新規ユーザー登録
+        </h2>
 
-        <div class="p-form__container">
-            <label for="name" class="c-label">名前:</label>
-            <input id="name" type="text" class="c-input @error('name') valid-error @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="20文字以内">
+        <div class="p-register__container c-box--form-container">
+            <label for="name" class="p-register__label c-label">名前:</label>
+            <input id="name" type="text" class="p-register__input c-input @error('name') c-error @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="20文字以内">
             @error('name')
-                <span class="c-error-text" role="alert">
+                <p class="c-error--text" role="alert">
                     {{ $message }}
-                </span>
+                </p>
             @enderror
         </div>
 
-        <div class="p-form__container">
-            <label for="email" class="c-label">メールアドレス:</label>
-            <input id="email" type="email" class="c-input @error('email') valid-error @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+        <div class="p-register__container c-box--form-container">
+            <label for="email" class="p-register__label c-label">メールアドレス:</label>
+            <input id="email" type="email" class="p-register__input c-input @error('email') c-error @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
             @error('email')
-                <span class="c-error-text" role="alert">
+                <p class="c-error--text" role="alert">
                     {{ $message }}
-                </span>
+                </p>
             @enderror
         </div>
 
-        <div class="p-form__container">
-            <label for="password" class="c-label">パスワード:</label>
-            <input id="password" type="password" class="c-input @error('password') valid-error @enderror" name="password" required autocomplete="current-password" placeholder="半角英数字8文字以上">
+        <div class="p-register__container c-box--form-container">
+            <label for="password" class="p-register__label c-label">パスワード:</label>
+            <input id="password" type="password" class="p-register__input c-input @error('password') c-error @enderror" name="password" required autocomplete="current-password" placeholder="半角英数字8文字以上">
             @error('password')
-                <span class="c-error-text" role="alert">
+                <p class="c-error--text" role="alert">
                     {{ $message }}
-                </span>
+                </p>
             @enderror
         </div>
 
-        <div class="p-form__container">
-            <label for="password-confirm" class="c-label">パスワード（再入力）:</label>
-            <input id="password-confirm" type="password" class="c-input @error('password-confirm') valid-error @enderror" name="password_confirmation" required autocomplete="new-password" placeholder="半角英数字8文字以上">
+        <div class="p-register__container c-box--form-container">
+            <label for="password-confirm" class="p-register__label c-label">パスワード（再入力）:</label>
+            <input id="password-confirm" type="password" class="p-register__input c-input @error('password-confirm') c-error @enderror" name="password_confirmation" required autocomplete="new-password" placeholder="半角英数字8文字以上">
             @error('password-confirm')
-                <span class="c-error-text" role="alert">
+                <p class="c-error--text" role="alert">
                     {{ $message }}
-                </span>
+                </p>
             @enderror
         </div>
 

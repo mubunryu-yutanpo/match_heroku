@@ -1,192 +1,207 @@
 <template>
-    <div class="">
-        
-        <!-- 一覧 -->
-        <section class="">
 
+    <div class="p-list">
+        <h2 class="p-list__title c-title">
+        <i class="fa-solid fa-list c-icon c-icon--title"></i>
+        応募した案件一覧
+        </h2>
+
+        <!-- 一覧 -->
+        <section class="p-list__container c-box--flex">
+            
             <!-- 各案件 -->
-            <div class="p-card" v-for="list in lists" :key="list.id">
-                <p class="">{{ list.project.title }}</p>
+            <div class="p-project" v-for="apply in paginatedProjects" :key="apply.id">
+                
+                <h4 class="p-project__title c-title">
+                    <a :href="'/project/' + apply.project.id + '/detail'" class="p-project__link c-link">{{ apply.project.title }}</a>
+                </h4>
+
+                <div class="p-project__image">
+                    <img :src="apply.project.thumbnail" class="p-project__image-item c-image">
+                    <p class="p-project__type c-text--type">{{ apply.project.type.name }}</p>
+                </div>
+
+                <div class="p-project__price">
+                    <p class="c-text">【 料金 】</p>
+                    <p class="p-project__price-text c-text--price" v-if="apply.project.lowerPrice && apply.project.upperPrice">
+                        {{ apply.project.lowerPrice | numberWithCommas }}〜{{ apply.project.upperPrice | numberWithCommas }} 
+                    </p>
+                    <p class="p-project__price-text c-text--price" v-else>ー</p>
+                    <p class="c-text c-text--right">（円）</p>
+                </div>
+
+                <div class="p-project__content">
+                    <p class="c-text">【 内容 】</p>
+                    {{ apply.project.content }}
+                </div>
             </div>
         </section>
 
         <!-- ページネーション -->
-        <section class="">
-            <!-- 最初のページへ -->
-            <div class="p-pagination">
-            <button
-                v-if="currentPage > 1"
-                class="p-pagination__button"
-                @click="changePage(1)"
-            >
-                ＜
-            </button>
+        <section class="p-pagination">
+        <!-- 最初のページへ -->
+        <button
+            v-if="currentPage > 1"
+            class="p-pagination__button c-button"
+            @click="changePage(1)"
+        >
+            <
+        </button>
 
-            <!-- 前のページボタン -->
-            <button
-                v-if="currentPage > 2"
-                class="p-pagination__button"
-                @click="changePage(currentPage - 1)"
-            >
-                prev
-            </button>
+        <!-- 前のページボタン -->
+        <button
+            v-if="currentPage > 2"
+            class="p-pagination__button c-button"
+            @click="changePage(currentPage - 1)"
+        >
+            prev
+        </button>
 
-            <!-- 動的に変化するページボタン -->
-            <button
-                v-for="pageNumber in visiblePageNumbers"
-                :key="pageNumber"
-                class="p-pagination__button"
-                :class="{ active: currentPage === pageNumber }"
-                @click="changePage(pageNumber)"
-            >
-                {{ pageNumber }}
-            </button>
+        <!-- 動的に変化するページボタン -->
+        <button
+            v-for="pageNumber in visiblePageNumbers"
+            :key="pageNumber"
+            class="p-pagination__button c-button"
+            :class="{ active: currentPage === pageNumber }"
+            @click="changePage(pageNumber)"
+        >
+            {{ pageNumber }}
+        </button>
 
-            <!-- 次のページボタン -->
-            <button
-                v-if="currentPage < totalPages - 1"
-                class="p-pagination__button"
-                @click="changePage(currentPage + 1)"
-            >
-                next
-            </button>
+        <!-- 次のページボタン -->
+        <button
+            v-if="currentPage < totalPages - 1"
+            class="p-pagination__button c-button"
+            @click="changePage(currentPage + 1)"
+        >
+            next
+        </button>
 
-            <!-- 最終ページ -->
-            <button
-                v-if="currentPage < totalPages"
-                class="p-pagination__button"
-                @click="changePage(totalPages)"
+        <!-- 最終ページ -->
+        <button
+            v-if="currentPage < totalPages"
+            class="p-pagination__button c-button"
+            @click="changePage(totalPages)"
+        >
             >
-                ＞
-            </button>
-            </div>
-
+        </button>
         </section>
-
     </div>
 </template>
 
 <script>
-    import axios from 'axios';
+import axios from 'axios';
 
-    export default {
-    props : ['user_id'],
+export default {
+
+    props: ['user_id'],
     
     data() {
         return {
-        lists: [],
-        currentPage: 1,
-        listsPerPage: 1,
+            projects: [],
+            currentPage: 1,
+            projectsPerPage: 3, // 頁ネーションのテスト用にとりあえず3に
         };
     },
 
     async mounted() {
-        await this.getList(); // ページ読み込み時に案件情報を取得
+        await this.getApplyList(); // 投稿した案件情報を取得
+        this.filterAndPaginateProjects(); // 初回データ取得後にページネーションを適用
     },
 
     computed: {
 
-        // フィルタリングされた案件の長さとlistsPerPageを元に、総ページ数を計算する
-        totalPages() {
-        return Math.ceil(this.lists.length / this.listsPerPage);
-        },
-
         // 現在のページの開始インデックスと終了インデックスを計算する
         startIndex() {
-        return (this.currentPage - 1) * this.listsPerPage;
+            return (this.currentPage - 1) * this.projectsPerPage;
         },
+
         endIndex() {
-        return this.startIndex + this.listsPerPage;
+            return this.startIndex + this.projectsPerPage;
         },
 
-        // 現在のページの案件を取得する
-        paginatedlists() {
-        return this.lists.slice(this.startIndex, this.endIndex);
+                // フィルタリングとページネーションを適用したプロジェクトリスト
+        paginatedProjects: {
+
+            get() {
+                const projects = this.projects;
+
+                // ページネーション
+                const startIndex = this.startIndex;
+                const endIndex = this.endIndex;
+                return projects.slice(startIndex, endIndex);
+            },
+            set(value) {
+                // このセッターは読み取り専用のため、何も行わない
+            },
         },
 
+        // フィルタリングされた案件の長さとprojectsPerPageを元に、総ページ数を計算する
+        totalPages() {
+            return Math.ceil(this.projects.length / this.projectsPerPage);
+        },
 
         // ページネーションで表示するページ番号のリストを取得
         visiblePageNumbers() {
-        const totalPages = this.totalPages;
-        const currentPage = this.currentPage;
+            const totalPages = this.totalPages;
+            const currentPage = this.currentPage;
+            const maxVisiblePages = 3;
 
-        const maxVisiblePages = 3; // 表示する最大のページ数
-
-        if (totalPages <= maxVisiblePages) {
-            return Array.from({ length: totalPages }, (_, i) => i + 1);
-
-        } else {
-            // 真ん中のボタン
-            const middlePage = Math.floor(maxVisiblePages / 2) + 1;
-
-            if (currentPage <= middlePage) {
-            return Array.from({ length: maxVisiblePages }, (_, i) => i + 1);
-            } else if (currentPage >= totalPages - middlePage + 1) {
-            return Array.from({ length: maxVisiblePages }, (_, i) => totalPages - maxVisiblePages + i + 1);
+            if (totalPages <= maxVisiblePages) {
+                return Array.from({ length: totalPages }, (_, i) => i + 1);
             } else {
-            return Array.from({ length: maxVisiblePages }, (_, i) => currentPage - middlePage + i);
-            }
-        }
-        },
+                // 真ん中のボタン
+                const middlePage = Math.floor(maxVisiblePages / 2) + 1;
 
+                if (currentPage <= middlePage) {
+                    return Array.from({ length: maxVisiblePages }, (_, i) => i + 1);
+                } else if (currentPage >= totalPages - middlePage + 1) {
+                    return Array.from({ length: maxVisiblePages }, (_, i) => totalPages - maxVisiblePages + i + 1);
+                } else {
+                    return Array.from({ length: maxVisiblePages }, (_, i) => currentPage - middlePage + i);
+                }
+            }
+        },
     },
+
     methods: {
 
         // 案件情報取得
-        getList() {
+        getApplyList() {
             axios
-            .get('/api/' + this.user_id + '/applyList')
-            .then((response) => {
-                this.lists = response.data.applyList;
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+                .get('/api/' + this.user_id + '/applyList')
+                .then((response) => {
+                    this.projects = response.data.applyList;
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
-
-        // // 「気になる」の状態をトグル
-        // toggleCheck(id) {
-        //   axios.post('/api/idea/' + id + '/toggleCheck')
-        //     .then(response => {
-        //       console.log('気になるのトグル処理成功');
-        //       this.isChecked = !this.isChecked; // チェックボックスの状態を反転させる
-        //       this.getlists();
-        //     })
-        //     .catch(error => {
-        //       console.error(error);
-        //     });
-        // },
-
-        // 日付の表示を変更
-        formatDate(value) {
-        const date = new Date(value);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        return `${year}.${month}.${day}`;
-        },
-
 
         // ページネーションのページ変更を処理する
         changePage(pageNumber) {
-        this.currentPage = pageNumber;
+            this.currentPage = pageNumber;
         },
 
+        // ページネーションを適用したリストを取得
+        filterAndPaginateProjects() {
+            const startIndex = this.startIndex;
+            const endIndex = this.endIndex;
+            this.paginatedProjects = this.projects.slice(startIndex, endIndex);
+        },
     },
 
     filters: {
-
         // 値段の表記。コンマ区切りにする。
         numberWithCommas(value) {
-        if (value === 0) {
-            return '0';
-        }
-        if (!value) {
-            return '';
-        }
-        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            if (value === 0) {
+                return '0';
+            }
+            if (!value) {
+                return '';
+            }
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         },
     },
-    };
+};
 </script>
-

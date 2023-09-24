@@ -11,28 +11,30 @@
         {{ $user->name }}さんのプロフィール編集画面さ。
     </h1>
 
-    <form action="{{ route('prof.update', $user->id) }}" method="post" class="p-form" enctype="multipart/form-data">
+    <form action="{{ route('prof.update', $user->id) }}" method="post" class="p-profile c-box--form" enctype="multipart/form-data">
         @csrf
 
-        <div class="c-title p-form__title">新規ユーザー登録</div>
+        <h2 class="c-title p-profile__title">
+            <i class="fa-solid fa-user-pen c-icon c-icon--title"></i>プロフィール編集
+        </h2>
 
         <!-- ユーザー名 -->
-        <div class="p-form__container">
-            <label for="name" class="c-label p-form__label">名前:</label>
-                <input id="name" type="text" class="c-input p-form__input @error('name') valid-error @enderror" name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" autofocus>
+        <div class="p-profile__container c-box--form-container">
+            <label for="name" class="c-label p-profile__label">名前:</label>
+                <input id="name" type="text" class="c-input p-profile__input @error('name') valid-error @enderror" name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" autofocus>
                 @error('name')
-                    <span class="c-error c-error--text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-profile__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
         </div>
 
         <!-- メールアドレス -->
-        <div class="p-form__container">
-            <label for="email" class="c-label p-form__label">メールアドレス:</label>
-                <input id="email" type="email" class="c-input p-form__input @error('email') valid-error @enderror" name="email" value="{{ old('email', $user->email) }}" required autocomplete="email" autofocus>
+        <div class="p-profile__container c-box--form-container">
+            <label for="email" class="c-label p-profile__label">メールアドレス:</label>
+                <input id="email" type="email" class="c-input p-profile__input @error('email') valid-error @enderror" name="email" value="{{ old('email', $user->email) }}" required autocomplete="email" autofocus>
                 @error('email')
-                    <span class="c-error c-error--text p-form__error-text" role="alert">
+                    <span class="c-error c-error--text p-profile__error-text" role="alert">
                         {{ $message }}
                     </span>
                 @enderror
@@ -43,7 +45,7 @@
         </div>
 
         <!-- 自己紹介文 -->
-        <div class="p-form__container">
+        <div class="p-profile__container c-box--form-container">
             <!-- テキストカウンター用コンポーネント -->
             <div id="counter">
                 <text-counter-component
@@ -58,7 +60,7 @@
             </div>
 
             @error('introduction')
-                <span class="c-error c-error--text p-form__error-text" role="alert">
+                <span class="c-error c-error--text p-profile__error-text" role="alert">
                     {{ $message }}
                 </span>
             @enderror

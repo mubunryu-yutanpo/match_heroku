@@ -4,7 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+// require('./bootstrap');
 
 window.Vue = require('vue');
 
@@ -33,6 +33,9 @@ Vue.component('public-message-list-component', require('./components/PublicMessa
 Vue.component('text-counter-component', require('./components/TextCounterComponent.vue').default);
 Vue.component('thumbnail-preview-component', require('./components/ThumbnailPreviewComponent.vue').default);
 
+
+const VueAwesomeSwiper = window.VueAwesomeSwiper;
+Vue.use(VueAwesomeSwiper);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

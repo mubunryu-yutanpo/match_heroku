@@ -1,9 +1,9 @@
 <template>
-    <div class="hoge__wrap u-align__stretch">
-        <label for="avatar" class="hoge__label">アバター画像:</label>
+    <div class="p-avatar c-box--form-container">
+        <label for="avatar" class="p-avatar__label c-label">アバター画像:</label>
         <div
-            class="hoge__file-label"
-            :class="{ 'preview': previewImage, 'dragover': isDragover }"
+            class="p-avatar__container"
+            :class="{ 'is-preview': previewImage, 'is-dragover': isDragover }"
             @dragover.prevent="handleDragover"
             @dragleave="handleDragleave"
             @drop.prevent="handleDrop"
@@ -11,12 +11,13 @@
         >
             <!-- 8MBまで -->
             <input type="hidden" name="MAX_FILE_SIZE" value="8388608">
-            <input type="file" class="hoge__file-input" name="avatar" ref="fileInput" @change="handleFileChange">
-            <img :src="previewImage" alt="" class="hoge__file-image">
+            <input type="file" class="p-avatar__input" name="avatar" ref="fileInput" @change="handleFileChange">
+            <img :src="previewImage" alt="" class="p-avatar__image c-image">
+            タップ（クリック）で画像を挿入
         </div>
-        <span v-if="validError" class="hoge__error" role="alert">
-            <strong>{{ validError }}</strong>
-        </span>
+        <p v-if="validError" class="c-error--text" role="alert">
+            {{ validError }}
+        </p>
     </div>
 </template>
 
@@ -101,67 +102,3 @@
         },
     };
 </script>
-
-<style>
-    .hoge__wrap{
-        margin: 0 auto;
-        width: 100%;
-
-    }
-
-
-    .hoge__file-label {
-            background: white;
-            border: 1px dashed gray;
-            border-radius: 5px;
-            color: brown;
-            display: block;
-            height: 300px;
-            line-height: 300px;
-            width: 400px;
-            margin: 0 auto;
-            position: relative;
-            text-align: center;
-
-            /* @include mq(sm){
-                height: 230px;
-                line-height: 230px;
-                width: 100%;
-            } */
-    }
-    
-    .hoge__file-label.preview {
-        border: none;
-        box-shadow: 0 0 5px 3px brown;
-
-        /* @include mq(){
-            box-shadow: 0 0 5px 0 $brown;
-        } */
-    }
-    
-    .hoge__file-label.dragover {
-        border-color: #000;
-        background-color: #f0f0f0;
-        color: #000;
-    }
-    
-    .hoge__file-input {
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-    
-    .hoge__file-image {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-
-</style>

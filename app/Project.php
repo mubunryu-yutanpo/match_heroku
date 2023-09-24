@@ -17,4 +17,9 @@ class Project extends Model
     public function type(){
         return $this->belongsTo('App\Type', 'type');
     }
+
+    public function publicMessages()
+{
+    return $this->hasMany(PublicMessage::class);
+}
 }
