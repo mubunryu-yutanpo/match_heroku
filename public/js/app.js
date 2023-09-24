@@ -2613,10 +2613,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: ['user_id'],
   data: function data() {
     return {
-      projects: [],
       messages: [],
       currentPage: 1,
-      projectsPerPage: 3 // 頁ネーションのテスト用にとりあえず3に
+      messagesPerPage: 3 // 頁ネーションのテスト用にとりあえず3に
     };
   },
   mounted: function mounted() {
@@ -2626,10 +2625,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) switch (_context.prev = _context.next) {
           case 0:
             _context.next = 2;
-            return _this.getPublicMessageList();
+            return _this.getDirectMessageList();
           case 2:
             // 投稿した案件情報を取得
-            _this.filterAndPaginateProjects(); // 初回データ取得後にページネーションを適用
+            _this.filterAndPaginateMessages(); // 初回データ取得後にページネーションを適用
           case 3:
           case "end":
             return _context.stop();
@@ -2640,28 +2639,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   computed: {
     // 現在のページの開始インデックスと終了インデックスを計算する
     startIndex: function startIndex() {
-      return (this.currentPage - 1) * this.projectsPerPage;
+      return (this.currentPage - 1) * this.messagesPerPage;
     },
     endIndex: function endIndex() {
-      return this.startIndex + this.projectsPerPage;
+      return this.startIndex + this.messagesPerPage;
     },
     // フィルタリングとページネーションを適用したプロジェクトリスト
-    paginatedProjects: {
+    PaginatedMessages: {
       get: function get() {
-        var projects = this.projects;
+        var messages = this.messages;
 
         // ページネーション
         var startIndex = this.startIndex;
         var endIndex = this.endIndex;
-        return projects.slice(startIndex, endIndex);
+        return messages.slice(startIndex, endIndex);
       },
       set: function set(value) {
         // このセッターは読み取り専用のため、何も行わない
       }
     },
-    // フィルタリングされた案件の長さとprojectsPerPageを元に、総ページ数を計算する
+    // フィルタリングされた案件の長さとmessagesPerPageを元に、総ページ数を計算する
     totalPages: function totalPages() {
-      return Math.ceil(this.projects.length / this.projectsPerPage);
+      return Math.ceil(this.messages.length / this.messagesPerPage);
     },
     // ページネーションで表示するページ番号のリストを取得
     visiblePageNumbers: function visiblePageNumbers() {
@@ -2701,11 +2700,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     // 案件情報取得
-    getPublicMessageList: function getPublicMessageList() {
+    getDirectMessageList: function getDirectMessageList() {
       var _this2 = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/' + this.user_id + '/publicMessageList').then(function (response) {
-        _this2.projects = response.data.publicMessageList;
-        _this2.messages = response.data.latestMessages;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/' + this.user_id + '/directMessageList').then(function (response) {
+        _this2.messages = response.data.directMessageList;
       })["catch"](function (error) {
         console.error(error);
       });
@@ -2715,10 +2713,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.currentPage = pageNumber;
     },
     // ページネーションを適用したリストを取得
-    filterAndPaginateProjects: function filterAndPaginateProjects() {
+    filterAndPaginateMessages: function filterAndPaginateMessages() {
       var startIndex = this.startIndex;
       var endIndex = this.endIndex;
-      this.paginatedProjects = this.projects.slice(startIndex, endIndex);
+      this.PaginatedMessages = this.messages.slice(startIndex, endIndex);
     }
   },
   filters: {
@@ -3759,7 +3757,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       projects: [],
-      messages: [],
       currentPage: 1,
       projectsPerPage: 3 // 頁ネーションのテスト用にとりあえず3に
     };
@@ -3850,7 +3847,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/' + this.user_id + '/publicMessageList').then(function (response) {
         _this2.projects = response.data.publicMessageList;
-        _this2.messages = response.data.latestMessages;
       })["catch"](function (error) {
         console.error(error);
       });
@@ -5103,40 +5099,57 @@ var render = function () {
     _vm._v(" "),
     _c(
       "section",
-      { staticClass: "p-list__container c-box--flex" },
-      _vm._l(_vm.paginatedProjects, function (pub) {
-        return _c("div", { key: pub.id, staticClass: "p-project" }, [
-          _c("h4", { staticClass: "p-project__title c-title" }, [
+      { staticClass: "p-list__box c-box--flex c-box--flex-column" },
+      _vm._l(_vm.PaginatedMessages, function (dm) {
+        return _c(
+          "div",
+          { key: dm.id, staticClass: "p-message-list c-box--message" },
+          [
             _c(
-              "a",
+              "div",
               {
-                staticClass: "p-project__link c-link",
-                attrs: { href: "/project/" + pub.project.id + "/detail" },
+                staticClass:
+                  "p-message-list__container c-box--flex c-box--flex-1",
               },
-              [_vm._v(_vm._s(pub.project.title))]
+              [
+                _vm._v(
+                  "\n                【 メッセージの相手 】\n                "
+                ),
+                _c("p", { staticClass: "p-message-list__user-name" }, [
+                  _vm._v(_vm._s(dm.other_user.name)),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "p-message-list__user-image c-box--avatar" },
+                  [
+                    _c("img", {
+                      staticClass: "p-message-list__user-image-item c-image",
+                      attrs: { src: dm.other_user.avatar },
+                    }),
+                  ]
+                ),
+              ]
             ),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "p-project__image" }, [
-            _c("img", {
-              staticClass: "p-project__image-item c-image",
-              attrs: { src: pub.project.thumbnail },
-            }),
             _vm._v(" "),
-            _c("p", { staticClass: "p-project__type c-text--type" }, [
-              _vm._v(_vm._s(pub.project.type.name)),
+            _c("p", { staticClass: "p-message-list__content c-text" }, [
+              _vm._v("【 最新のコメント 】" + _vm._s(dm.message.comment)),
             ]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "p-project__content" }, [
-            _c("p", { staticClass: "c-text" }, [
-              _vm._v("【 最新のメッセージ 】"),
+            _vm._v(" "),
+            _c("div", { staticClass: "c-box--link" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "c-link p-message-list__link",
+                  attrs: {
+                    href: "/messages/" + _vm.user_id + "/" + dm.other_user.id,
+                  },
+                },
+                [_vm._v("このメッセージへ")]
+              ),
             ]),
-            _vm._v(
-              "\n                " + _vm._s(pub.comment) + "\n            "
-            ),
-          ]),
-        ])
+          ]
+        )
       })
     ),
     _vm._v(" "),
@@ -5231,8 +5244,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("h2", { staticClass: "p-list__title c-title" }, [
-      _c("i", { staticClass: "fa-solid fa-list c-icon c-icon--title" }),
-      _vm._v("\n    メッセージをした案件一覧\n    "),
+      _c("i", { staticClass: "fa-solid fa-comments c-icon c-icon--title" }),
+      _vm._v("\n        メッセージ一覧\n    "),
     ])
   },
 ]

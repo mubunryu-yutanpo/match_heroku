@@ -2,30 +2,30 @@
 
     <div class="p-list">
         <h2 class="p-list__title c-title">
-        <i class="fa-solid fa-list c-icon c-icon--title"></i>
-        メッセージをした案件一覧
+            <i class="fa-solid fa-comments c-icon c-icon--title"></i>
+            メッセージ一覧
         </h2>
 
         <!-- 一覧 -->
-        <section class="p-list__container c-box--flex">
-            
-            <!-- 各案件 -->
-            <div class="p-project" v-for="pub in paginatedProjects" :key="pub.id">
+        <section class="p-list__box c-box--flex c-box--flex-column">
+            <!-- 各チャットの最新の1件のみ表示 -->
+            <div class="p-message-list c-box--message" v-for=" dm in PaginatedMessages" :key="dm.id">
                 
-                <h4 class="p-project__title c-title">
-                    <a :href="'/project/' + pub.project.id + '/detail'" class="p-project__link c-link">{{ pub.project.title }}</a>
-                </h4>
-
-                <div class="p-project__image">
-                    <img :src="pub.project.thumbnail" class="p-project__image-item c-image">
-                    <p class="p-project__type c-text--type">{{ pub.project.type.name }}</p>
+                <div class="p-message-list__container c-box--flex c-box--flex-1">
+                    【 メッセージの相手 】
+                    <p class="p-message-list__user-name">{{ dm.other_user.name }}</p>
+                    <div class="p-message-list__user-image c-box--avatar">
+                        <img :src="dm.other_user.avatar" class="p-message-list__user-image-item c-image">
+                    </div>
                 </div>
 
-                <div class="p-project__content">
-                    <p class="c-text">【 最新のメッセージ 】</p>
-                    {{ pub.comment }}
+                <p class="p-message-list__content c-text">【 最新のコメント 】{{ dm.message.comment }}</p>
+                <div class="c-box--link">
+                    <a :href="'/messages/' + user_id + '/' + dm.other_user.id " class="c-link p-message-list__link">このメッセージへ</a>
                 </div>
+
             </div>
+
         </section>
 
         <!-- ページネーション -->
@@ -89,48 +89,47 @@ export default {
     
     data() {
         return {
-            projects: [],
             messages: [],
             currentPage: 1,
-            projectsPerPage: 3, // 頁ネーションのテスト用にとりあえず3に
+            messagesPerPage: 3, // 頁ネーションのテスト用にとりあえず3に
         };
     },
 
     async mounted() {
-        await this.getPublicMessageList(); // 投稿した案件情報を取得
-        this.filterAndPaginateProjects(); // 初回データ取得後にページネーションを適用
+        await this.getDirectMessageList(); // 投稿した案件情報を取得
+        this.filterAndPaginateMessages(); // 初回データ取得後にページネーションを適用
     },
 
     computed: {
 
         // 現在のページの開始インデックスと終了インデックスを計算する
         startIndex() {
-            return (this.currentPage - 1) * this.projectsPerPage;
+            return (this.currentPage - 1) * this.messagesPerPage;
         },
 
         endIndex() {
-            return this.startIndex + this.projectsPerPage;
+            return this.startIndex + this.messagesPerPage;
         },
 
                 // フィルタリングとページネーションを適用したプロジェクトリスト
-        paginatedProjects: {
+        PaginatedMessages: {
 
             get() {
-                const projects = this.projects;
+                const messages = this.messages;
 
                 // ページネーション
                 const startIndex = this.startIndex;
                 const endIndex = this.endIndex;
-                return projects.slice(startIndex, endIndex);
+                return messages.slice(startIndex, endIndex);
             },
             set(value) {
                 // このセッターは読み取り専用のため、何も行わない
             },
         },
 
-        // フィルタリングされた案件の長さとprojectsPerPageを元に、総ページ数を計算する
+        // フィルタリングされた案件の長さとmessagesPerPageを元に、総ページ数を計算する
         totalPages() {
-            return Math.ceil(this.projects.length / this.projectsPerPage);
+            return Math.ceil(this.messages.length / this.messagesPerPage);
         },
 
         // ページネーションで表示するページ番号のリストを取得
@@ -159,12 +158,11 @@ export default {
     methods: {
 
         // 案件情報取得
-        getPublicMessageList() {
+        getDirectMessageList() {
             axios
-                .get('/api/' + this.user_id + '/publicMessageList')
+                .get('/api/' + this.user_id + '/directMessageList')
                 .then((response) => {
-                    this.projects = response.data.publicMessageList;
-                    this.messages = response.data.latestMessages;
+                    this.messages = response.data.directMessageList;
                 })
                 .catch((error) => {
                     console.error(error);
@@ -177,10 +175,10 @@ export default {
         },
 
         // ページネーションを適用したリストを取得
-        filterAndPaginateProjects() {
+        filterAndPaginateMessages() {
             const startIndex = this.startIndex;
             const endIndex = this.endIndex;
-            this.paginatedProjects = this.projects.slice(startIndex, endIndex);
+            this.PaginatedMessages = this.messages.slice(startIndex, endIndex);
         },
     },
 

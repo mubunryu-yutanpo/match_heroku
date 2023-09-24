@@ -90,7 +90,6 @@ export default {
     data() {
         return {
             projects: [],
-            messages: [],
             currentPage: 1,
             projectsPerPage: 3, // 頁ネーションのテスト用にとりあえず3に
         };
@@ -164,7 +163,6 @@ export default {
                 .get('/api/' + this.user_id + '/publicMessageList')
                 .then((response) => {
                     this.projects = response.data.publicMessageList;
-                    this.messages = response.data.latestMessages;
                 })
                 .catch((error) => {
                     console.error(error);

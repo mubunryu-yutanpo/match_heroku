@@ -13,4 +13,15 @@
             margin-right: 0;
         }
     }
+
+    &__box{
+        box-sizing: border-box;
+        margin: $space_30 auto 0;
+        padding: $space_30 $space_20;
+
+        @include mq(sm){
+            margin: $space_30 0 $space_20;
+            padding: $space_10 $space_20;
+        }
+    }
 }
