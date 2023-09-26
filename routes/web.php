@@ -112,6 +112,8 @@ Route::middleware('api')->group(function(){
     Route::get('/api/messages/{chat_id}', 'ApiController@getDirectMessage');
     // ダイレクトメッセージ追加
     Route::post('/api/message/{user_id}/{chat_id}', 'ApiController@sendMessage');
+    // DMの既読化
+    Route::post('api/markAsRead/{chat_id}/{sender_id}/{receiver_id}', 'ApiController@markAsRead');
 
     // === 一覧用 ===
 

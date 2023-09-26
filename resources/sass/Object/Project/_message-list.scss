@@ -4,7 +4,7 @@
         margin-bottom: $space_default;
     }
 
-    &__content{
+    &__text{
         max-height: 80px;
         overflow-y: hidden;
     }
@@ -16,8 +16,9 @@
     }
 
     &__user-image{
-        @include mq(sm){
-            display: none;
+
+        &-item{
+            border-radius: 100%;
         }
     }
 }

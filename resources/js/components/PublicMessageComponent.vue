@@ -22,8 +22,8 @@
                         <p class="p-user__name">{{ message.user.name }}</p>
                     </div>
                     <!-- メッセージ -->
-                    <div class="c-message" :class="{'c-message--me': seller_id === message.user.id , 'c-message--other': seller_id !== message.user.id}">
-                        <p class="c-message__text">{{ message.comment }}</p>
+                    <div class="c-talk" :class="{'c-talk--me': seller_id === message.user.id , 'c-talk--other': seller_id !== message.user.id}">
+                        <p class="c-talk__text">{{ message.comment }}</p>
                     </div>
                 </div>
             </div>

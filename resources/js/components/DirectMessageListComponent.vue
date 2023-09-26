@@ -11,17 +11,23 @@
             <!-- 各チャットの最新の1件のみ表示 -->
             <div class="p-message-list c-box--message" v-for=" dm in PaginatedMessages" :key="dm.id">
                 
+                <p class="p-message-list__text c-text">【 メッセージの相手 】</p>
                 <div class="p-message-list__container c-box--flex c-box--flex-1">
-                    【 メッセージの相手 】
                     <p class="p-message-list__user-name">{{ dm.other_user.name }}</p>
                     <div class="p-message-list__user-image c-box--avatar">
                         <img :src="dm.other_user.avatar" class="p-message-list__user-image-item c-image">
                     </div>
                 </div>
 
-                <p class="p-message-list__content c-text">【 最新のコメント 】{{ dm.message.comment }}</p>
+                <p class="p-message-list__text c-text">【 状態 】</p>
+                <p class="p-message-list__text c-text" v-if="dm.isRead">既読</p>
+                <p class="p-message-list__text c-text c-text--attention" v-else>メッセージを確認してください</p>
+
+                <p class="p-message-list__text c-text">【 最新のコメント 】</p>
+                <p class="p-message-list__text c-text">{{ dm.message.comment }}</p>
+                
                 <div class="c-box--link">
-                    <a :href="'/messages/' + user_id + '/' + dm.other_user.id " class="c-link p-message-list__link">このメッセージへ</a>
+                    <a @click="markAsRead(dm.message.chat_id, dm.message.sender_id, user_id)" class="c-link p-message-list__link">このメッセージへ</a>
                 </div>
 
             </div>
@@ -180,6 +186,20 @@ export default {
             const endIndex = this.endIndex;
             this.PaginatedMessages = this.messages.slice(startIndex, endIndex);
         },
+
+        markAsRead(chatId, senderId, receiverId) {
+            // APIリクエストを送信して既読に設定
+            axios.post('/api/markAsRead/' + chatId + '/' + senderId + '/' + receiverId)
+            .then((response) => {
+                // チャットへの遷移
+                console.log('既読化処理成功');
+                window.location.href = '/messages/' + receiverId + '/' + senderId;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        },
+
     },
 
     filters: {

@@ -112,7 +112,7 @@ class ApiController extends Controller
             $posts = Project::where('user_id', $user_id)
                             ->with('type')
                             ->orderBy('created_at', 'desc')
-                            ->limit(3)
+                            ->limit(5)
                             ->get();
 
             $postList = [];
@@ -124,7 +124,7 @@ class ApiController extends Controller
             $applies = Apply::where('user_id', $user_id)
                             ->with(['project.type'])
                             ->orderBy('created_at', 'desc')
-                            ->limit(3)
+                            ->limit(5)
                             ->get();
 
             $applyList = [];
@@ -134,32 +134,40 @@ class ApiController extends Controller
 
             // ====== パブリックメッセ ======
 
+            // ユーザーに紐づいたパブリックメッセージを取得
             $publicMessages = PublicMessage::where('user_id', $user_id)
-                ->orderBy('created_at', 'desc')
-                ->limit(3) // 自分が投稿したパブリックメッセージを最新の5件取得
-                ->get();
+                                            ->orderBy('created_at', 'desc')
+                                            ->limit(5)
+                                            ->get();
 
+            // 各案件ごとの最新のメッセージを格納する配列を初期化
             $publicMessageList = [];
+
+            // ユーザーのパブリックメッセージが存在する場合
             if ($publicMessages->isNotEmpty()) {
-                $publicMessageList = $publicMessages;
-                
-                // 各パブリックメッセージに紐づくプロジェクトを取得し、最新の1件のパブリックメッセージを追加
-                foreach ($publicMessageList as $publicMessage) {
-                    $project = Project::where('id', $publicMessage->project_id)
-                        ->with(['type'])
-                        ->orderBy('created_at', 'desc')
-                        ->first();
-                    
-                    $publicMessage->project = $project;
+                // ユーザーのパブリックメッセージを案件ごとにグループ化
+                $publicMessagesByProject = $publicMessages->groupBy('project_id');
+
+                // 各案件ごとに最新のメッセージを取得
+                foreach ($publicMessagesByProject as $projectId => $messages) {
+                    $latestMessage = $messages->sortByDesc('created_at')->first();
+
+                    // 対応する案件情報も取得
+                    $project = Project::with('type')->find($projectId);
+
+                    if ($latestMessage && $project) {
+                        $latestMessage->project = $project;
+                        $publicMessageList[] = $latestMessage;
+                    }
                 }
             }
-        
+
             // ====== DM ======
             // 自分が送信or受信したDM情報を、最新5件取得
             $chats = Chat::where('user1_id', $user_id)
             ->orWhere('user2_id', $user_id)
             ->orderBy('created_at', 'desc')
-            ->limit(3)
+            ->limit(5)
             ->get();
 
             $directMessageList = [];
@@ -174,11 +182,28 @@ class ApiController extends Controller
                     $user_id = (int)$user_id;
                     $otherUserId = ($user_id === $chat->user1_id) ? $chat->user2_id : $chat->user1_id;
                     $otherUser = User::find($otherUserId);
-            
+
+                    // 既読or未読の状態を取得
+                    $notification = Notification::where('chat_id', $chat->id)
+                    ->where('receiver_id', $user_id)
+                    ->latest()
+                    ->first();
+                
+                    // 最新の通知が存在する場合
+                    $isRead = false;
+                    if ($notification) {
+
+                        if($notification->read === 1){
+                            // 既読の場合
+                            $isRead = true;
+                        }
+                    }
+
                     // メッセージとユーザー情報をリストに追加
                     $directMessageList[] = [
-                        'message' => $latestMessage,
+                        'message'    => $latestMessage,
                         'other_user' => $otherUser,
+                        'isRead'     => $isRead,
                     ];
                 }
             }
@@ -513,13 +538,29 @@ class ApiController extends Controller
     
         try{
 
-            $publicMessages = PublicMessage::where('user_id', $user_id)
-                                            ->with(['project.type'])
-                                            ->get();
-            
+            // ユーザーに紐づいたパブリックメッセージを取得
+            $publicMessages = PublicMessage::where('user_id', $user_id)->get();
+
+            // 各案件ごとの最新のメッセージを格納する配列を初期化
             $publicMessageList = [];
-            if($publicMessages->isNotEmpty()){
-                $publicMessageList = $publicMessages;
+
+            // ユーザーのパブリックメッセージが存在する場合
+            if ($publicMessages->isNotEmpty()) {
+                // ユーザーのパブリックメッセージを案件ごとにグループ化
+                $publicMessagesByProject = $publicMessages->groupBy('project_id');
+
+                // 各案件ごとに最新のメッセージを取得
+                foreach ($publicMessagesByProject as $projectId => $messages) {
+                    $latestMessage = $messages->sortByDesc('created_at')->first();
+
+                    // 対応する案件情報も取得
+                    $project = Project::with('type')->find($projectId);
+
+                    if ($latestMessage && $project) {
+                        $latestMessage->project = $project;
+                        $publicMessageList[] = $latestMessage;
+                    }
+                }
             }
 
             $data = [
@@ -564,11 +605,28 @@ class ApiController extends Controller
                     $user_id = (int)$user_id;
                     $otherUserId = ($user_id === $chat->user1_id) ? $chat->user2_id : $chat->user1_id;
                     $otherUser = User::find($otherUserId);
-            
+
+                    // 既読or未読の状態を取得
+                    $notification = Notification::where('chat_id', $chat->id)
+                    ->where('receiver_id', $user_id)
+                    ->latest()
+                    ->first();
+                
+                    // 最新の通知が存在する場合
+                    $isRead = false;
+                    if ($notification) {
+
+                        if($notification->read === 1){
+                            // 既読の場合
+                            $isRead = true;
+                        }
+                    }
+
                     // メッセージとユーザー情報をリストに追加
                     $directMessageList[] = [
-                        'message' => $latestMessage,
+                        'message'    => $latestMessage,
                         'other_user' => $otherUser,
+                        'isRead'     => $isRead,
                     ];
                 }
             }
@@ -589,4 +647,47 @@ class ApiController extends Controller
         }
 
     }
+
+    /* ================================================================
+        メッセージの既読化
+    =================================================================*/
+    public function markAsRead($chat_id, $sender_id, $receiver_id){
+        try{
+
+            $notification = Notification::where('chat_id', $chat_id)
+                                        ->where('sender_id', $sender_id)
+                                        ->where('receiver_id', $receiver_id)
+                                        ->latest()
+                                        ->first();
+
+            if($notification){
+                // 既読に変更
+                $notificationUpdated = $notification->update([
+                    'read' => true,
+                ]);
+
+                if($notificationUpdated){
+                    // 成功時
+                    return response()->json([
+                        'flashMessage' => '移動します',
+                        'flashMessageType' => 'success',
+                    ]);        
+                }else{
+                    // 失敗時
+                    return response()->json([
+                        'flashMessage' => '処理中にエラーが発生しました',
+                        'flashMessageType' => 'error',
+                    ]);
+                }
+    
+            }
+        }catch(QueryException $e){
+            Log::error('既読化処理エラー：'. $e->getMessage());
+            return response()->json([
+                'flashMessage' => '予想外のエラーが発生しました',
+                'flashMessageType' => 'error',
+            ]);
+        }
+    }
+
 }

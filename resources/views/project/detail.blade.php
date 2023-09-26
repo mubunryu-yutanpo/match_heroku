@@ -7,13 +7,6 @@
 @show
 
 @section('main')
-    <h1>
-        {{ $project->title }}の案件詳細なんだな。
-    </h1>
-    <p>Auth::{{ $user->name }}</p>
-    <p>発案者：
-        <a href="{{ route('user.info', $project->user_id ) }}">{{ $project->user->name }}</a>
-    </p>
 
     <div id="app" class="">
         <detail-component :project_id="{{ $project->id }}" :user_id="{{ $user->id }}"></detail-component>

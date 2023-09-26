@@ -23,4 +23,9 @@
     &--right{
         text-align: right;
     }
+
+    &--attention{
+        color: $red;
+        font-weight: bold;
+    }
 }

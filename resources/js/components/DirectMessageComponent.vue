@@ -1,12 +1,17 @@
 <template>
-    <div class="p-page-visual"><!-- 全体のwrap -->
-
+    <div class="p-direct-message">
         <!-- フラッシュメッセージを表示 -->
         <div v-if="flashMessage" class="p-alert" :class="'is-' + flashMessageType">{{ flashMessage }}</div>
+
+        <h2 class="p-direct-message__title c-title">
+            <i class="fa-solid fa-envelope c-icon c-icon--title"></i>
+            ダイレクトメッセージ
+        </h2>
 
         <!-- メッセージを表示するエリア -->
         <div class="p-message">
             <div class="p-message__container" v-for="message in messageList" :key="message.id">
+                
                 <!-- ユーザー -->
                 <div class="p-user c-box--flex" :class="{'p-user--me': 1 === message.sender_id , 'p-user--other': 1 !== message.sender_id}">
                     <div class="p-user__image c-box--avatar">
@@ -14,9 +19,10 @@
                     </div>
                     <p class="p-user__name">{{ message.user.name }}</p>
                 </div>
+                
                 <!-- メッセージ -->
-                <div class="c-message" :class="{'c-message--me': 1 === message.sender_id , 'c-message--other': 1 !== message.sender_id}">
-                    <p class="c-message__text">{{ message.comment }}</p>
+                <div class="c-talk" :class="{'c-talk--me': 1 === message.sender_id , 'c-talk--other': 1 !== message.sender_id}">
+                    <p class="c-talk__text">{{ message.comment }}</p>
                 </div>
             </div>
         </div>

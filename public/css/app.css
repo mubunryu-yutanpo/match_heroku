@@ -270,7 +270,15 @@ textarea {
   color: #FA7070;
 }
 
-.c-message {
+.c-select {
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 0 8px 0 gray;
+  cursor: pointer;
+  padding: 10px 5px;
+}
+
+.c-talk {
   border-radius: 5px;
   max-width: 45%;
   padding: 10px 15px;
@@ -279,13 +287,13 @@ textarea {
   width: fit-content;
 }
 
-.c-message--me {
+.c-talk--me {
   background: #ebe7e1;
   margin-right: auto;
   text-align: left;
 }
 
-.c-message--me:after {
+.c-talk--me:after {
   border: solid transparent;
   border-bottom-color: #ebe7e1;
   border-bottom-width: 10px;
@@ -302,13 +310,13 @@ textarea {
   width: 0;
 }
 
-.c-message--other {
+.c-talk--other {
   background: #c6d4e1;
   margin-left: auto;
   text-align: right;
 }
 
-.c-message--other:after {
+.c-talk--other:after {
   border: solid transparent;
   border-bottom-width: 10px;
   border-left-width: 10px;
@@ -323,14 +331,6 @@ textarea {
   position: absolute;
   border-bottom-color: #c6d4e1;
   width: 0;
-}
-
-.c-select {
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0 0 8px 0 gray;
-  cursor: pointer;
-  padding: 10px 5px;
 }
 
 .c-text {
@@ -358,6 +358,11 @@ textarea {
 
 .c-text--right {
   text-align: right;
+}
+
+.c-text--attention {
+  color: #FA7070;
+  font-weight: bold;
 }
 
 .c-textarea {
@@ -643,7 +648,7 @@ textarea {
   margin-bottom: 15px;
 }
 
-.p-message-list__content {
+.p-message-list__text {
   max-height: 80px;
   overflow-y: hidden;
 }
@@ -654,10 +659,8 @@ textarea {
   }
 }
 
-@media screen and (max-width:479px) {
-  .p-message-list__user-image {
-    display: none;
-  }
+.p-message-list__user-image-item {
+  border-radius: 100%;
 }
 
 .p-message-form {

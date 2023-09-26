@@ -7,15 +7,13 @@
 @show
 
 @section('main')
-    <h1>
-        {{ $user->name }}さんのプロフィール編集画面さ。
-    </h1>
 
     <form action="{{ route('prof.update', $user->id) }}" method="post" class="p-profile c-box--form" enctype="multipart/form-data">
         @csrf
 
         <h2 class="c-title p-profile__title">
-            <i class="fa-solid fa-user-pen c-icon c-icon--title"></i>プロフィール編集
+            <i class="fa-solid fa-user-pen c-icon c-icon--title"></i>
+            プロフィール編集
         </h2>
 
         <!-- ユーザー名 -->

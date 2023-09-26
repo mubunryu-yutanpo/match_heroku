@@ -16,8 +16,8 @@ class Notification extends Model
     public function chat(){
         return $this->belongsTo('App\Chat');
     }
-    public function message(){
-        return $this->belongsTo('App\Message');
+    public function dm(){
+        return $this->belongsTo('App\DirectMessage');
     }
 
 }
