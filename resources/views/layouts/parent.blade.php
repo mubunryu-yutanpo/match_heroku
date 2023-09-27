@@ -71,7 +71,7 @@
                         </li>
 
                         <li class="p-nav__item c-list-item">
-                            <a href="" class="p-nav__link c-link">メッセージBOX</a>
+                            <a href="{{ route('dmList', Auth::id() ) }}" class="p-nav__link c-link">メッセージBOX</a>
                         </li>
                         
                         <li class="p-nav__item c-list-item">

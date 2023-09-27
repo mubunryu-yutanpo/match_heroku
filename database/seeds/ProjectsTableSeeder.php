@@ -18,7 +18,6 @@ class ProjectsTableSeeder extends Seeder
                 'type'       => 1,
                 'upperPrice' => 30000,
                 'lowerPrice' => 10000,
-                'thumbnail'  => '/uploads/img19.png',
                 'content'    => 'バナーを作って欲しいんだよね。',
             ],
             [

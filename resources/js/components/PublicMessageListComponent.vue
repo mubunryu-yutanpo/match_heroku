@@ -91,7 +91,7 @@ export default {
         return {
             projects: [],
             currentPage: 1,
-            projectsPerPage: 3, // 頁ネーションのテスト用にとりあえず3に
+            projectsPerPage: 3, // ページネーションのテスト用にとりあえず3に
         };
     },
 

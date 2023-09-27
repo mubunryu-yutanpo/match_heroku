@@ -11,6 +11,7 @@
             <!-- 各チャットの最新の1件のみ表示 -->
             <div class="p-message-list c-box--message" v-for=" dm in PaginatedMessages" :key="dm.id">
                 
+                <!-- ユーザー情報 -->
                 <p class="p-message-list__text c-text">【 メッセージの相手 】</p>
                 <div class="p-message-list__container c-box--flex c-box--flex-1">
                     <p class="p-message-list__user-name">{{ dm.other_user.name }}</p>
@@ -19,15 +20,21 @@
                     </div>
                 </div>
 
+                <!-- 日付 -->
+                <p class="p-message-list__text c-text">【 日付 】</p>
+                <p class="p-message-list__text c-text">{{ formatDate(dm.message.created_at) }}</p>
+
+                <!-- 既読の状態 -->
                 <p class="p-message-list__text c-text">【 状態 】</p>
                 <p class="p-message-list__text c-text" v-if="dm.isRead">既読</p>
                 <p class="p-message-list__text c-text c-text--attention" v-else>メッセージを確認してください</p>
 
+                <!-- 内容 -->
                 <p class="p-message-list__text c-text">【 最新のコメント 】</p>
                 <p class="p-message-list__text c-text">{{ dm.message.comment }}</p>
                 
-                <div class="c-box--link">
-                    <a @click="markAsRead(dm.message.chat_id, dm.message.sender_id, user_id)" class="c-link p-message-list__link">このメッセージへ</a>
+                <div class="p-message-list__link-box c-box--link">
+                    <a @click="markAsRead(dm.message.chat_id, dm.other_user.id, user_id)" class="c-link p-message-list__link">このメッセージへ</a>
                 </div>
 
             </div>
@@ -97,7 +104,7 @@ export default {
         return {
             messages: [],
             currentPage: 1,
-            messagesPerPage: 3, // 頁ネーションのテスト用にとりあえず3に
+            messagesPerPage: 3, // ページネーションのテスト用にとりあえず3に
         };
     },
 
@@ -198,6 +205,15 @@ export default {
             .catch((error) => {
                 console.error(error);
             });
+        },
+
+        // 日付の表示を変更
+        formatDate(value) {
+            const date = new Date(value);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            return `${year}.${month}.${day}`;
         },
 
     },

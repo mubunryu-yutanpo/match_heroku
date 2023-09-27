@@ -141,6 +141,13 @@ textarea {
   padding: 15px 20px;
 }
 
+@media screen and (max-width:479px) {
+  .c-button {
+    font-size: 15px;
+    padding: 10px 15px;
+  }
+}
+
 .c-button:hover {
   background-color: #c6d4e1;
   box-shadow: 0 0 2px 0 #44749d;
@@ -204,6 +211,8 @@ textarea {
 
 .c-box--link {
   text-align: right;
+  max-width: 980px;
+  margin: 0 auto;
   width: 100%;
 }
 
@@ -285,6 +294,12 @@ textarea {
   position: relative;
   width: -moz-fit-content;
   width: fit-content;
+}
+
+@media screen and (max-width:767px) {
+  .c-talk {
+    max-width: inherit;
+  }
 }
 
 .c-talk--me {
@@ -544,7 +559,7 @@ textarea {
 }
 
 .p-detail-action {
-  margin: 30px auto;
+  margin: 50px auto;
   max-width: 980px;
   text-align: right;
   width: 100%;
@@ -634,8 +649,9 @@ textarea {
 .p-message {
   background: white;
   border-radius: 5px;
-  box-shadow: 0 0 2px 0 #ededec;
-  max-height: 500px;
+  box-shadow: 0 0 2px 0 gray;
+  max-height: 750px;
+  min-height: 300px;
   overflow-y: auto;
 }
 
@@ -659,6 +675,10 @@ textarea {
   }
 }
 
+.p-message-list__link-box {
+  max-width: inherit;
+}
+
 .p-message-list__user-image-item {
   border-radius: 100%;
 }
@@ -674,7 +694,7 @@ textarea {
 
 .p-message-form__area {
   border-radius: 5px;
-  box-shadow: 0 0 2px 0 #ededec;
+  box-shadow: 0 0 2px 0 gray;
   box-sizing: border-box;
   font-size: 16px;
   height: 56px;

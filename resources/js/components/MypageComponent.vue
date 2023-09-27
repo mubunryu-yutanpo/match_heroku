@@ -125,8 +125,8 @@
                         <p class="p-message-list__text c-text">{{ dm.message.comment }}</p>
 
                         
-                        <div class="c-box--link">
-                            <a @click="markAsRead(dm.message.chat_id, dm.message.sender_id, user.id)" class="c-link p-message-list__link">このメッセージへ</a>
+                        <div class="p-message-list__link-box c-box--link">
+                            <a @click="markAsRead(dm.message.chat_id, dm.other_user.id, user.id)" class="c-link p-message-list__link">このメッセージへ</a>
                         </div>
 
 

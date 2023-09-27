@@ -1,52 +1,53 @@
 <template>
-    <div class="p-page-visual">
-        
-        <div class="p-detail">
+    <div class="p-detail">
             
-            <h2 class="p-detail__title c-title">{{ project.title }}</h2>
+        <h2 class="p-detail__title c-title">
+            <i class="fa-solid fa-magnifying-glass c-icon c-icon--title"></i>
+            {{ project.title }}
+        </h2>
             
-            <!-- シェアとか -->
-            <div class="p-detail__ c-box--flex">
+        <!-- シェアとか -->
+        <div class="p-detail__ c-box--flex">
 
-                <div class="p-detail__dm">
-                    <a :href="'/messages/' + this.user_id + '/' + this.project.user_id " class="p-detail__dm-link c-link" v-if="this.user_id !== this.project.user_id">
-                        <i class="fa-solid fa-envelope c-icon"></i>
-                        メッセージを送る
-                    </a>
-                </div>
-                <div class="p-detail__share">
-                    <button class="p-detail__share-button c-button" @click="twitterShare">
-                        <i class="fa-brands fa-square-x-twitter c-icon"></i>
-                        シェアする
-                    </button>
-                </div>
+            <div class="p-detail__dm">
+                <a :href="'/messages/' + this.user_id + '/' + this.project.user_id " class="p-detail__dm-link c-link" v-if="this.user_id !== this.project.user_id">
+                    <i class="fa-solid fa-envelope c-icon"></i>
+                    メッセージを送る
+                </a>
             </div>
-
-            <!-- 詳細のwrap -->
-            <div class="p-detail__container">
-                <div class="p-detail__thumbnail c-box--image">
-                    <img :src="project.thumbnail" alt="" class="p-detail__thumbnail--item c-image">
-                </div>
-                <div class="p-detail__type">
-                    <p class="c-text">【 案件種別 】</p>
-                    <p class="p-detail__type c-text">{{ project.type ? project.type.name : '未指定' }}</p>
-                </div>
-                <div class="p-detail__content">
-                    <p class="c-text">【 内容 】</p>
-                    {{ project.content }}
-                </div>
-                <div class="p-detail__price" v-if="project.upperPrice !== null || project.lowerPrice !== null">
-                    <p class="c-text">【 料金 】 </p>
-                    <span class="p-detail__price-text c-text--price">{{ project.lowerPrice | numberWithCommas }}〜{{ project.upperPrice | numberWithCommas }} </span>
-                    円
-                </div>
+            <div class="p-detail__share">
+                <button class="p-detail__share-button c-button" @click="twitterShare">
+                    <i class="fa-brands fa-square-x-twitter c-icon"></i>
+                    シェアする
+                </button>
             </div>
-
-            <!-- メッセ部分 -->
-            <public-message-component :project_id="project_id" :user_id="user_id"></public-message-component>
-
         </div>
+
+        <!-- 詳細のwrap -->
+        <div class="p-detail__container">
+            <div class="p-detail__thumbnail c-box--image">
+                <img :src="project.thumbnail" alt="" class="p-detail__thumbnail--item c-image">
+            </div>
+            <div class="p-detail__type">
+                <p class="c-text">【 案件種別 】</p>
+                <p class="p-detail__type c-text">{{ project.type ? project.type.name : '未指定' }}</p>
+            </div>
+            <div class="p-detail__content">
+                <p class="c-text">【 内容 】</p>
+                    {{ project.content }}
+            </div>
+            <div class="p-detail__price" v-if="project.upperPrice !== null || project.lowerPrice !== null">
+                <p class="c-text">【 料金 】 </p>
+                <span class="p-detail__price-text c-text--price">{{ project.lowerPrice | numberWithCommas }}〜{{ project.upperPrice | numberWithCommas }} </span>
+                円
+            </div>
+        </div>
+
+        <!-- メッセ部分 -->
+        <public-message-component :project_id="project_id" :user_id="user_id"></public-message-component>
+
     </div>
+
 </template>
 
 <script>

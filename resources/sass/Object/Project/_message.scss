@@ -1,8 +1,9 @@
 .p-message{
     background: $white;
     border-radius: 5px;
-    box-shadow: 0 0 2px 0 $gray;
-    max-height: 500px;
+    box-shadow: 0 0 2px 0 gray;
+    max-height: 750px;
+    min-height: 300px;
     overflow-y: auto;
 
     &__container{

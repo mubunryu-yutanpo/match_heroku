@@ -70,7 +70,9 @@
 
     </form>
 
-    <a href="{{ route('withdraw', $user->id) }}" class="c-link">退会はこちら</a>
+    <div class="c-box--link">
+        <a href="{{ route('withdraw', $user->id) }}" class="c-link">退会はこちら</a>
+    </div>
 
 @endsection
 

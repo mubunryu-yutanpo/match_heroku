@@ -165,29 +165,31 @@ class ApiController extends Controller
             // ====== DM ======
             // 自分が送信or受信したDM情報を、最新5件取得
             $chats = Chat::where('user1_id', $user_id)
-            ->orWhere('user2_id', $user_id)
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
-
+                ->orWhere('user2_id', $user_id)
+                ->orderBy('created_at', 'desc')
+                ->limit(5)
+                ->get();
+    
             $directMessageList = [];
+    
             if ($chats->isNotEmpty()) {
                 foreach ($chats as $chat) {
                     // Chatに関連する最新のメッセージを取得
-                    $latestMessage = DirectMessage::where('chat_id', $chat->id)
+                    $latestMessage = $chat->message()
                         ->orderBy('created_at', 'desc')
                         ->first();
-            
+    
                     // Chatの相手のユーザー情報を取得
                     $user_id = (int)$user_id;
                     $otherUserId = ($user_id === $chat->user1_id) ? $chat->user2_id : $chat->user1_id;
                     $otherUser = User::find($otherUserId);
-
-                    // 既読or未読の状態を取得
+    
+                    // 既読または未読の状態を取得
                     $notification = Notification::where('chat_id', $chat->id)
-                    ->where('receiver_id', $user_id)
-                    ->latest()
-                    ->first();
+                        ->where('receiver_id', $user_id)
+                        ->latest()
+                        ->first();
+    
                 
                     // 最新の通知が存在する場合
                     $isRead = false;
@@ -585,43 +587,40 @@ class ApiController extends Controller
     public function getDirectMessageList($user_id){
     
         try{
-
-            // 自分が送信or受信したDM情報取得
+            // 自分が送信または受信したチャットを取得
             $chats = Chat::where('user1_id', $user_id)
-            ->orWhere('user2_id', $user_id)
-            ->get();
-
+                ->orWhere('user2_id', $user_id)
+                ->get();
+    
             $directMessageList = [];
-
+    
             if ($chats->isNotEmpty()) {
                 foreach ($chats as $chat) {
-
                     // Chatに関連する最新のメッセージを取得
-                    $latestMessage = DirectMessage::where('chat_id', $chat->id)
-                                                    ->orderBy('created_at', 'desc')
-                                                    ->first();
-            
+                    $latestMessage = $chat->message()
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+    
                     // Chatの相手のユーザー情報を取得
                     $user_id = (int)$user_id;
                     $otherUserId = ($user_id === $chat->user1_id) ? $chat->user2_id : $chat->user1_id;
                     $otherUser = User::find($otherUserId);
-
-                    // 既読or未読の状態を取得
+    
+                    // 既読または未読の状態を取得
                     $notification = Notification::where('chat_id', $chat->id)
-                    ->where('receiver_id', $user_id)
-                    ->latest()
-                    ->first();
-                
+                        ->where('receiver_id', $user_id)
+                        ->latest()
+                        ->first();
+    
                     // 最新の通知が存在する場合
                     $isRead = false;
                     if ($notification) {
-
-                        if($notification->read === 1){
+                        if ($notification->read === 1) {
                             // 既読の場合
                             $isRead = true;
                         }
                     }
-
+    
                     // メッセージとユーザー情報をリストに追加
                     $directMessageList[] = [
                         'message'    => $latestMessage,
@@ -630,22 +629,21 @@ class ApiController extends Controller
                     ];
                 }
             }
-
+    
             $data = [
                 'directMessageList' => $directMessageList,
             ];
-
+    
             return response()->json($data);
-
-        }catch(QueryException $e){
+        } catch(QueryException $e) {
             Log::error('一覧用・DM取得エラー：'. $e->getMessage());
-
+    
             return response()->json([
                 'flashMessage' => '予想外のエラーが発生しました',
                 'flashMessageType' => 'error',
             ]);
         }
-
+    
     }
 
     /* ================================================================

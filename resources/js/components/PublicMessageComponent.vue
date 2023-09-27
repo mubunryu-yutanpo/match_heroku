@@ -19,7 +19,9 @@
                         <div class="p-user__image c-box--avatar">
                             <img :src="message.user.avatar" class="p-user__image-item c-image">
                         </div>
-                        <p class="p-user__name">{{ message.user.name }}</p>
+                        <p class="p-user__name">
+                            <a :href="'/user/info/' + message.user.id">{{ message.user.name }}</a>
+                        </p>
                     </div>
                     <!-- メッセージ -->
                     <div class="c-talk" :class="{'c-talk--me': seller_id === message.user.id , 'c-talk--other': seller_id !== message.user.id}">

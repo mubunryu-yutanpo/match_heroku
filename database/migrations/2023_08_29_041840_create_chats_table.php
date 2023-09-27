@@ -23,6 +23,8 @@ class CreateChatsTable extends Migration
             $table->foreign('user1_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user2_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
+            // 同じ組み合わせに対して1つのチャットを作成
+            $table->unique(['user1_id', 'user2_id']);
         });
     }
 

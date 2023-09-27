@@ -5,6 +5,10 @@
     position: relative;
     width: fit-content;
 
+    @include mq(){
+        max-width: inherit;
+    }
+
 
     &--me{
         background: $lightbrown;
