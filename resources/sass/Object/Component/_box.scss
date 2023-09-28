@@ -42,6 +42,14 @@
             justify-content: flex-end;
         }
 
+        &-3{
+            justify-content: center;
+        }
+
+        &-4{
+            justify-content: space-evenly;
+        }
+
         &-column{
             flex-direction: column;
         }

@@ -200,6 +200,14 @@ textarea {
   justify-content: flex-end;
 }
 
+.c-box--flex-3 {
+  justify-content: center;
+}
+
+.c-box--flex-4 {
+  justify-content: space-evenly;
+}
+
 .c-box--flex-column {
   flex-direction: column;
 }
@@ -992,6 +1000,35 @@ textarea {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.p-user-info {
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 0 8px 0 gray;
+  padding: 40px 30px;
+}
+
+.p-user-info__name {
+  font-size: 24px;
+  margin-bottom: 40px;
+}
+
+.p-user-info__count-text {
+  font-weight: bold;
+  text-align: center;
+}
+
+.p-user-info__count--post {
+  margin: 0 10px;
+}
+
+.p-user-info__introduction {
+  margin: 40px 0;
+}
+
+.p-user-info__message {
+  font-weight: bold;
 }
 
 .p-user {
