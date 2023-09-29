@@ -101,7 +101,7 @@ class ProjectController extends Controller
                 return redirect('/mypage')->with('flash_message', '案件を投稿しました！')->with('flash_message_type', 'success');
             } else {
                 // 失敗時
-                return redirect('/mypage')->with('flash_message', 'データの保存に失敗しました。')->with('flash_message_type', 'error');
+                return redirect('/')->with('flash_message', 'データの保存に失敗しました。')->with('flash_message_type', 'error');
             }
     
         } catch (QueryException $e) {

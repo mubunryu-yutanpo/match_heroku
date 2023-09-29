@@ -49,7 +49,7 @@ Route::middleware('verified')->group(function () {
     Route::get('/edit/project/{project_id}', 'ProjectController@edit')->name('project.edit');
 
     // メッセージ関連
-    Route::get('/messages/{auth_user_id}/{user_id}', 'MessageController@directMessages')->name('d.message');
+    Route::get('/messages/{auth_user_id}/{user_id}', 'HomeController@directMessages')->name('d.message');
 
     // 一覧ページ関連
     Route::get('/postList/{user_id}', 'MypageController@postList')->name('postList');

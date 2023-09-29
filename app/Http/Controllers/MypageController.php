@@ -139,7 +139,7 @@ class MypageController extends Controller
         try{
 
             $user = User::find($id);
-            return view('mypage/withdrow', compact('user'));
+            return view('mypage/withdraw', compact('user'));
 
         }catch(QueryException $e){
             Log::error('メソッド"withdrow"実行エラー：'. $e->getMessage());
