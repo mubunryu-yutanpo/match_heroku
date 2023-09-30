@@ -435,7 +435,7 @@ class ApiController extends Controller
             // チャットに紐づいているユーザーのうち、送信者じゃない方のIDを設定
             $receiver_id = ($user_id === $chat->user1_id) ? $chat->user2_id : $chat->user1_id;
 
-            $notifiSaved = $notification->fill([
+            $notifySaved = $notification->fill([
                 'receiver_id'  => $receiver_id,
                 'sender_id'    => $user_id,
                 'chat_id'      => $chat_id,
@@ -444,7 +444,7 @@ class ApiController extends Controller
             ])->save();
 
             // DM追加処理の判定
-            if($dmSaved && $notifiSaved){
+            if($dmSaved && $notifySaved){
                 // 成功時
                 return response()->json([
                     'flashMessage' => 'メッセージを送信しました！',
