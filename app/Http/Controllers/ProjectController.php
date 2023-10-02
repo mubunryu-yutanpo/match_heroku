@@ -290,14 +290,14 @@ class ProjectController extends Controller
 
         try{
             
-            // すでに本案件に同意している場合はリダイレクト
+            // すでに本案件に応募している場合はリダイレクト
             $applied = Apply::where('user_id', $user_id)->where('project_id', $project_id)->first();
 
             if($applied){
-                return redirect()->back()->with('flash_message', 'この案件には既に応募しています')->with('flash_message_type', 'error');
+                return redirect('/test')->with('flash_message', 'この案件には既に応募しています')->with('flash_message_type', 'error');
             }
 
-            // 同意テーブルに追加
+            // 応募テーブルに追加
             $apply = new Apply;
             $applySaved = $apply->fill([
                 'user_id'    => $user_id,
@@ -305,7 +305,7 @@ class ProjectController extends Controller
             ])->save();
 
             if(!$applySaved){
-                // 同意の処理に失敗した場合
+                // 応募の処理に失敗した場合
                 return redirect()->back()->with('flash_message', '応募に失敗しました')->with('flash_message_type', 'error');
             }
 

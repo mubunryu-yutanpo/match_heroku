@@ -123,7 +123,6 @@ class MypageControllerTest extends TestCase
         // CSRFトークンの検証を一時的に無効化
         $this->withoutMiddleware(VerifyCsrfToken::class);
 
-
         // テスト用のリクエストを送信
         $response = $this->post('/withdraw/' . $user->id . '/destroy');
 

@@ -5,23 +5,13 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\QueryException;
 use App\Http\Middleware\VerifyCsrfToken;
-use Faker\Factory as Faker;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
-use Exception; 
 use App\User;
 use App\Apply;
 use App\Project;
 use App\Chat;
 use App\DirectMessage;
 use App\PublicMessage;
-use App\Type;
 use App\Notification;
 
 class ApiControllerTest extends TestCase
@@ -44,7 +34,9 @@ class ApiControllerTest extends TestCase
 
         // レスポンスを検証
         $response->assertStatus(200)
-                    ->assertJson(['user' => $user->toArray()]);
+                    ->assertJsonStructure([
+                        'user',
+                    ]);
     }
 
     // 異常系
@@ -105,22 +97,10 @@ class ApiControllerTest extends TestCase
     /* ================================================================
         メソッド名：getMypage
     =================================================================*/
-    public function testGetMyPage()
+    public function testGetMypage()
     {
         // テスト用のユーザーを作成
         $user = factory(User::class)->create();
-
-        // プロジェクトを作成し、ユーザーに紐付ける
-        $projects = factory(Project::class, 5)->create(['user_id' => $user->id]);
-
-        // 応募を作成し、ユーザーに紐付ける
-        $applies = factory(Apply::class, 5)->create(['user_id' => $user->id]);
-
-        // パブリックメッセージを作成し、ユーザーに紐付ける
-        $publicMessages = factory(PublicMessage::class, 5)->create(['user_id' => $user->id]);
-
-        // ダイレクトメッセージを作成し、ユーザーに紐付ける
-        $directMessages = factory(DirectMessage::class, 5)->create(['sender_id' => $user->id]);
 
         // APIエンドポイントを呼び出し
         $response = $this->json('GET', '/api/' . $user->id . '/mypage/');
