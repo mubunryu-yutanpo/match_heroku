@@ -1,0 +1,16 @@
+.p-menu{
+    display: none;
+    height: 40px;
+    width: 40px;
+
+    @include mq(){
+        display: block;
+        position: absolute;
+        right: 10px;
+        z-index: 1;
+    }
+
+    &__button{
+        background: none;
+    }
+}

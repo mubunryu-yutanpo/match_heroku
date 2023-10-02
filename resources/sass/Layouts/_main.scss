@@ -1,5 +1,6 @@
 .l-main{
     box-sizing: border-box;
+    min-height: 500px;
     padding: $space_40 $space-30;
 
     @include mq(sm){

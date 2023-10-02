@@ -118,6 +118,7 @@ textarea {
 
 .l-main {
   box-sizing: border-box;
+  min-height: 500px;
   padding: 40px 30px;
 }
 
@@ -602,7 +603,20 @@ textarea {
 }
 
 .p-footer {
+  background-color: black;
+  color: #fff;
+  font-size: 12px;
+  font-family: "Lobster", cursive;
+  padding: 10px 0;
   text-align: center;
+  width: 100%;
+}
+
+.p-footer.is-small-contents {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
 }
 
 .p-forgot {
@@ -611,6 +625,18 @@ textarea {
 
 .p-forgot__link {
   padding-left: 0;
+}
+
+.p-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  position: fixed;
+  width: 100%;
+}
+
+.p-header__title {
+  margin: 0;
 }
 
 .p-list__container {
@@ -652,6 +678,25 @@ textarea {
   .p-login {
     padding: 40px 30px;
   }
+}
+
+.p-menu {
+  display: none;
+  height: 40px;
+  width: 40px;
+}
+
+@media screen and (max-width:767px) {
+  .p-menu {
+    display: block;
+    position: absolute;
+    right: 10px;
+    z-index: 1;
+  }
+}
+
+.p-menu__button {
+  background: none;
 }
 
 .p-message {
@@ -789,6 +834,22 @@ textarea {
   justify-content: flex-end;
   margin-left: 55%;
   width: 45%;
+}
+
+@media screen and (max-width:767px) {
+  .p-nav {
+    display: none;
+  }
+
+  .p-nav.is-open {
+    background: #000;
+    display: block;
+    height: auto;
+    overflow-y: auto;
+    padding: 40px 0 0 0;
+    text-align: center;
+    width: 100%;
+  }
 }
 
 .p-page-visual {

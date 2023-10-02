@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Project;
 use App\Apply;
+use App\Chat;
 
 
 

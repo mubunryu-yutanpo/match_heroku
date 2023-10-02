@@ -1,3 +1,16 @@
 .p-footer{
+    background-color: black;
+    color: #fff;
+    font-size: $font-size_12;
+    font-family: "Lobster", cursive;
+    padding: $space_10 0;
     text-align: center;
+    width: 100%;
+
+    &.is-small-contents{
+        bottom: 0;
+        left: 0;
+        right: 0;
+        position: fixed;
+    }
 }

@@ -24,8 +24,9 @@ Vue.component('avatar-preview-component', require('./components/AvatarPreviewCom
 Vue.component('detail-component', require('./components/DetailComponent.vue').default);
 Vue.component('direct-message-component', require('./components/DirectMessageComponent.vue').default);
 Vue.component('direct-message-list-component', require('./components/DirectMessageListComponent.vue').default);
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('footer-component', require('./components/FooterComponent.vue').default);
 Vue.component('list-component', require('./components/ListComponent.vue').default);
+Vue.component('menu-component', require('./components/MenuComponent.vue').default);
 Vue.component('mypage-component', require('./components/MypageComponent.vue').default);
 Vue.component('post-list-component', require('./components/PostListComponent.vue').default);
 Vue.component('public-message-component', require('./components/PublicMessageComponent.vue').default);
@@ -48,11 +49,15 @@ const app = new Vue({
     el: '#app',
 });
 
-// const preview = new Vue({
-//     el: '#preview',
-// });
-
 const counter = new Vue({
     el: '#counter',
+});
+
+const header = new Vue({
+    el: '#header',
+});
+
+const footer = new Vue({
+    el: '#footer',
 });
 

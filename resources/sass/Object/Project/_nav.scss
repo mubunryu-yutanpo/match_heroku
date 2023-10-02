@@ -1,0 +1,16 @@
+.p-nav{
+
+    @include mq(){
+        display: none;
+
+        &.is-open{
+            background: #000;
+            display: block;
+            height: auto;
+            overflow-y: auto;
+            padding: $space_40 0 0 0;
+            text-align: center;
+            width: 100%;
+        }
+    }
+}

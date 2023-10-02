@@ -1,0 +1,11 @@
+.p-header{
+    display: flex;
+    justify-content: space-between;
+    padding: $space_5 $space_10;
+    position: fixed;
+    width: 100%;
+    
+    &__title{
+        margin: 0;
+    }
+}
