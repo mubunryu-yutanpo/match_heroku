@@ -5,7 +5,11 @@
 @show
 
 @section('main')
-    <h1>hello?</h1>
+    <h1>ウェルカム</h1>
+
+    <div id="app">
+        <welcome-component></welcome-component>
+    </div>
 @endsection
 
 @section('footer')

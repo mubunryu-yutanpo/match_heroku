@@ -34,6 +34,7 @@ Vue.component('public-message-list-component', require('./components/PublicMessa
 Vue.component('text-counter-component', require('./components/TextCounterComponent.vue').default);
 Vue.component('thumbnail-preview-component', require('./components/ThumbnailPreviewComponent.vue').default);
 Vue.component('user-info-component', require('./components/UserInfoComponent').default);
+Vue.component('welcome-component', require('./components/WelcomeComponent').default);
 
 
 const VueAwesomeSwiper = window.VueAwesomeSwiper;

@@ -294,7 +294,7 @@ class ProjectController extends Controller
             $applied = Apply::where('user_id', $user_id)->where('project_id', $project_id)->first();
 
             if($applied){
-                return redirect('/test')->with('flash_message', 'この案件には既に応募しています')->with('flash_message_type', 'error');
+                return redirect()->back()->with('flash_message', 'この案件には既に応募しています')->with('flash_message_type', 'error');
             }
 
             // 応募テーブルに追加

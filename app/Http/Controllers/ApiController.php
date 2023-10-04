@@ -17,6 +17,37 @@ use App\Apply;
 
 class ApiController extends Controller
 {
+    /* ================================================================
+        TOPページの案件情報取得
+    =================================================================*/
+    public function getTopProjects(){
+        try{
+            // 案件をランダムに10件取得
+            $projects = Project::with('type')
+                                ->inRandomOrder()
+                                ->limit(10)
+                                ->get();
+
+            $projectList = [];
+            if($projects->isNotEmpty()){
+                $projectList = $projects;
+            }
+
+            $data = [
+                'projectList' => $projectList,
+            ];
+
+            return response()->json($data);
+
+        }catch(QueryException $e){
+            Log::error('トップページ情報取得エラー'.$e->getMessage());
+            return response()->json([
+                'flash_message'      => 'エラーが発生しました',
+                'flash_message_type' => 'error',
+            ]);
+        }
+    }
+
 
     /* ================================================================
         プロフィール情報取得

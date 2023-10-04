@@ -37,8 +37,11 @@
 
 // ============= Project =============
 
+@import 'Object/Project/_action';
 @import 'Object/Project/_alert';
 @import 'Object/Project/_avatar';
+@import 'Object/Project/_case';
+@import 'Object/Project/_catch';
 @import 'Object/Project/_counter';
 @import 'Object/Project/_create';
 @import 'Object/Project/_delete';
@@ -49,6 +52,8 @@
 @import 'Object/Project/_footer';
 @import 'Object/Project/_forgot';
 @import 'Object/Project/_header';
+@import 'Object/Project/_hero';
+@import 'Object/Project/_home';
 @import 'Object/Project/_list';
 @import 'Object/Project/_login';
 @import 'Object/Project/_menu';

@@ -92,6 +92,8 @@ Route::middleware('verified')->group(function () {
 
 Route::middleware('api')->group(function(){
 
+    // トップページ用：案件取得
+    Route::get('/api/top/projects', 'ApiController@getTopProjects');
     // プロフィール取得
     Route::get('/api/profile/{user_id}', 'ApiController@getProfile');
     // アバター取得

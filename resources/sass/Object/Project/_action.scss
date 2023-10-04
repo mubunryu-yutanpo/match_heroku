@@ -1,0 +1,31 @@
+.p-action{
+    position: relative;
+
+    &__image{
+        @include mq(){
+            display: none;
+        }
+
+        &--sp{
+            display: none;
+
+            @include mq(){
+                display: block;
+            }
+        }
+    }
+
+    &__button{
+        bottom: 20%;
+        left: 7%;
+        position: absolute;
+        width: 30%;
+
+        @include mq(){
+            bottom: 10%;
+            left: 25%;
+            right: 25%;
+            width: auto;
+        }
+    }
+}

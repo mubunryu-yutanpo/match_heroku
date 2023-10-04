@@ -407,6 +407,42 @@ textarea {
   margin: 40px 0;
 }
 
+.p-action {
+  position: relative;
+}
+
+@media screen and (max-width:767px) {
+  .p-action__image {
+    display: none;
+  }
+}
+
+.p-action__image--sp {
+  display: none;
+}
+
+@media screen and (max-width:767px) {
+  .p-action__image--sp {
+    display: block;
+  }
+}
+
+.p-action__button {
+  bottom: 20%;
+  left: 7%;
+  position: absolute;
+  width: 30%;
+}
+
+@media screen and (max-width:767px) {
+  .p-action__button {
+    bottom: 10%;
+    left: 25%;
+    right: 25%;
+    width: auto;
+  }
+}
+
 .p-alert {
   border: 1px solid transparent;
   border-radius: 0.25rem;
@@ -639,6 +675,10 @@ textarea {
 
 .p-header__title {
   margin: 0;
+}
+
+.p-home {
+  margin: 0 -30px;
 }
 
 .p-list__container {

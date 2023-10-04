@@ -22,6 +22,27 @@ class ApiControllerTest extends TestCase
 
 
     /* ================================================================
+        メソッド名：getTopProjects
+    =================================================================*/
+
+    public function testGetTopProjects()
+    {
+        // テスト用の案件を作成
+        $numOfProjects = 10;
+        factory(Project::class, $numOfProjects)->create();
+
+        // APIエンドポイントを呼び出し
+        $response = $this->json('GET', '/api/top/projects');
+
+        // レスポンスを検証
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'projectList',
+            ]);
+    }
+
+
+    /* ================================================================
         メソッド名：getProfile
     =================================================================*/
     public function testGetProfile()
