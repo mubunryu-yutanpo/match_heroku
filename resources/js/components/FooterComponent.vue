@@ -1,5 +1,5 @@
 <template>
-    <div class="p-footer" :class="{ 'is-small-contents': !isSmallContents }">
+    <div class="p-footer" :class="{ 'is-small-contents': isSmallContents }">
         <p class="p-footer__text">Copyright © match All Rights Reserved</p>
     </div>
 </template>

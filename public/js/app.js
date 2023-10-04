@@ -5559,7 +5559,7 @@ var render = function () {
     "div",
     {
       staticClass: "p-footer",
-      class: { "is-small-contents": !_vm.isSmallContents },
+      class: { "is-small-contents": _vm.isSmallContents },
     },
     [
       _c("p", { staticClass: "p-footer__text" }, [

@@ -1,9 +1,11 @@
 .p-header{
+    align-items: center;
     display: flex;
     justify-content: space-between;
     padding: $space_5 $space_10;
     position: fixed;
     width: 100%;
+    z-index: 3;
     
     &__title{
         margin: 0;

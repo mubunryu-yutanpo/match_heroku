@@ -7,10 +7,31 @@
             background: #000;
             display: block;
             height: auto;
+            left: 0;
+            max-height: 100vh;
             overflow-y: auto;
-            padding: $space_40 0 0 0;
+            padding: 45px 0;
+            position: absolute;
+            top: 0;
             text-align: center;
             width: 100%;
+            z-index: 5;
         }
     }
+
+    &__list{
+        align-items: center;
+        display: flex;
+        
+        @include mq(){
+            flex-direction: column;
+        }
+    }
+
+    &__item{
+        @include mq(){
+            padding: $space_20 0;
+        }
+    }
+
 }

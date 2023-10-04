@@ -33,61 +33,63 @@
 
         <header id="header" class="l-header">
             <div class="p-header">
-                <!-- アプリ名 -->
+                <!-- アプリタイトル -->
                 <h1 class="p-header__title">match</h1>
+
                 <!-- SP用メニューボタン -->
                 <menu-component></menu-component>
-            </div>
 
-            <!-- NAVメニュー -->
-            <nav class="p-nav">
-                <ul class="p-nav__list">
+                <!-- NAVメニュー -->
+                <nav class="p-nav">
+                    <ul class="p-nav__list">
 
-                    <li class="p-nav__item c-list-item">
-                        <a href="/" class="p-nav__link c-link">HOME</a>
-                    </li>
+                        <li class="p-nav__item c-list-item">
+                            <a href="/" class="p-nav__link c-link">HOME</a>
+                        </li>
+                                
+                        <li class="p-nav__item c-list-item">
+                            <a href="{{ route('list') }}" class="p-nav__link c-link">案件一覧</a>
+                        </li>
+
+                    @if(!Auth::check())
                             
-                    <li class="p-nav__item c-list-item">
-                        <a href="{{ route('list') }}" class="p-nav__link c-link">案件一覧</a>
-                    </li>
+                            <li class="p-nav__item c-list-item">
+                                <a href="/login" class="p-nav__link c-link">ログイン</a>
+                            </li>
 
-                @if(!Auth::check())
-                        
-                        <li class="p-nav__item c-list-item">
-                            <a href="/login" class="p-nav__link c-link">ログイン</a>
-                        </li>
-
-                    @if(Route::has('register'))
-                        <li class="p-nav__item c-list-item">
-                            <a href="/register" class="p-nav__link c-link">会員登録</a>
-                        </li>
+                        @if(Route::has('register'))
+                            <li class="p-nav__item c-list-item">
+                                <a href="/register" class="p-nav__link c-link">会員登録</a>
+                            </li>
+                        @endif
                     @endif
-                @endif
 
-                @auth
-                    <li class="p-nav__item c-list-item">
-                        <a href="{{ route('mypage') }}" class="p-nav__link c-link">マイページ</a>
-                    </li>
-                        
-                    <li class="p-nav__item c-list-item">
-                        <a href="{{ route('new') }}" class="p-nav__link c-link">案件を投稿</a>
-                    </li>
+                    @auth
+                        <li class="p-nav__item c-list-item">
+                            <a href="{{ route('mypage') }}" class="p-nav__link c-link">マイページ</a>
+                        </li>
+                            
+                        <li class="p-nav__item c-list-item">
+                            <a href="{{ route('new') }}" class="p-nav__link c-link">案件を投稿</a>
+                        </li>
 
-                    <li class="p-nav__item c-list-item">
-                        <a href="{{ route('dmList', Auth::id() ) }}" class="p-nav__link c-link">メッセージBOX</a>
-                    </li>
-                        
-                    <li class="p-nav__item c-list-item">
-                        <a href="{{ route('prof', Auth::id() ) }}" class="p-nav__link c-link">プロフィール編集</a>
-                    </li>
+                        <li class="p-nav__item c-list-item">
+                            <a href="{{ route('dmList', Auth::id() ) }}" class="p-nav__link c-link">メッセージBOX</a>
+                        </li>
+                            
+                        <li class="p-nav__item c-list-item">
+                            <a href="{{ route('prof', Auth::id() ) }}" class="p-nav__link c-link">プロフィール編集</a>
+                        </li>
 
-                    <li class="p-nav__item c-list-item">
-                        <a href="{{ route('logout') }}" class="p-nav__link c-link">ログアウト</a>
-                    </li>
+                        <li class="p-nav__item c-list-item">
+                            <a href="{{ route('logout') }}" class="p-nav__link c-link">ログアウト</a>
+                        </li>
 
-                    @endauth
-                </ul>
-            </nav>
+                        @endauth
+                    </ul>
+                </nav>
+
+            </div>
 
         </header>
     @show
