@@ -4338,6 +4338,65 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4372,7 +4431,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     // アイデア情報の取得
-    getIdeas: function getIdeas() {
+    getprojects: function getprojects() {
       var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response;
@@ -4414,7 +4473,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     // APIからアイデアデータを取得
-    this.getIdeas();
+    this.getprojects();
   }
 });
 
@@ -7801,36 +7860,157 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "p-home" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _vm._m(1),
+    _vm._v(" "),
+    _vm._m(2),
+    _vm._v(" "),
+    _c("section", { staticClass: "p-case" }, [
+      _c("h2", { staticClass: "p-case__title" }, [_vm._v("案件の一例")]),
+      _vm._v(" "),
+      _c("strong", { staticClass: "p-case__title-sub" }, [_vm._v("PROJECTS")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "p-case__container" },
+        [
+          _c(
+            "swiper",
+            { attrs: { options: _vm.swiperOptions } },
+            _vm._l(_vm.projectList, function (project) {
+              return _c(
+                "swiper-slide",
+                { key: project.id, staticStyle: { height: "auto" } },
+                [
+                  _c("div", { staticClass: "p-project u-width--100" }, [
+                    _c("h3", { staticClass: "p-project__title c-title" }, [
+                      _vm._v(_vm._s(project.title)),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "p-project__image" }, [
+                      _c("img", {
+                        staticClass: "p-project__image-item c-image",
+                        attrs: { src: project.thumbnail },
+                      }),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "p-project__type c-text--type" }, [
+                        _vm._v(_vm._s(project.type.name)),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "p-project__content c-text" }, [
+                      _vm._v(_vm._s(project.content)),
+                    ]),
+                  ]),
+                ]
+              )
+            })
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm._m(3),
+    ]),
+    _vm._v(" "),
+    _vm._m(4),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "p-home" }, [
-      _c("section", { staticClass: "p-hero" }),
+    return _c("section", { staticClass: "p-hero" }, [
+      _c("img", {
+        staticClass: "p-hero__image",
+        attrs: { src: "images/hero.png" },
+      }),
       _vm._v(" "),
-      _c("section", { staticClass: "p-catch" }),
+      _c("img", {
+        staticClass: "p-hero__image--sp",
+        attrs: { src: "images/hero_sp.png" },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", { staticClass: "p-catch" }, [
+      _c("p", { staticClass: "p-catch__title" }, [_vm._v("もっと簡単に")]),
       _vm._v(" "),
-      _c("section", { staticClass: "p-about" }),
+      _c("p", { staticClass: "p-catch__title--sub" }, [_vm._v("PROBLEM")]),
       _vm._v(" "),
-      _c("section", { staticClass: "p-case" }),
-      _vm._v(" "),
-      _c("section", { staticClass: "p-action" }, [
-        _c("img", {
-          staticClass: "p-action__image",
-          attrs: { src: "images/action.png" },
-        }),
-        _vm._v(" "),
-        _c("img", {
-          staticClass: "p-action__image--sp",
-          attrs: { src: "images/action_sp.png" },
-        }),
-        _vm._v(" "),
-        _c("button", { staticClass: "p-action__button c-button" }, [
-          _vm._v("無料で登録する！"),
+      _c("div", { staticClass: "p-catch__container" }, [
+        _c("p", { staticClass: "p-catch__text" }, [
+          _c("i", { staticClass: "fa-solid fa-check c-icon" }),
+          _vm._v("\n                あんなことやこんなこと\n            "),
         ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "p-catch__container" }, [
+        _c("p", { staticClass: "p-catch__text" }, [
+          _c("i", { staticClass: "fa-solid fa-check c-icon" }),
+          _vm._v("\n                色々あったけどもさ。\n            "),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "p-catch__container" }, [
+        _c("p", { staticClass: "p-catch__text" }, [
+          _c("i", { staticClass: "fa-solid fa-check c-icon" }),
+          _vm._v(
+            "\n                今日まで、ここまで来れたのはみんなのおかげです。\n            "
+          ),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", { staticClass: "p-about" }, [
+      _c("p", { staticClass: "p-about__title" }, [
+        _vm._v("技術の「欲しい」を手軽にやり取り"),
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "p-about__title--sub" }, [_vm._v("ABOUT")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", {}, [
+      _c("button", {}, [
+        _c("a", { attrs: { href: "/list" } }, [_vm._v("すべての案件を見る")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", { staticClass: "p-action" }, [
+      _c("img", {
+        staticClass: "p-action__image",
+        attrs: { src: "images/action.png" },
+      }),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "p-action__image--sp",
+        attrs: { src: "images/action_sp.png" },
+      }),
+      _vm._v(" "),
+      _c("button", { staticClass: "p-action__button c-button" }, [
+        _vm._v("案件に応募する！"),
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "p-action__text" }, [
+        _vm._v("無料の会員登録が必要です"),
       ]),
     ])
   },

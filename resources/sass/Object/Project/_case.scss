@@ -1,0 +1,10 @@
+.p-case{
+    
+    &__container{
+        padding: $space_40 $space_30;
+
+        @include mq(sm){
+            padding: 0 $space_25;
+        }
+    }
+}

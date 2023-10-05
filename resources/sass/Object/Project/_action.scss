@@ -17,15 +17,40 @@
 
     &__button{
         bottom: 20%;
+        font-size: $font-size_20;
         left: 7%;
         position: absolute;
         width: 30%;
 
+        @include mq(lg){
+            font-size: $font-size_18;
+        }
+
         @include mq(){
             bottom: 10%;
+            font-size: $font-size_17;
             left: 25%;
             right: 25%;
-            width: auto;
+            width: 50%;
+        }
+    }
+
+    &__text{
+        bottom: 13%;
+        left: 7%;
+        position: absolute;
+        text-align: center;
+        width: 30%;
+
+        @include mq(){
+            bottom: 5%;
+            left: 0;
+            width: 100%;
+        }
+
+        @include mq(sm){
+            bottom: 4%;
+            font-size: $font-size_14;
         }
     }
 }
