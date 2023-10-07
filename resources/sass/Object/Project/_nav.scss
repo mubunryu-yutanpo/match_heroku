@@ -34,4 +34,13 @@
         }
     }
 
+    &__link{
+        color: $white;
+
+        &:hover{
+            color: $pink;
+            font-weight: bold;
+        }
+    }
+
 }

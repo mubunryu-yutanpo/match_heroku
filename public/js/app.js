@@ -2629,6 +2629,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3139,7 +3143,7 @@ __webpack_require__.r(__webpack_exports__);
     handleScroll: function handleScroll() {
       var scrollPosition = window.scrollY || document.documentElement.scrollTop;
       var headerElement = document.querySelector('.p-header');
-      if (scrollPosition > 500) {
+      if (scrollPosition > 300) {
         // スクロール位置が500pxを超えた場合、クラス名を追加
         headerElement.classList.add('is-bg-change');
       } else {
@@ -4397,6 +4401,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4430,8 +4460,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    // アイデア情報の取得
-    getprojects: function getprojects() {
+    // 情報の取得
+    getProject: function getProject() {
       var _this = this;
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
         var response;
@@ -4457,6 +4487,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee, null, [[0, 8]]);
       }))();
+    },
+    // アクションボタンのクリック時
+    toRegister: function toRegister() {
+      window.location.href = '/register';
     }
   },
   filters: {
@@ -4473,7 +4507,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     // APIからアイデアデータを取得
-    this.getprojects();
+    this.getProject();
   }
 });
 
@@ -6169,94 +6203,107 @@ var render = function () {
     _vm._v(" "),
     _c(
       "section",
-      { staticClass: "p-list__box c-box--flex c-box--flex-column" },
-      _vm._l(_vm.PaginatedMessages, function (dm) {
-        return _c(
-          "div",
-          { key: dm.id, staticClass: "p-message-list c-box--message" },
-          [
-            _c("p", { staticClass: "p-message-list__text c-text" }, [
-              _vm._v("【 メッセージの相手 】"),
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "p-message-list__container c-box--flex c-box--flex-1",
-              },
-              [
-                _c("p", { staticClass: "p-message-list__user-name" }, [
-                  _vm._v(_vm._s(dm.other_user.name)),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "p-message-list__user-image c-box--avatar" },
-                  [
-                    _c("img", {
-                      staticClass: "p-message-list__user-image-item c-image",
-                      attrs: { src: dm.other_user.avatar },
-                    }),
-                  ]
-                ),
-              ]
-            ),
-            _vm._v(" "),
-            _c("p", { staticClass: "p-message-list__text c-text" }, [
-              _vm._v("【 日付 】"),
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "p-message-list__text c-text" }, [
-              _vm._v(_vm._s(_vm.formatDate(dm.message.created_at))),
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "p-message-list__text c-text" }, [
-              _vm._v("【 状態 】"),
-            ]),
-            _vm._v(" "),
-            dm.isRead
-              ? _c("p", { staticClass: "p-message-list__text c-text" }, [
-                  _vm._v("既読"),
-                ])
-              : _c(
-                  "p",
-                  {
-                    staticClass:
-                      "p-message-list__text c-text c-text--attention",
-                  },
-                  [_vm._v("メッセージを確認してください")]
-                ),
-            _vm._v(" "),
-            _c("p", { staticClass: "p-message-list__text c-text" }, [
-              _vm._v("【 最新のコメント 】"),
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "p-message-list__text c-text" }, [
-              _vm._v(_vm._s(dm.message.comment)),
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "p-message-list__link-box c-box--link" }, [
+      { staticClass: "p-list__wrap c-box--flex c-box--flex-column" },
+      [
+        _vm.messages === null || _vm.messages.length === 0
+          ? _c("div", { staticClass: "p-list__none" }, [
+              _vm._v("\n            まだメッセージはありません\n        "),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm._l(_vm.PaginatedMessages, function (dm) {
+          return _c(
+            "div",
+            { key: dm.id, staticClass: "p-message-list c-box--message" },
+            [
+              _c("p", { staticClass: "p-message-list__text c-text" }, [
+                _vm._v("【 メッセージの相手 】"),
+              ]),
+              _vm._v(" "),
               _c(
-                "a",
+                "div",
                 {
-                  staticClass: "c-link p-message-list__link",
-                  on: {
-                    click: function ($event) {
-                      _vm.markAsRead(
-                        dm.message.chat_id,
-                        dm.other_user.id,
-                        _vm.user_id
-                      )
-                    },
-                  },
+                  staticClass:
+                    "p-message-list__container c-box--flex c-box--flex-1",
                 },
-                [_vm._v("このメッセージへ")]
+                [
+                  _c("p", { staticClass: "p-message-list__user-name" }, [
+                    _vm._v(_vm._s(dm.other_user.name)),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "p-message-list__user-image c-box--avatar" },
+                    [
+                      _c("img", {
+                        staticClass: "p-message-list__user-image-item c-image",
+                        attrs: { src: dm.other_user.avatar },
+                      }),
+                    ]
+                  ),
+                ]
               ),
-            ]),
-          ]
-        )
-      })
+              _vm._v(" "),
+              _c("p", { staticClass: "p-message-list__text c-text" }, [
+                _vm._v("【 日付 】"),
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "p-message-list__text c-text" }, [
+                _vm._v(_vm._s(_vm.formatDate(dm.message.created_at))),
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "p-message-list__text c-text" }, [
+                _vm._v("【 状態 】"),
+              ]),
+              _vm._v(" "),
+              dm.isRead
+                ? _c("p", { staticClass: "p-message-list__text c-text" }, [
+                    _vm._v("既読"),
+                  ])
+                : _c(
+                    "p",
+                    {
+                      staticClass:
+                        "p-message-list__text c-text c-text--attention",
+                    },
+                    [_vm._v("メッセージを確認してください")]
+                  ),
+              _vm._v(" "),
+              _c("p", { staticClass: "p-message-list__text c-text" }, [
+                _vm._v("【 最新のコメント 】"),
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "p-message-list__text c-text" }, [
+                _vm._v(_vm._s(dm.message.comment)),
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "p-message-list__link-box c-box--link" },
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "c-link p-message-list__link",
+                      on: {
+                        click: function ($event) {
+                          _vm.markAsRead(
+                            dm.message.chat_id,
+                            dm.other_user.id,
+                            _vm.user_id
+                          )
+                        },
+                      },
+                    },
+                    [_vm._v("このメッセージへ")]
+                  ),
+                ]
+              ),
+            ]
+          )
+        }),
+      ],
+      2
     ),
     _vm._v(" "),
     _c(
@@ -6274,7 +6321,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        <\n    ")]
+              [_vm._v("\n            ←\n        ")]
             )
           : _vm._e(),
         _vm._v(" "),
@@ -6289,7 +6336,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        prev\n    ")]
+              [_vm._v("\n            prev\n        ")]
             )
           : _vm._e(),
         _vm._v(" "),
@@ -6306,7 +6353,7 @@ var render = function () {
                 },
               },
             },
-            [_vm._v("\n        " + _vm._s(pageNumber) + "\n    ")]
+            [_vm._v("\n            " + _vm._s(pageNumber) + "\n        ")]
           )
         }),
         _vm._v(" "),
@@ -6321,7 +6368,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        next\n    ")]
+              [_vm._v("\n            next\n        ")]
             )
           : _vm._e(),
         _vm._v(" "),
@@ -6336,7 +6383,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        >\n    ")]
+              [_vm._v("\n            →\n        ")]
             )
           : _vm._e(),
       ],
@@ -7868,9 +7915,11 @@ var render = function () {
     _vm._m(2),
     _vm._v(" "),
     _c("section", { staticClass: "p-case" }, [
-      _c("h2", { staticClass: "p-case__title" }, [_vm._v("案件の一例")]),
+      _c("h2", { staticClass: "p-case__title c-title" }, [
+        _vm._v("案件の一例"),
+      ]),
       _vm._v(" "),
-      _c("strong", { staticClass: "p-case__title-sub" }, [_vm._v("PROJECTS")]),
+      _c("p", { staticClass: "p-case__title--sub" }, [_vm._v("PROJECTS")]),
       _vm._v(" "),
       _c(
         "div",
@@ -7915,7 +7964,30 @@ var render = function () {
       _vm._m(3),
     ]),
     _vm._v(" "),
-    _vm._m(4),
+    _c("section", { staticClass: "p-action" }, [
+      _c("img", {
+        staticClass: "p-action__image",
+        attrs: { src: "images/action.png" },
+      }),
+      _vm._v(" "),
+      _c("img", {
+        staticClass: "p-action__image--sp",
+        attrs: { src: "images/action_sp.png" },
+      }),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "p-action__button c-button",
+          on: { click: _vm.toRegister },
+        },
+        [_vm._v("\n            案件に応募する!\n        ")]
+      ),
+      _vm._v(" "),
+      _c("p", { staticClass: "p-action__text" }, [
+        _vm._v("無料の会員登録が必要です"),
+      ]),
+    ]),
   ])
 }
 var staticRenderFns = [
@@ -7940,29 +8012,28 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("section", { staticClass: "p-catch" }, [
-      _c("p", { staticClass: "p-catch__title" }, [_vm._v("もっと簡単に")]),
+      _c("img", {
+        staticClass: "p-catch__image",
+        attrs: { src: "images/catch_image.png" },
+      }),
       _vm._v(" "),
-      _c("p", { staticClass: "p-catch__title--sub" }, [_vm._v("PROBLEM")]),
+      _c("img", {
+        staticClass: "p-catch__image--sp",
+        attrs: { src: "images/catch_image_sp.png" },
+      }),
       _vm._v(" "),
       _c("div", { staticClass: "p-catch__container" }, [
-        _c("p", { staticClass: "p-catch__text" }, [
-          _c("i", { staticClass: "fa-solid fa-check c-icon" }),
-          _vm._v("\n                あんなことやこんなこと\n            "),
+        _c("p", { staticClass: "p-catch__text c-text" }, [
+          _c("strong", { staticClass: "p-catch__text--big" }, [
+            _vm._v("「match」"),
+          ]),
+          _vm._v("\n            はそんなお悩みに応えたサービスです。"),
+          _c("br"),
         ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "p-catch__container" }, [
-        _c("p", { staticClass: "p-catch__text" }, [
-          _c("i", { staticClass: "fa-solid fa-check c-icon" }),
-          _vm._v("\n                色々あったけどもさ。\n            "),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "p-catch__container" }, [
-        _c("p", { staticClass: "p-catch__text" }, [
-          _c("i", { staticClass: "fa-solid fa-check c-icon" }),
+        _vm._v(" "),
+        _c("p", { staticClass: "p-catch__text c-text" }, [
           _vm._v(
-            "\n                今日まで、ここまで来れたのはみんなのおかげです。\n            "
+            "案件の依頼・応募などの手間を最小限にし、エンジニアのお仕事のお手伝いをします。"
           ),
         ]),
       ]),
@@ -7973,44 +8044,107 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("section", { staticClass: "p-about" }, [
-      _c("p", { staticClass: "p-about__title" }, [
-        _vm._v("技術の「欲しい」を手軽にやり取り"),
+      _c("h2", { staticClass: "p-about__title c-title" }, [
+        _vm._v("仕事の「欲しい」を気軽にやり取り"),
       ]),
       _vm._v(" "),
       _c("p", { staticClass: "p-about__title--sub" }, [_vm._v("ABOUT")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "p-about__container c-box--flex c-box--flex-4" },
+        [
+          _c(
+            "div",
+            { staticClass: "p-about__box c-box--flex c-box--flex-column" },
+            [
+              _c("div", { staticClass: "p-about__image" }, [
+                _c("img", {
+                  staticClass: "p-about__image--item",
+                  attrs: { src: "images/about_image01.png" },
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "p-about__image--shadow" }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "p-about__content" }, [
+                _c("h3", { staticClass: "p-about__content--title c-title" }, [
+                  _vm._v("やり取りはメッセージで"),
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "p-about__content--text c-text" }, [
+                  _vm._v(
+                    "案件ごとにメッセージ（コメント）ができ、気軽に気になる部分を聞けます。詳細をDMで聞くことも可能。"
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "p-about__box c-box--flex c-box--flex-column" },
+            [
+              _c("div", { staticClass: "p-about__image" }, [
+                _c("img", {
+                  staticClass: "p-about__image--item",
+                  attrs: { src: "images/about_image02.png" },
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "p-about__image--shadow" }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "p-about__content" }, [
+                _c("h3", { staticClass: "p-about__content--title c-title" }, [
+                  _vm._v("「とりあえず」での応募OK"),
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "p-about__content--text c-text" }, [
+                  _vm._v(
+                    "面倒な手続きを省いてサクッと応募可能。「まずは話を聞いてみたい。」でも大丈夫!"
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "p-about__box c-box--flex c-box--flex-column" },
+            [
+              _c("div", { staticClass: "p-about__image" }, [
+                _c("img", {
+                  staticClass: "p-about__image--item",
+                  attrs: { src: "images/about_image03.png" },
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "p-about__image--shadow" }),
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "p-about__content" }, [
+                _c("h3", { staticClass: "p-about__content--title c-title" }, [
+                  _vm._v("案件の投稿・依頼もカンタン"),
+                ]),
+                _vm._v(" "),
+                _c("p", { staticClass: "p-about__content--text c-text" }, [
+                  _vm._v(
+                    "技術者やビジネスパートナー「欲しい」なら依頼することも可能。最小限の情報入力で依頼を出せます。"
+                  ),
+                ]),
+              ]),
+            ]
+          ),
+        ]
+      ),
     ])
   },
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", {}, [
-      _c("button", {}, [
-        _c("a", { attrs: { href: "/list" } }, [_vm._v("すべての案件を見る")]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("section", { staticClass: "p-action" }, [
-      _c("img", {
-        staticClass: "p-action__image",
-        attrs: { src: "images/action.png" },
-      }),
-      _vm._v(" "),
-      _c("img", {
-        staticClass: "p-action__image--sp",
-        attrs: { src: "images/action_sp.png" },
-      }),
-      _vm._v(" "),
-      _c("button", { staticClass: "p-action__button c-button" }, [
-        _vm._v("案件に応募する！"),
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "p-action__text" }, [
-        _vm._v("無料の会員登録が必要です"),
+    return _c("div", { staticClass: "p-case__box c-box--link" }, [
+      _c("a", { staticClass: "c-link", attrs: { href: "/list" } }, [
+        _vm._v("すべての案件を見る"),
       ]),
     ])
   },

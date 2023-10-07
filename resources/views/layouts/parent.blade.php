@@ -25,7 +25,9 @@
         @if (session('flash_message'))
         <div id="flash-message" class="p-alert 
             @if (session('flash_message_type') === 'error') is-error
+            
             @elseif (session('flash_message_type') === 'success') is-success
+            
             @endif" role="alert">
             {{ session('flash_message') }}
         </div>
@@ -72,10 +74,6 @@
                         <li class="p-nav__item c-list-item">
                             <a href="{{ route('new') }}" class="p-nav__link c-link">案件を投稿</a>
                         </li>
-
-                        <li class="p-nav__item c-list-item">
-                            <a href="{{ route('dmList', Auth::id() ) }}" class="p-nav__link c-link">メッセージBOX</a>
-                        </li>
                             
                         <li class="p-nav__item c-list-item">
                             <a href="{{ route('prof', Auth::id() ) }}" class="p-nav__link c-link">プロフィール編集</a>
@@ -104,6 +102,16 @@
         </footer>
     @show
 
+<script>
+    // 2.5秒後にフラッシュメッセージを非表示にする
+    setTimeout(function() {
+        const flashMessage = document.getElementById('flash-message');
+        if (flashMessage) {
+            flashMessage.style.display = 'none';
+        }
+    }, 2500);
+
+</script>
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

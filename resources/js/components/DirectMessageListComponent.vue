@@ -7,7 +7,12 @@
         </h2>
 
         <!-- 一覧 -->
-        <section class="p-list__box c-box--flex c-box--flex-column">
+        <section class="p-list__wrap c-box--flex c-box--flex-column">
+            
+            <div class="p-list__none" v-if="messages === null || messages.length === 0">
+                まだメッセージはありません
+            </div>
+
             <!-- 各チャットの最新の1件のみ表示 -->
             <div class="p-message-list c-box--message" v-for=" dm in PaginatedMessages" :key="dm.id">
                 
@@ -38,57 +43,56 @@
                 </div>
 
             </div>
-
         </section>
 
         <!-- ページネーション -->
         <section class="p-pagination">
-        <!-- 最初のページへ -->
-        <button
-            v-if="currentPage > 1"
-            class="p-pagination__button c-button"
-            @click="changePage(1)"
-        >
-            <
-        </button>
-
-        <!-- 前のページボタン -->
-        <button
-            v-if="currentPage > 2"
-            class="p-pagination__button c-button"
-            @click="changePage(currentPage - 1)"
-        >
-            prev
-        </button>
-
-        <!-- 動的に変化するページボタン -->
-        <button
-            v-for="pageNumber in visiblePageNumbers"
-            :key="pageNumber"
-            class="p-pagination__button c-button"
-            :class="{ active: currentPage === pageNumber }"
-            @click="changePage(pageNumber)"
-        >
-            {{ pageNumber }}
-        </button>
-
-        <!-- 次のページボタン -->
-        <button
-            v-if="currentPage < totalPages - 1"
-            class="p-pagination__button c-button"
-            @click="changePage(currentPage + 1)"
-        >
-            next
-        </button>
-
-        <!-- 最終ページ -->
-        <button
-            v-if="currentPage < totalPages"
-            class="p-pagination__button c-button"
-            @click="changePage(totalPages)"
-        >
+            <!-- 最初のページへ -->
+            <button
+                v-if="currentPage > 1"
+                class="p-pagination__button c-button"
+                @click="changePage(1)"
             >
-        </button>
+                ←
+            </button>
+
+            <!-- 前のページボタン -->
+            <button
+                v-if="currentPage > 2"
+                class="p-pagination__button c-button"
+                @click="changePage(currentPage - 1)"
+            >
+                prev
+            </button>
+
+            <!-- 動的に変化するページボタン -->
+            <button
+                v-for="pageNumber in visiblePageNumbers"
+                :key="pageNumber"
+                class="p-pagination__button c-button"
+                :class="{ active: currentPage === pageNumber }"
+                @click="changePage(pageNumber)"
+            >
+                {{ pageNumber }}
+            </button>
+
+            <!-- 次のページボタン -->
+            <button
+                v-if="currentPage < totalPages - 1"
+                class="p-pagination__button c-button"
+                @click="changePage(currentPage + 1)"
+            >
+                next
+            </button>
+
+            <!-- 最終ページ -->
+            <button
+                v-if="currentPage < totalPages"
+                class="p-pagination__button c-button"
+                @click="changePage(totalPages)"
+            >
+                →
+            </button>
         </section>
     </div>
 </template>

@@ -378,37 +378,6 @@ class UnitTest extends TestCase
         プロフィールに関するバリデーション（テストするメソッドは「profUpdate」）
     =================================================================*/
     
-    // ＝＝＝＝＝＝＝＝ 異常系：メールアドレスの重複 ＝＝＝＝＝＝＝＝
-
-    public function testProfUpdateEmailError1(){
-        // テスト用のユーザーを作成
-        $user = factory(User::class)->create();
-        $other_user = factory(User::class)->create();
-        $existEmail = $other_user->email;
-    
-        // ログインさせる
-        $this->actingAs($user);
-    
-        // テスト用のリクエストデータを作成（upperPriceが1未満）
-        $data = [
-            'email' => $existEmail,
-        ];
-            
-            // CSRFトークンの検証を一時的に無効化
-            $this->withoutMiddleware(VerifyCsrfToken::class);
-    
-            // テスト用のファイルアップロードをシミュレート
-            $response = $this->post('/prof/'. $user->id . '/edit', $data);
-    
-            // バリデーションエラーによるリダイレクトバック
-            $response->assertStatus(302);
-    
-            // セッションにバリデーションエラーが含まれていることを確認
-            $response->assertSessionHasErrors([
-                'email' => 'すでに利用されているアドレスです',
-            ]);
-    }
-
     // ＝＝＝＝＝＝＝＝ 異常系：自己紹介文の文字数オーバー ＝＝＝＝＝＝＝＝
 
     public function testProfUpdateIntroductionError(){

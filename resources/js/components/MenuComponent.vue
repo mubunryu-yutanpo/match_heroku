@@ -37,7 +37,7 @@
                 const scrollPosition = window.scrollY || document.documentElement.scrollTop;
                 const headerElement = document.querySelector('.p-header');
 
-                if (scrollPosition > 500) {
+                if (scrollPosition > 300) {
                 // スクロール位置が500pxを超えた場合、クラス名を追加
                 headerElement.classList.add('is-bg-change');
                 } else {

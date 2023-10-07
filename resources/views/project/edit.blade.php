@@ -7,11 +7,6 @@
 @show
 
 @section('main')
-    <h1>
-        {{ $user->name }}さんの、案件の編集・削除ページさ。
-        案件のIDは{{ $project->id }}です。
-    </h1>
-
     <form action="{{ route('project.update', $project->id) }}" method="post" class="p-edit c-box--form" enctype="multipart/form-data">
         @csrf
 

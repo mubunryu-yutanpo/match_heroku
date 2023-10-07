@@ -26,7 +26,7 @@ class ValidRequest extends FormRequest
         return [
             //viewで設定している各フォームのname属性の名前
             'name'         => 'sometimes|required|string|max:20',
-            'email'        => 'sometimes|unique:users|required|string|max:255',
+            'email'        => 'sometimes|required|string|max:255',
             'password'     => 'sometimes|required|string|max:255|min:8',
             'password_re'  => 'sometimes|required|same:password',
             'introduction' => 'sometimes|nullable|string|max:300',
@@ -44,7 +44,6 @@ class ValidRequest extends FormRequest
     public function messages(){
         return[
             //バリデーションのエラーメッセージ設定
-            'email.unique' => 'すでに利用されているアドレスです',
             'type.required' => '選択してください',
             'upperPrice.min' => '1,000円(1)未満は設定できません',
             'upperPrice.max' => '999,999,000円(999999)以内で設定してください',

@@ -8,38 +8,64 @@
         
         <!-- こんなお悩みありませんか的な部分 -->
         <section class="p-catch">
-            <p class="p-catch__title">もっと簡単に</p>
-            <p class="p-catch__title--sub">PROBLEM</p>
+            <img src="images/catch_image.png" class="p-catch__image">
+            <img src="images/catch_image_sp.png" class="p-catch__image--sp">
             <div class="p-catch__container">
-                <p class="p-catch__text">
-                    <i class="fa-solid fa-check c-icon"></i>
-                    あんなことやこんなこと
+                <p class="p-catch__text c-text">
+                <strong class="p-catch__text--big">「match」</strong>
+                はそんなお悩みに応えたサービスです。<br>
                 </p>
-            </div>
-            <div class="p-catch__container">
-                <p class="p-catch__text">
-                    <i class="fa-solid fa-check c-icon"></i>
-                    色々あったけどもさ。
-                </p>
-            </div>
-            <div class="p-catch__container">
-                <p class="p-catch__text">
-                    <i class="fa-solid fa-check c-icon"></i>
-                    今日まで、ここまで来れたのはみんなのおかげです。
-                </p>
+                <p class="p-catch__text c-text">案件の依頼・応募などの手間を最小限にし、エンジニアのお仕事のお手伝いをします。</p>
             </div>
         </section>
         
         <!-- 説明の部分 -->
         <section class="p-about">
-            <p class="p-about__title">技術の「欲しい」を手軽にやり取り</p>
+            <h2 class="p-about__title c-title">仕事の「欲しい」を気軽にやり取り</h2>
             <p class="p-about__title--sub">ABOUT</p>
+
+            <div class="p-about__container c-box--flex c-box--flex-4">
+
+                <div class="p-about__box c-box--flex c-box--flex-column">
+                    <div class="p-about__image">
+                        <img src="images/about_image01.png" class="p-about__image--item">
+                        <div class="p-about__image--shadow"></div>
+                    </div>
+                    <div class="p-about__content">
+                        <h3 class="p-about__content--title c-title">やり取りはメッセージで</h3>
+                        <p class="p-about__content--text c-text">案件ごとにメッセージ（コメント）ができ、気軽に気になる部分を聞けます。詳細をDMで聞くことも可能。</p>
+                    </div>
+                </div>
+
+                <div class="p-about__box c-box--flex c-box--flex-column">
+                    <div class="p-about__image">
+                        <img src="images/about_image02.png" class="p-about__image--item">
+                        <div class="p-about__image--shadow"></div>
+                    </div>
+                    <div class="p-about__content">
+                        <h3 class="p-about__content--title c-title">「とりあえず」での応募OK</h3>
+                        <p class="p-about__content--text c-text">面倒な手続きを省いてサクッと応募可能。「まずは話を聞いてみたい。」でも大丈夫!</p>
+                    </div>
+                </div>
+
+                <div class="p-about__box c-box--flex c-box--flex-column">
+                    <div class="p-about__image">
+                        <img src="images/about_image03.png" class="p-about__image--item">
+                        <div class="p-about__image--shadow"></div>
+                    </div>
+                    <div class="p-about__content">
+                        <h3 class="p-about__content--title c-title">案件の投稿・依頼もカンタン</h3>
+                        <p class="p-about__content--text c-text">技術者やビジネスパートナー「欲しい」なら依頼することも可能。最小限の情報入力で依頼を出せます。</p>
+                    </div>
+                </div>
+
+            </div>
         </section>
         
         <!-- 実績的な部分 -->
         <section class="p-case">
-            <h2 class="p-case__title">案件の一例</h2>
-            <strong class="p-case__title-sub">PROJECTS</strong>
+            <h2 class="p-case__title c-title">案件の一例</h2>
+            <p class="p-case__title--sub">PROJECTS</p>
 
 
             <div class="p-case__container">
@@ -59,10 +85,8 @@
 
             </div>
 
-            <div class="">
-                <button class="">
-                    <a href="/list" class="">すべての案件を見る</a>
-                </button>
+            <div class="p-case__box c-box--link">
+                    <a href="/list" class="c-link">すべての案件を見る</a>
             </div>
 
         </section>
@@ -71,7 +95,9 @@
         <section class="p-action">
             <img src="images/action.png" class="p-action__image">
             <img src="images/action_sp.png" class="p-action__image--sp">
-            <button class="p-action__button c-button">案件に応募する！</button>
+            <button class="p-action__button c-button" @click="toRegister">
+                案件に応募する!
+            </button>
             <p class="p-action__text">無料の会員登録が必要です</p>
         </section>
     </div>
@@ -115,17 +141,22 @@ export default {
 
     methods: {
 
-        // アイデア情報の取得
-        async getprojects() {
-        try {
-            const response = await axios.get('/api/top/projects');
-            this.projectList = response.data.projectList;
-            console.log(response.data)
-        } 
-        catch (error) {
-            console.log(error);
-        }
+        // 情報の取得
+        async getProject() {
+            try {
+                const response = await axios.get('/api/top/projects');
+                this.projectList = response.data.projectList;
+                console.log(response.data)
+            } 
+            catch (error) {
+                console.log(error);
+            }
         },
+
+        // アクションボタンのクリック時
+        toRegister() {
+            window.location.href = '/register';
+        }
 
 
     },
@@ -147,7 +178,7 @@ export default {
 
     mounted() {
         // APIからアイデアデータを取得
-        this.getprojects();
+        this.getProject();
 
         },
 

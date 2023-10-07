@@ -13,6 +13,8 @@
     Layouts
 =================================================================*/
 
+@import 'Layouts/_footer';
+@import 'Layouts/_header';
 @import 'Layouts/_main';
 
 /* ================================================================
@@ -37,6 +39,7 @@
 
 // ============= Project =============
 
+@import 'Object/Project/_about';
 @import 'Object/Project/_action';
 @import 'Object/Project/_alert';
 @import 'Object/Project/_avatar';
