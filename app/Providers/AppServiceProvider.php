@@ -31,5 +31,8 @@ class AppServiceProvider extends ServiceProvider
             });
         }
 
+        // heroku用
+        Schema::defaultStringLength(191);
+
     }
 }
