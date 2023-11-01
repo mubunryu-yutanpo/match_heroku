@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\ValidRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
@@ -79,7 +77,9 @@ class MypageController extends Controller
                 });
 
                 // 画像をpublic/uploadsディレクトリに移動
-                $moved = $compressedImage->save(public_path('uploads/'.$filename));
+                // $moved = $compressedImage->save(public_path('uploads/'.$filename));
+                $moved = $compressedImage->save(storage_path('app/public/uploads/' . $filename));
+
                 
                 if (!$moved) {
                     // 画像の保存等が失敗した場合
@@ -89,7 +89,7 @@ class MypageController extends Controller
             } else if ($user->avatar !== 'default-avatar.png') {
                 // 画像を変更しない場合
                 $filename = $user->avatar;
-                $filename = str_replace('/uploads/', '', $filename);
+                $filename = str_replace('/storage/uploads/', '', $filename);
 
             } else {
                 // アバターが未選択の場合
@@ -99,7 +99,7 @@ class MypageController extends Controller
             $updated = $user->update([
                 'name'         => $request->name,
                 'email'        => $request->email,
-                'avatar'       => '/uploads/' . $filename,
+                'avatar'       => '/storage/uploads/'.$filename,
                 'introduction' => $request->introduction,
             ]);
 

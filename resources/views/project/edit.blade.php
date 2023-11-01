@@ -17,7 +17,7 @@
         <!-- 案件タイプ -->
         <div class="p-edit__container c-box--form-container">
             <label for="type" class="c-label p-edit__label">案件の種類:</label>
-                <select name="type" id="type" class="c-select p-edit__select @error('type') valid-error @enderror">
+                <select name="type" id="type" class="c-select p-edit__select @error('type') valid-error @enderror" value="">
 
                     <option value="" hidden>選択してください</option>
                     
@@ -36,7 +36,7 @@
 
         <!-- 案件名 -->
         <div class="p-edit__container c-box--form-container">
-            <label for="title" class="c-label p-edit__label">タイトル:</label>
+            <label for="title" class="c-label p-edit__label">*タイトル:</label>
                 <input id="title" type="text" class="c-input p-edit__input @error('title') valid-error @enderror" name="title" value="{{ old('title', $project->title) }}" required autocomplete="title" autofocus>
                 @error('title')
                     <span class="c-error c-error--text p-edit__error-text" role="alert">
@@ -45,28 +45,31 @@
                 @enderror
         </div>
 
-        <!-- 料金（上限） -->
-        <div class="p-edit__container c-box--form-container">
-            <label for="upperPrice" class="c-label p-edit__label">料金上限（単位：千円）:</label>
-                <input id="upperPrice" type="number" class="c-input p-edit__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice', $savedUpperPrice ) }}" required autofocus placeholder="〜999999">
-                @error('upperPrice')
-                    <span class="c-error c-error--text p-edit__error-text" role="alert">
-                        {{ $message }}
-                    </span>
-                @enderror
-        </div>
+        <!-- 表示を切り替えるフォーム部分 -->
+        <div id="priceFields" style="display: none;">
+            <!-- 料金（上限） -->
+            <div class="p-edit__container c-box--form-container">
+                <label for="upperPrice" class="c-label p-edit__label">*料金上限（単位：千円）:</label>
+                    <input id="upperPrice" type="number" class="c-input p-edit__input @error('upperPrice') valid-error @enderror" name="upperPrice" value="{{ old('upperPrice', $savedUpperPrice ) }}" required autofocus placeholder="〜999999">
+                    @error('upperPrice')
+                        <span class="c-error c-error--text p-edit__error-text" role="alert">
+                            {{ $message }}
+                        </span>
+                    @enderror
+            </div>
 
-        <!-- 料金（下限） -->
-        <div class="p-edit__container c-box--form-container">
-            <label for="lowerPrice" class="c-label p-edit__label">料金下限（単位：千円）:</label>
-                <input id="lowerPrice" type="number" class="c-input p-edit__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice', $savedLowerPrice ) }}" required autofocus placeholder="1〜">
-                @error('lowerPrice')
-                    <span class="c-error c-error--text p-edit__error-text" role="alert">
-                        {{ $message }}
-                    </span>
-                @enderror
-        </div>
+            <!-- 料金（下限） -->
+            <div class="p-edit__container c-box--form-container">
+                <label for="lowerPrice" class="c-label p-edit__label">*料金下限（単位：千円）:</label>
+                    <input id="lowerPrice" type="number" class="c-input p-edit__input @error('lowerPrice') valid-error @enderror" name="lowerPrice" value="{{ old('lowerPrice', $savedLowerPrice ) }}" required autofocus placeholder="1〜">
+                    @error('lowerPrice')
+                        <span class="c-error c-error--text p-edit__error-text" role="alert">
+                            {{ $message }}
+                        </span>
+                    @enderror
+            </div>
 
+        </div>
 
         <!-- サムネ画像 -->
         <div id="app">
@@ -115,3 +118,32 @@
 @section('footer')
     @parent
 @show
+
+<script>
+    // 料金部分の表示切り替え
+    document.addEventListener('DOMContentLoaded', () => {
+        // セレクトボックスの要素を取得
+        const typeSelect = document.getElementById('type');
+        const priceFields = document.getElementById('priceFields'); // 金額部分の要素
+
+        // 初期状態を確認
+        if (typeSelect.value === '1') {
+            priceFields.style.display = 'block';
+        } else {
+            priceFields.style.display = 'none';
+        }
+
+        // セレクトボックスの値が変更されたときに実行される関数
+        typeSelect.addEventListener('change', () => {
+            // セレクトボックスの値を取得
+            const selectedValue = typeSelect.value;
+
+            // レベニューシェア案件の場合は非表示に
+            if (selectedValue === '1') {
+                priceFields.style.display = 'block';
+            } else {
+                priceFields.style.display = 'none';
+            }
+        });
+    });
+</script>

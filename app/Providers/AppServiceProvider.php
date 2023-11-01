@@ -3,8 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
-
 
 
 class AppServiceProvider extends ServiceProvider
@@ -32,10 +30,6 @@ class AppServiceProvider extends ServiceProvider
                 \Log::info("Query Time:{$query->time}s] $query->sql");
             });
         }
-
-        // heroku用
-        Schema::defaultStringLength(191);
-
 
     }
 }

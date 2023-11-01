@@ -42,11 +42,9 @@
             font-weight: bold;
         }
 
-        // new
         @include mq(lg){
             padding: $space-10 $space_default;
         }
-
     }
 
 }

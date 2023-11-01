@@ -2,26 +2,31 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use App\Notifications\ResetPassword;
 
-class VerifyEmailJapanese extends VerifyEmail
+class CustomResetPassword extends Notification
 {
-    use Queueable;
+    /**
+    * The password reset token.
+    * 
+    /** @var string */
 
+    public $token;
+    
     /**
      * Create a new notification instance.
      *
+     * @param  string  $token
      * @return void
      */
-    public function __construct()
+
+    
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
     }
+
 
     /**
      * Get the notification's delivery channels.
@@ -40,20 +45,27 @@ class VerifyEmailJapanese extends VerifyEmail
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
-    {
 
-        return (new MailMessage)
-            ->subject('メールアドレスの確認')
-            ->markdown('emails.verifyEmail', ['url' => $this->verificationUrl($notifiable), 'user' => $notifiable]);
-    }
+    
+        public function toMail($notifiable)
+        {
+            // パスワードリセットのリンクを生成
+            $actionUrl = url('password/reset', $this->token);
 
+            // カスタマイズしたメールテンプレートを使う
+            return (new MailMessage)
+                ->from('match.app.infomation@gmail.com', config('app.name'))
+                ->subject('パスワード再設定のご案内')
+                ->markdown('emails.reset-password', ['actionUrl' => $actionUrl]);        }
+        
     /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
      * @return array
      */
+
+    
     public function toArray($notifiable)
     {
         return [

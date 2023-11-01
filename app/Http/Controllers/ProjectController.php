@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectApplied;
 use App\Http\Requests\ValidRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Storage;
 use Image;
 use App\User;
 use App\Type;
@@ -48,23 +45,24 @@ class ProjectController extends Controller
     
             // サムネ画像のパス名を変数に
             if ($request->hasFile('thumbnail')) {
-                $avatar = $request->file('thumbnail');
-                $filename = $avatar->getClientOriginalName();
+                $thumbnail = $request->file('thumbnail');
+                $filename = $thumbnail->getClientOriginalName();
 
                 // HEIC形式の画像をJPEG形式に変換
-                if ($avatar->getClientOriginalExtension() === 'heic') {
-                    $avatar = Image::make($avatar)->encode('jpg');
+                if ($thumbnail->getClientOriginalExtension() === 'heic') {
+                    $thumbnail = Image::make($thumbnail)->encode('jpg');
                     $filename = pathinfo($filename, PATHINFO_FILENAME) . '.jpg';
                 }
 
                 // 画像を圧縮して保存 
-                $compressedImage = Image::make($avatar)->resize(300, null, function ($constraint) {
+                $compressedImage = Image::make($thumbnail)->resize(300, null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
 
                 // 画像をpublic/uploadsディレクトリに移動
-                $moved = $compressedImage->save(public_path('uploads/'.$filename));
+                // $moved = $compressedImage->save(public_path('uploads/'.$filename));
+                $moved = $compressedImage->save(storage_path('app/public/uploads/' . $filename));
                 
                 if (!$moved) {
                     // 画像の保存等が失敗した場合
@@ -77,7 +75,7 @@ class ProjectController extends Controller
             }
     
             // 案件のタイプに応じて料金の内容を変更
-            if ($request->type === 1) {
+            if ((int)$request->type === 1) {
                 // 金額は1,000をかけた値に変換
                 $upperPrice = $request->upperPrice * 1000;
                 $lowerPrice = $request->lowerPrice * 1000;
@@ -92,7 +90,7 @@ class ProjectController extends Controller
                 'type'       => $request->type,
                 'upperPrice' => $upperPrice,
                 'lowerPrice' => $lowerPrice,
-                'thumbnail'  => '/uploads/'.$filename,
+                'thumbnail'  => '/storage/uploads/'.$filename,
                 'content'    => $request->content,
             ])->save();
     
@@ -171,29 +169,35 @@ class ProjectController extends Controller
                 redirect('/')->with('flash_message', 'エラーが発生しました')->with('flash_message_type', 'error');
             }
 
-            // 金額は1,000をかけた値に変換
-            $upperPrice = $request->upperPrice * 1000;
-            $lowerPrice = $request->lowerPrice * 1000;
+            // 案件のタイプに応じて料金の内容を変更
+            if ((int)$request->type === 1) {
+                // 金額は1,000をかけた値に変換
+                $upperPrice = $request->upperPrice * 1000;
+                $lowerPrice = $request->lowerPrice * 1000;
+            } else {
+                $upperPrice = null;
+                $lowerPrice = null;
+            }
 
             // サムネ画像のパス名を変数に
             if ($request->hasFile('thumbnail')) {
-                $avatar = $request->file('thumbnail');
-                $filename = $avatar->getClientOriginalName();
+                $thumbnail = $request->file('thumbnail');
+                $filename = $thumbnail->getClientOriginalName();
                 
                 // HEIC形式の画像をJPEG形式に変換
-                if ($avatar->getClientOriginalExtension() === 'heic') {
-                    $avatar = Image::make($avatar)->encode('jpg');
+                if ($thumbnail->getClientOriginalExtension() === 'heic') {
+                    $thumbnail = Image::make($thumbnail)->encode('jpg');
                     $filename = pathinfo($filename, PATHINFO_FILENAME) . '.jpg';
                 }
 
                 // 画像を圧縮して保存 
-                $compressedImage = Image::make($avatar)->resize(300, null, function ($constraint) {
+                $compressedImage = Image::make($thumbnail)->resize(300, null, function ($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 });
 
-                // 画像をpublic/uploadsディレクトリに移動
-                $moved = $compressedImage->save(public_path('uploads/'.$filename));
+                $moved = $compressedImage->save(storage_path('app/public/uploads/' . $filename));
+
                 
                 if (!$moved) {
                     // 画像の保存等が失敗した場合
@@ -203,7 +207,7 @@ class ProjectController extends Controller
             } else if ($project->thumbnail !== 'thumbnail-default.png') {
                 // 画像を変更しない場合
                 $filename = $project->thumbnail;
-                $filename = str_replace('/uploads/', '', $filename);
+                $filename = str_replace('storage/uploads/', '', $filename);
 
             } else {
                 // サムネが未選択の場合
@@ -216,7 +220,7 @@ class ProjectController extends Controller
                 'type'       => $request->type,
                 'upperPrice' => $upperPrice,
                 'lowerPrice' => $lowerPrice,
-                'thumbnail'    => '/uploads/'.$filename,
+                'thumbnail'    => '/storage/uploads/'.$filename,
                 'content'    => $request->content,
             ]);
 
