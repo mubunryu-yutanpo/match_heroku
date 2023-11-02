@@ -2304,6 +2304,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2347,9 +2348,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var day = date.getDate();
       return "".concat(year, ".").concat(month, ".").concat(day);
     },
+    // DM画面へ
+    toDirectMessage: function toDirectMessage() {
+      window.location.href = '/messages/' + this.user_id + '/' + this.project.user_id;
+    },
     // Twitterにシェア
     twitterShare: function twitterShare() {
-      var shareURL = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent("案件名：" + this.project.title + " #match") + '&url=' + encodeURIComponent("https://yutanpo-output2.com/project" + this.project_id + "/detail");
+      var shareURL = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent("案件名：" + this.project.title + " #match") + '&url=' + encodeURIComponent("https://yutanpo-output2.com/project/" + this.project_id + "/detail");
       window.open(shareURL, '_blank');
     }
   },
@@ -3143,7 +3148,7 @@ __webpack_require__.r(__webpack_exports__);
     handleScroll: function handleScroll() {
       var scrollPosition = window.scrollY || document.documentElement.scrollTop;
       var headerElement = document.querySelector('.p-header');
-      if (scrollPosition > 300) {
+      if (scrollPosition > 100) {
         // スクロール位置が500pxを超えた場合、クラス名を追加
         headerElement.classList.add('is-bg-change');
       } else {
@@ -4051,6 +4056,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -4437,7 +4443,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       swiperOptions: {
         loop: true,
         // ループ有効
-        //speed: 6000, // ループの時間
+        speed: 6000,
+        // ループの時間
         autoplay: {
           delay: 3000 // 途切れなくループ
         },
@@ -4448,12 +4455,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         // 一度に表示する枚数
 
         breakpoints: {
+          768: {
+            slidesPerView: 3
+          },
           420: {
             slidesPerView: 2,
             spaceBetween: 15
-          },
-          768: {
-            slidesPerView: 3
           }
         }
       }
@@ -4490,7 +4497,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // アクションボタンのクリック時
     toRegister: function toRegister() {
-      window.location.href = '/register';
+      window.location.href = '/login';
     }
   },
   filters: {
@@ -4525,7 +4532,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.swiper-container{\n    border-radius: 5px;\n}\n.swiper-slide{\n    max-width: 350px;\n}\n", ""]);
+exports.push([module.i, "\n.swiper-container{\n    border-radius: 5px;\n}\n", ""]);
 
 // exports
 
@@ -5730,7 +5737,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        <\n    ")]
+              [_vm._v("\n        ＜\n    ")]
             )
           : _vm._e(),
         _vm._v(" "),
@@ -5792,7 +5799,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        >\n    ")]
+              [_vm._v("\n        ＞\n    ")]
             )
           : _vm._e(),
       ],
@@ -5924,13 +5931,10 @@ var render = function () {
         _c("div", { staticClass: "p-detail__dm" }, [
           this.user_id !== this.project.user_id
             ? _c(
-                "a",
+                "button",
                 {
-                  staticClass: "p-detail__dm-link c-link",
-                  attrs: {
-                    href:
-                      "/messages/" + this.user_id + "/" + this.project.user_id,
-                  },
+                  staticClass: "p-detail__dm-button c-button",
+                  on: { click: _vm.toDirectMessage },
                 },
                 [
                   _c("i", { staticClass: "fa-solid fa-envelope c-icon" }),
@@ -6054,8 +6058,8 @@ var render = function () {
               {
                 staticClass: "p-user c-box--flex",
                 class: {
-                  "p-user--me": 1 === message.sender_id,
-                  "p-user--other": 1 !== message.sender_id,
+                  "is-me": 1 === message.sender_id,
+                  "is-other": 1 !== message.sender_id,
                 },
               },
               [
@@ -6321,7 +6325,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n            ←\n        ")]
+              [_vm._v("\n            ＜\n        ")]
             )
           : _vm._e(),
         _vm._v(" "),
@@ -6383,7 +6387,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n            →\n        ")]
+              [_vm._v("\n            ＞\n        ")]
             )
           : _vm._e(),
       ],
@@ -6837,7 +6841,9 @@ var render = function () {
                           "a",
                           {
                             staticClass: "c-link p-project__link",
-                            attrs: { href: "/project/" + apply.id + "/detail" },
+                            attrs: {
+                              href: "/project/" + apply.project.id + "/detail",
+                            },
                           },
                           [_vm._v(_vm._s(apply.project.title))]
                         ),
@@ -7219,7 +7225,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        <\n    ")]
+              [_vm._v("\n        ＜\n    ")]
             )
           : _vm._e(),
         _vm._v(" "),
@@ -7281,7 +7287,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        >\n    ")]
+              [_vm._v("\n        ＞\n    ")]
             )
           : _vm._e(),
       ],
@@ -7367,8 +7373,8 @@ var render = function () {
                     {
                       staticClass: "p-user c-box--flex",
                       class: {
-                        "p-user--me": _vm.seller_id === message.user.id,
-                        "p-user--other": _vm.seller_id !== message.user.id,
+                        "is-me": _vm.seller_id === message.user.id,
+                        "is-other": _vm.seller_id !== message.user.id,
                       },
                     },
                     [
@@ -7571,7 +7577,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        <\n    ")]
+              [_vm._v("\n        ＜\n    ")]
             )
           : _vm._e(),
         _vm._v(" "),
@@ -7633,7 +7639,7 @@ var render = function () {
                   },
                 },
               },
-              [_vm._v("\n        >\n    ")]
+              [_vm._v("\n        ＞\n    ")]
             )
           : _vm._e(),
       ],
@@ -7677,7 +7683,7 @@ var render = function () {
     _c(
       "label",
       { staticClass: "c-label p-counter__label", attrs: { for: _vm.name } },
-      [_vm._v(_vm._s(_vm.label) + ":")]
+      [_vm._v("*" + _vm._s(_vm.label) + ":")]
     ),
     _vm._v(" "),
     _c("textarea", {
@@ -7698,6 +7704,7 @@ var render = function () {
         rows: "10",
         autocomplete: _vm.autocomplete,
         placeholder: _vm.placeholder,
+        required: "",
       },
       domProps: { value: _vm.countText },
       on: {
@@ -20462,8 +20469,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Applications/MAMP/htdocs/match/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/match/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Applications/MAMP/htdocs/match_heroku/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Applications/MAMP/htdocs/match_heroku/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
