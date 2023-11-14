@@ -19,7 +19,7 @@ class Project extends Model
     }
 
     public function publicMessages()
-{
-    return $this->hasMany(PublicMessage::class);
-}
+    {
+        return $this->hasMany(PublicMessage::class);
+    }
 }

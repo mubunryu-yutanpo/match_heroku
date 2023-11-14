@@ -262,6 +262,7 @@ textarea {
 }
 
 .c-image {
+  aspect-ratio: 3/2;
   border-radius: 5px;
   height: 100%;
   vertical-align: bottom;
