@@ -14,7 +14,7 @@
 
     <!-- 応募部分 -->
     <div class="p-detail-action">
-        @if($user->id !== $project->user->id && $applyFlg === true)
+        @if($user->id !== $project->user->id && $applyFlg === false)
             <form action="{{ route('apply', ['project_id' => $project->id, 'user_id' => $user->id]) }}" method="post" class="p-detail-action__apply">
                 @csrf
                 <button class="p-detail-action__button c-button" type="submit" onclick="return confirm('この案件に応募します。よろしいですか？')">応募する！</button>
