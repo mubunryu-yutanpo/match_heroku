@@ -19,7 +19,7 @@
                 @csrf
                 <button class="p-detail-action__button c-button" type="submit" onclick="return confirm('この案件に応募します。よろしいですか？')">応募する！</button>
             </form>
-        @else
+        @else if($user->id === $project->user->id)
             <a href="{{ route('project.edit', $project->id) }}" class="p-detail-action__link c-link">案件内容を編集する</a>
         @endif
 
