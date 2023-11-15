@@ -118,8 +118,16 @@ class ProjectController extends Controller
 
             $user = Auth::user();
             $project = Project::where('id', $id)->with('user')->first();
+
+            // 応募の有無をチェック
+            $applyFlg = false;
+
+            $apply = Apply::where('user_id', $user->id)->where('project_id', $id)->first();
+            if($apply !== null){
+                $applyFlg = true;
+            }
     
-            return view('project/detail', compact('user', 'project'));
+            return view('project/detail', compact('user', 'project', 'applyFlg'));
 
         }catch(QueryException $e){
             // エラー時
