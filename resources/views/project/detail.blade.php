@@ -21,6 +21,7 @@
             </form>
         @elseif($user->id === $project->user->id)
             <a href="{{ route('project.edit', $project->id) }}" class="p-detail-action__link c-link">案件内容を編集する</a>
+
             
         @endif
 
